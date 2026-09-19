@@ -1,86 +1,86 @@
 # 🃏 BLUFF
 
-> **AI读不懂你的牌。**
+> **AI can't read your cards.**
 
-[English](./README_EN.md) | 中文
-
----
-
-## 简介
-
-**BLUFF** 是一款融合了 **扑克对战** 与 **Roguelike** 元素的策略卡牌游戏。你的对手是一个实时分析你行为模式的 AI——通过巧妙的虚张声势击溃它的认知模型，获取强力增益，构建无敌的计分引擎。
-
-### ✨ 核心特色
-
-- 🎭 **虚张声势机制** — 用弱牌欺骗 AI，触发 "Model Break" 击溃系统
-- 🤖 **AI 心理博弈** — AI 使用启发式引擎 + LLM 实时分析你的行为意图
-- 🃏 **Roguelike 构筑** — 受 Balatro 启发的 Ante/Blind 进阶系统，收集 Joker、Buff 和升级
-- 🎰 **双模式** — 经典5局扑克对决 & 深度肉鸽模式
-- 🔑 **三方登录与云存档** — 支持 Google 与 GitHub 登录，战局记录与回放跨端持久化存储于 PostgreSQL 数据库
-- 🚀 **Vercel 一键托管** — 原生适配 Serverless 架构，开箱即用部署
-- 🌏 **中英双语** — 完整的国际化支持
-- 🕹️ **像素风格** — 复古 CRT 终端美学
-- 🤖 **自动驾驶** — 内置 AI Autopilot 模式，可自动对局并追踪统计
+English | [简体中文](./README_zh.md)
 
 ---
 
-## 截图
+## About
 
-> _（开发中）_
+**BLUFF** is a strategic card game that blends **poker dueling** with **roguelike deckbuilding**. Your opponent is an AI that analyzes your behavioral patterns in real time — outsmart it through clever bluffing, shatter its cognitive model, earn powerful upgrades, and build an unstoppable scoring engine.
+
+### ✨ Key Features
+
+- 🎭 **Bluffing Mechanic** — Deceive the AI with weak hands to trigger the "Model Break" system
+- 🤖 **AI Psychological Warfare** — AI uses a heuristic engine + LLM to analyze your behavioral intent in real time
+- 🃏 **Roguelike Deckbuilding** — Balatro-inspired Ante/Blind progression with Jokers, Buffs, and upgrades
+- 🎰 **Dual Modes** — Classic 5-hand poker duel & deep roguelike mode
+- 🔑 **OAuth & Cloud Database** — Google & GitHub third-party login, with run records and full replays persisted in PostgreSQL
+- 🚀 **Vercel Ready** — Built for serverless deployment out of the box
+- 🌏 **Bilingual** — Full Chinese and English localization
+- 🕹️ **Pixel Art Style** — Retro CRT terminal aesthetic
+- 🤖 **Autopilot** — Built-in AI Autopilot mode with automated play and stat tracking
 
 ---
 
-## 快速开始
+## Screenshots
 
-### 环境要求
+> _(Coming soon)_
+
+---
+
+## Getting Started
+
+### Prerequisites
 
 - Node.js 18+
 - pnpm 10+
 
-### 安装
+### Installation
 
 ```bash
-# 克隆仓库
-git clone https://github.com/your-username/bluff.git
+# Clone the repository
+git clone https://github.com/h1bomb/bluff.git
 cd bluff
 
-# 安装依赖
+# Install dependencies
 pnpm install
 
-# 配置环境变量（可选，用于 AI 模型功能）
+# Configure environment variables (optional, for AI model features)
 cp .env.example .env.local
 ```
 
-### 配置 JEV AI 密钥（可选）
+### Configure JEV AI Key (Optional)
 
-编辑 `.env.local`，填入你的 [TypeSafe AI](https://typesafe.ai) API Key：
+Edit `.env.local` and add your [TypeSafe AI](https://typesafe.ai) API Key:
 
 ```bash
 TYPESAFE_API_KEY=your_api_key_here
 ```
 
 > [!NOTE]
-> 此密钥为 **可选配置**。如果未配置或 API 调用超时（>1200ms），系统会自动无缝回退到内置的 **启发式决策引擎 (HeuristicDecisionProvider)**，游戏仍可正常运行。
+> This key is **optional**. If not configured or if the API call times out (>1200ms), the system automatically and seamlessly falls back to the built-in **Heuristic Decision Engine (HeuristicDecisionProvider)**. The game works perfectly fine without it.
 >
-> 配置后，AI 对手将使用 LLM 进行更深层的行为分析，提供更具挑战性的对局体验。
+> When configured, the AI opponent uses an LLM for deeper behavioral analysis, providing a more challenging gameplay experience.
 
-### 运行
+### Run
 
 ```bash
-# 启动开发服务器
+# Start the development server
 pnpm dev
 ```
 
-打开 [http://localhost:3000](http://localhost:3000) 开始游戏。
+Open [http://localhost:3000](http://localhost:3000) to start playing.
 
-### 构建
+### Build
 
 ```bash
 pnpm build
 pnpm start
 ```
 
-### 测试
+### Test
 
 ```bash
 pnpm test
@@ -88,51 +88,51 @@ pnpm test
 
 ---
 
-## 游戏模式
+## Game Modes
 
-### 🎴 经典模式
+### 🎴 Classic Mode
 
-5 局制扑克对决。通过 弃牌 / 跟注 / 加注 / 全下 与 AI 博弈，成功虚张声势可触发 Model Break，降低 AI 理解度。
+A best-of-5 poker duel. Use Fold / Call / Raise / All-In against the AI. Successfully bluffing triggers a Model Break, reducing the AI's understanding of your play style.
 
-### 🎰 肉鸽模式
+### 🎰 Roguelike Mode
 
-Balatro 风格的 Roguelike 模式：
+A Balatro-style roguelike mode:
 
-- **8 个 Ante**，每个包含小盲注、大盲注和 Boss 盲注
-- **选牌出牌**打出牌型累积分数，达到目标分数击败盲注
-- **商店系统**购买 Joker、牌型升级卷轴与记忆修改器（卡牌修饰）
-- **Boss 战**拥有特殊能力的 Boss 盲注
-- **无尽模式** — Ante 8 之后进入指数级增长的无尽挑战
-
----
-
-## 核心系统
-
-| 系统 | 说明 |
-|------|------|
-| **Model Break** | 成功欺骗 AI 后触发，获得奖励和 Buff 选择权 |
-| **Joker 系统** | 18 种心理学主题 Joker，4 种稀有度，在计分时触发各种加成 |
-| **Buff 系统** | 假动作、记忆毒素、反读术、读心术 — 操控 AI 感知 |
-| **计分引擎** | 筹码 × 倍率 × 认知倍率，支持卡牌修饰器和 Joker 联动 |
-| **商店** | 回合间购买 Joker、升级牌型、改造卡牌 |
-| **AI 引擎** | 启发式规则引擎 + TypeSafe AI SDK (LLM) 双重决策 |
+- **8 Antes**, each with Small Blind, Big Blind, and Boss Blind
+- **Select and play cards** to build poker hands and accumulate score to beat the target
+- **Shop system** to purchase Jokers, hand upgrade scrolls, and memory mods (card modifiers)
+- **Boss battles** with special abilities and restrictions
+- **Endless mode** — exponentially scaling challenges after Ante 8
 
 ---
 
-## 📖 游戏文档
- 
-详细的游戏说明与部署文档请查看：
+## Core Systems
 
-- 🚀 [Vercel 部署与第三方登录配置指南](./docs/vercel-deployment.md)
-- 📖 [游戏说明 (中文)](./docs/game-guide-zh.md)
+| System | Description |
+|--------|-------------|
+| **Model Break** | Triggered by successfully deceiving the AI; earn rewards and choose a Buff |
+| **Joker System** | 18 psychology-themed Jokers across 4 rarities, triggering scoring bonuses |
+| **Buff System** | False Tell, Memory Poison, Counter Read, Mind Read — manipulate AI perception |
+| **Scoring Engine** | Chips × Mult × Cognitive Mult, with card modifiers and Joker synergies |
+| **Shop** | Buy Jokers, upgrade hand types, and modify cards between rounds |
+| **AI Engine** | Heuristic rule engine + TypeSafe AI SDK (LLM) dual-layer decision system |
+
+---
+
+## 📖 Game Documentation
+
+For detailed game guides and deployment instructions, see:
+
+- 🚀 [Vercel Deployment & OAuth Setup Guide](./docs/vercel-deployment.md)
 - 📖 [Game Guide (English)](./docs/game-guide-en.md)
+- 📖 [游戏说明 (中文)](./docs/game-guide-zh.md)
 
 ---
 
-## 技术栈
+## Tech Stack
 
-| 技术 | 版本 |
-|------|------|
+| Technology | Version |
+|-----------|---------|
 | [Next.js](https://nextjs.org) | 16.3 |
 | [React](https://react.dev) | 19.2 |
 | [Auth.js / NextAuth](https://authjs.dev) | 5.0 (Beta) |
@@ -141,70 +141,70 @@ Balatro 风格的 Roguelike 模式：
 | [TypeScript](https://www.typescriptlang.org) | 5.x |
 | [Zustand](https://zustand.docs.pmnd.rs) | 5.x |
 | [Tailwind CSS](https://tailwindcss.com) | 4.x |
-| [shadcn/ui](https://ui.shadcn.com) | 最新 |
-| [Radix UI](https://www.radix-ui.com) | 最新 |
+| [shadcn/ui](https://ui.shadcn.com) | Latest |
+| [Radix UI](https://www.radix-ui.com) | Latest |
 | [@typesafe-ai/sdk](https://typesafe.ai) | 0.6 |
 | [Vitest](https://vitest.dev) | 5.x |
 
 ---
 
-## 项目结构
+## Project Structure
 
 ```
 bluff/
 ├── src/
-│   ├── app/                  # Next.js 页面路由
-│   │   ├── page.tsx          # 首页（模式选择）
-│   │   ├── game/             # 游戏主页面
-│   │   ├── history/          # 历史记录
-│   │   └── api/              # API 路由
-│   ├── components/           # React 组件
-│   │   ├── game/             # 游戏相关组件
-│   │   ├── history/          # 历史记录组件
-│   │   └── ui/               # shadcn/ui 组件
-│   ├── game/                 # 游戏核心引擎
-│   │   ├── engine/           # 经典 & 肉鸽引擎
-│   │   ├── poker/            # 牌型评估器
-│   │   ├── scoring/          # 计分系统
-│   │   ├── jokers/           # Joker 定义与逻辑
-│   │   ├── buffs/            # Buff 定义与引擎
-│   │   ├── shop/             # 商店系统
-│   │   ├── ai/               # AI 决策提供器
-│   │   └── patterns/         # 行为模式提取
-│   ├── jev/                  # AI 认知分析引擎 (JEV)
-│   ├── store/                # Zustand 状态管理
-│   ├── hooks/                # React 自定义 Hooks
-│   ├── lib/                  # 工具库 & 国际化
-│   └── services/             # API 服务层
-├── tests/                    # 测试文件
-├── docs/                     # 游戏文档
-└── public/                   # 静态资源
+│   ├── app/                  # Next.js page routes
+│   │   ├── page.tsx          # Landing page (mode selection)
+│   │   ├── game/             # Main game page
+│   │   ├── history/          # Game history
+│   │   └── api/              # API routes
+│   ├── components/           # React components
+│   │   ├── game/             # Game-related components
+│   │   ├── history/          # History components
+│   │   └── ui/               # shadcn/ui components
+│   ├── game/                 # Core game engine
+│   │   ├── engine/           # Classic & Roguelike engines
+│   │   ├── poker/            # Hand evaluators
+│   │   ├── scoring/          # Scoring system
+│   │   ├── jokers/           # Joker definitions & logic
+│   │   ├── buffs/            # Buff definitions & engine
+│   │   ├── shop/             # Shop system
+│   │   ├── ai/               # AI decision providers
+│   │   └── patterns/         # Behavioral pattern extraction
+│   ├── jev/                  # AI Cognitive Analysis Engine (JEV)
+│   ├── store/                # Zustand state management
+│   ├── hooks/                # Custom React hooks
+│   ├── lib/                  # Utilities & i18n
+│   └── services/             # API service layer
+├── tests/                    # Test files
+├── docs/                     # Game documentation
+└── public/                   # Static assets
 ```
 
 ---
 
-## 开发
+## Development
 
 ```bash
-# 运行开发服务器
+# Run development server
 pnpm dev
 
-# 运行测试
+# Run tests
 pnpm test
 
-# 代码检查
+# Lint code
 pnpm lint
 
-# 构建生产版本
+# Build for production
 pnpm build
 ```
 
 ---
 
-## 许可证
+## License
 
-本项目为私有项目。
+This is a private project.
 
 ---
 
-> 🎲 **在 BLUFF 的世界里，最强的牌不一定能赢——最好的骗子才能。**
+> 🎲 **In the world of BLUFF, the strongest hand doesn't always win — the best liar does.**
