@@ -1,0 +1,595 @@
+{
+  "common": {
+    "langToggle": "EN",
+    "chips": "筹码",
+    "bet": "注额",
+    "pot": "底池",
+    "hand": "局数",
+    "active": "在线",
+    "scanning": "扫描中",
+    "deceived": "被骗",
+    "folded": "已弃牌",
+    "boss": "BOSS",
+    "bossBattle": "BOSS 对决",
+    "aiUnderstanding": "AI 认知度",
+    "continue": "继续",
+    "backToGame": "← 返回牌局",
+    "devPlayground": "[DEV] JEV 认知实验台",
+    "devConsole": "[DEV] JEV 遥测控制台",
+    "hideConsole": "▲ 收起调试控制台",
+    "showConsole": "▼ [DEV] JEV 心理遥测数据",
+    "home": "主页",
+    "history": "历史",
+    "battleHud": "博弈牌桌全息机台",
+    "tapCardsToSelect": "点击选择卡牌（最多选5张或弃牌）",
+    "none": "无",
+    "action": "动作",
+    "visual": "视觉",
+    "understanding": "认知度",
+    "gameStateSnapshot": "对局状态快照",
+    "activeBuffs": "生效中增益",
+    "normalizedJevBelief": "JEV 归一化认知信念",
+    "aiStatus": "AI 当前状态",
+    "noActiveBelief": "暂无活跃信念"
+  },
+  "title": {
+    "gameTitle": "骗过 AI",
+    "gameTitleSub": "BLUFF.AI",
+    "subtitle": "TypeSafe 认知心理博弈实验",
+    "tagline": "三张牌 × AI 心理博弈 × Roguelike Buff",
+    "description": "一场与自适应神经网络对抗的心理实验。主动建立下注习惯，故意留下破绽，在关键时刻击碎 AI 的高置信度认知。",
+    "statHands": "手牌",
+    "statReader": "读心者",
+    "statMercy": "零容错",
+    "startRun": "开始实验 (START RUN)",
+    "continueRun": "继续战局 (CONTINUE)",
+    "newRun": "新开一局 (NEW RUN)"
+  },
+  "game": {
+    "initializing": "正在初始化 AI 心理实验室...",
+    "yourCards": "你的三张手牌",
+    "handWon": "★ 对局获胜！+",
+    "handLost": "✖ 对局落败！-",
+    "splitPot": "◆ 平局分池 ",
+    "chipsSuffix": " 筹码",
+    "viewResults": "查看实验报告 →",
+    "aiThinksYouAre": "AI 认为你的手牌是：",
+    "observingInitialTells": "AI 认知引擎：正在捕捉初始下注特征",
+    "mindReadDecrypted": "读心术已破解：",
+    "rawTelemetry": "JEV 原始认知遥测",
+    "aggression": "激进度",
+    "predictability": "刻板度",
+    "tilt": "上头指数"
+  },
+  "behaviors": {
+    "STRONG_REPRESENTATION": "持有强牌",
+    "BLUFF_REPRESENTATION": "虚张声势 / 诈唬",
+    "BAIT": "设套钓鱼 / 诱敌",
+    "PROBE": "试探摸底",
+    "DEFENSIVE": "防守观望",
+    "TILT": "情绪上头 / 失控",
+    "UNCLEAR": "意图不明",
+    "GENUINE_STRONG": "真材实料 / 强牌",
+    "CALCULATED_BLUFF": "战术诈唬 / 逆向核爆",
+    "TEMPO_MANIPULATION": "节奏操控 / 拟态破绽",
+    "DESPERATION_DIG": "绝境求生 / 轮换过牌"
+  },
+  "actions": {
+    "call": "跟注",
+    "raise": "加注 ×2",
+    "fold": "弃牌",
+    "allIn": "全推 ALL IN",
+    "giveUp": "放弃本手"
+  },
+  "boss": {
+    "defaultQuote": "我已经看穿了你的每一枚筹码。",
+    "taunt1": "人类在压力之下总会动摇。",
+    "taunt2": "又检测到一次拙劣的诈唬。",
+    "taunt3": "你的下注习惯刻板得无可救药。",
+    "readerName": "读心者",
+    "readerAi": "读心者 AI",
+    "readerBoss": "读心者 Lv. ????",
+    "quotePrefix": "“你现在的表现：",
+    "quoteSuffix": "”",
+    "controlledByMe": "被我掌控"
+  },
+  "buffs": {
+    "title": "选择一项心理实验 (BUFF)",
+    "subtitle": "为下一手牌植入认知诱骗漏洞",
+    "select": "安装此实验",
+    "FALSE_TELL": {
+      "name": "虚假习惯",
+      "tagline": "FALSE TELL",
+      "description": "连续相同操作的特征权重放大 1.5 倍，使 AI 更快形成刻板认知。"
+    },
+    "MEMORY_POISON": {
+      "name": "记忆污染",
+      "tagline": "MEMORY POISON",
+      "description": "将最近一次激进对局的历史权重 ×3 注入 AI 记忆，诱导强力误判。"
+    },
+    "COUNTER_READ": {
+      "name": "反向读心",
+      "tagline": "COUNTER READ",
+      "description": "当 AI 置信度 > 75% 且被成功欺骗时，MODEL BREAK 伤害与筹码奖励翻倍。"
+    },
+    "MIND_READ": {
+      "name": "读心术",
+      "tagline": "MIND READ",
+      "description": "破解 AI 认知层。在界面中完整解锁各分类概率细节与心态评分。"
+    }
+  },
+  "modelBreak": {
+    "aiConfidence": "AI 对你手牌的判断置信度",
+    "actualHolding": "你的真实底牌揭开",
+    "strength": "牌力强度",
+    "wrong": "严重误判！",
+    "title": "MODEL BREAK",
+    "subtitle": "AI 认知模型彻底崩溃！",
+    "bonus": "欺骗奖励筹码到账",
+    "chipsReward": "筹码",
+    "damage": "Boss 认知度摧毁",
+    "continueRun": "继续实验"
+  },
+  "result": {
+    "summaryTitle": "心理博弈实验总结报告",
+    "aiReadability": "AI 看穿概率",
+    "machineReadError": "机器识别偏差",
+    "modelBreaks": "模型崩溃次数",
+    "highConfMisjudge": "高置信误判",
+    "cognitiveArchetype": "认知博弈原型",
+    "biggestLieExhibit": "最大谎言展台",
+    "aiConfidenceLabel": "AI 误判置信度",
+    "actualLabel": "实际底牌：7高牌垃圾牌 → AI 吓得弃牌",
+    "finalChips": "最终筹码结算：",
+    "watermark": "你能骗过推理引擎吗？· BLUFF.AI",
+    "sharePoster": "生成并分享 9:16 战绩海报 (PNG)",
+    "generatingPoster": "正在生成海报...",
+    "playAgain": "再来一局 (PLAY AGAIN)",
+    "archetypes": {
+      "patternManipulator": {
+        "title": "规律操纵大师 (PATTERN MANIPULATOR)",
+        "desc": "你故意建立严格的连续秒加注习惯，并在 AI 深信不疑时给出了致命一击。"
+      },
+      "cognitiveAnomaly": {
+        "title": "认知异常体 (COGNITIVE ANOMALY)",
+        "desc": "AI 神经网络完全无法为你找到连贯的行为边界，认知模型屡遭摧毁。"
+      },
+      "coldBloodedBaiter": {
+        "title": "冷血诱捕者 (COLD-BLOODED BAITER)",
+        "desc": "你以貌似脆弱的破绽为诱饵，诱使自负的 AI 踏入精心布置的算计陷阱。"
+      },
+      "transparentSpecimen": {
+        "title": "透明实验样本 (TRANSPARENT SPECIMEN)",
+        "desc": "AI 神经网络以极高的准确率预判了你的每一步，请尝试建立更深层的虚假习惯。"
+      }
+    }
+  },
+  "autopilot": {
+    "cockpitTitle": "JEV 自动驾驶决策舱",
+    "cockpitSub": "认知博弈决策矩阵",
+    "engaged": "全自动托管中",
+    "standby": "智能辅助建议",
+    "autoToggleOn": "托管: 开启",
+    "autoToggleOff": "托管: 暂停",
+    "execute": "执行",
+    "executing": "执行中...",
+    "speed1x": "1x 拟真",
+    "speed2x": "2x 极速",
+    "telemetryLog": "JEV 思考遥测流",
+    "noDecisions": "正在推演神经网络决策树...",
+    "mobileBanner": "🤖 JEV 自动驾驶",
+    "openCockpit": "展开决策舱",
+    "closeCockpit": "收起",
+    "historicalTelemetry": "历史时序决策还原",
+    "candidateBranches": "候选决策分支",
+    "pathsUnit": "组",
+    "noTelemetry": "暂无遥测日志",
+    "confirmTitle": "JEV 代打托管",
+    "confirmPrompt": "是否开启 Jev 代打托管？",
+    "confirmDesc": "开启后，JEV 智能认知体将全自主接管出牌、弃牌与商店策略。对局中你仍可随时点击右上角开关暂停或手动接管。",
+    "enableOption": "🤖 开启 Jev 托管",
+    "manualOption": "🎮 手动游玩",
+    "featureAutoPlay": "神经网络自主执行出牌与弃牌决策",
+    "featureAutoShop": "基于小丑牌协同矩阵智能统筹商店采购",
+    "featureSeamless": "对局期间随时可自由切换接管状态",
+    "starting": "正在准备战局...",
+    "cancel": "取消",
+    "categories": {
+      "BEST": "最优出牌",
+      "SAFE": "稳健换牌",
+      "BLUFF": "心理诈唬",
+      "SYNERGY": "协同采购",
+      "GREED": "利息储备"
+    }
+  },
+  "blinds": {
+    "ante": "ANTE",
+    "smallBlind": "小型盲注",
+    "bigBlind": "大型盲注",
+    "boss": "首领",
+    "scoreToBeat": "目标得分",
+    "hands": "出牌",
+    "discards": "弃牌",
+    "bossRoster": {
+      "THE_CYNIC": {
+        "name": "多疑者",
+        "ability": "极度偏向怀疑，更频繁抓偷鸡并提升置信度"
+      },
+      "THE_NARCISSIST": {
+        "name": "自负狂",
+        "ability": "极度盲信自身判断，对反向诱导有极高脆弱度"
+      },
+      "THE_BLIND_SPOT": {
+        "name": "盲区节点",
+        "ability": "认知记忆迟钝，对连续出牌规律反应滞后"
+      },
+      "THE_OVERCLOCKER": {
+        "name": "超频核心",
+        "ability": "超频计算，目标分数更高，分析思考极为迅猛"
+      }
+    }
+  },
+  "jokers": {
+    "title": "认知小丑",
+    "passiveSlots": "常驻卡槽",
+    "passiveTag": "持续生效 · 上限5张",
+    "sell": "售出",
+    "rarity": {
+      "COMMON": "普通",
+      "UNCOMMON": "罕见",
+      "RARE": "稀有",
+      "LEGENDARY": "传说"
+    },
+    "items": {
+      "PAVLOVS_BELL": {
+        "name": "巴甫洛夫之铃",
+        "description": "若连续两次出牌模式一致，+25 倍率。",
+        "trigger": "🔔 巴甫洛夫之铃 +25 Mult!"
+      },
+      "CONFIRMATION_BIAS": {
+        "name": "确认偏误",
+        "description": "当 AI 置信度 ≥ 50% 时获得 ×1.6 倍率（若 ≥ 70% 提升至 ×2.0）。",
+        "triggerPeak": "👁️ 确认偏误巅峰激变 ×2.0!",
+        "triggerNormal": "👁️ 确认偏误生效 ×1.6!"
+      },
+      "POKER_FACE": {
+        "name": "扑克脸",
+        "description": "若在 1.0s ~ 2.5s 稳定节奏出牌，+50 筹码。",
+        "trigger": "🗿 扑克脸 +50 筹码!"
+      },
+      "PHANTOM_TELL": {
+        "name": "幽灵底牌",
+        "description": "若打出单张高牌，基础筹码视同为 80。",
+        "trigger": "👻 幽灵底牌提升至 80 筹码!"
+      },
+      "COGNITIVE_OVERLOAD": {
+        "name": "认知过载",
+        "description": "每次触发 MODEL BREAK，该牌永久增加 +0.5x 倍率。",
+        "triggerUpgrade": "⚡ 认知过载升级至 ×{xMult}!",
+        "triggerPlay": "⚡ 认知过载 ×{xMult} Mult!"
+      },
+      "FAKE_HESITATION": {
+        "name": "假意迟疑",
+        "description": "出牌前等待超过 2.5 秒，获得 +35 倍率与 +15 筹码。",
+        "trigger": "⏳ 假意迟疑 +15 筹码, +35 Mult!"
+      },
+      "FIBONACCI_NEURON": {
+        "name": "斐波那契神经元",
+        "description": "打出的牌每包含 2、3、5、8，每张提供 +8 倍率。",
+        "trigger": "🧬 斐波那契神经元 ×{count} +{mult} Mult!"
+      },
+      "RED_PILL": {
+        "name": "红药丸",
+        "description": "打出的每张红桃或方块提供 +20 筹码。",
+        "trigger": "💊 红药丸 +{chips} 筹码!"
+      },
+      "BLACK_ICE": {
+        "name": "黑冰防御",
+        "description": "打出的每张黑桃或梅花提供 +4 倍率。",
+        "trigger": "🧊 黑冰防御 +{mult} Mult!"
+      },
+      "SMOKE_SCREEN": {
+        "name": "烟雾弹",
+        "description": "弃掉 A 或 K 时，本回合出牌额外获得 +60 筹码。",
+        "triggerArmed": "💨 烟雾弹已触发，下次出牌 +60 筹码!",
+        "triggerActive": "💨 烟雾弹生效 +60 筹码!"
+      },
+      "REVERSE_PSYCHOLOGY": {
+        "name": "反直觉博弈",
+        "description": "当 AI 判定你处于「TILT (上头)」时，获得 ×2.0 倍率。",
+        "trigger": "🔄 反直觉博弈 ×2.0 Mult!"
+      },
+      "THE_GLITCH": {
+        "name": "故障残影",
+        "description": "MODEL BREAK 的 AI 认知倍率额外提升 50%。",
+        "trigger": "👾 故障残影：认知失真倍率 ×1.5!"
+      },
+      "ECHO_CHAMBER": {
+        "name": "回音室",
+        "description": "打出的最后一张卡牌重触：再次计入点数筹码并提供 +15 倍率。",
+        "trigger": "📡 回音室重触 {card}: +{chips} 筹码, +15 Mult!"
+      },
+      "LOGIC_DEADLOCK": {
+        "name": "逻辑死锁",
+        "description": "若打出单张高牌获得 ×2.5 总倍率；打出其他牌型亦提供 ×1.3 保底倍率。",
+        "triggerHighCard": "🔒 逻辑死锁：弱牌逆转 ×2.5 Mult!",
+        "triggerNormal": "🔒 逻辑死锁：逻辑牵引 ×1.3 Mult!"
+      },
+      "CHROMATIC_ABERRATION": {
+        "name": "色差畸变",
+        "description": "打出的手牌同时包含黑牌与红牌时，获得 ×1.8 总倍率。",
+        "trigger": "🎨 色差畸变：双色交织 ×1.8 Mult!"
+      },
+      "NEURAL_FEEDBACK": {
+        "name": "神经反馈",
+        "description": "打出的每张人头牌（J、Q、K）或 A，提供 ×1.3 总倍率（可连乘）。",
+        "trigger": "🧠 神经反馈：{count}张高牌 ×{xMult} Mult!"
+      },
+      "QUANTUM_ENTANGLEMENT": {
+        "name": "量子纠缠",
+        "description": "若打出对子，+40 筹码并获得 ×1.6 总倍率。",
+        "trigger": "⚛️ 量子纠缠：对子跃迁 +40 筹码 ×1.6 Mult!"
+      },
+      "TURING_SHIFTER": {
+        "name": "图灵变位",
+        "description": "若 AI 判定与你的真实手牌产生偏差，获得 ×2.2 总倍率。",
+        "trigger": "🌌 图灵变位：认知盲区 ×2.2 Mult!"
+      }
+    }
+  },
+  "pokerHands": {
+    "STRAIGHT_FLUSH": "同花顺",
+    "FOUR_OF_A_KIND": "四条",
+    "FULL_HOUSE": "葫芦",
+    "FLUSH": "同花",
+    "STRAIGHT": "顺子",
+    "THREE_OF_A_KIND": "三条",
+    "TWO_PAIR": "两对",
+    "PAIR": "对子",
+    "HIGH_CARD": "高牌",
+    "high": "高",
+    "kicker": "踢脚",
+    "evaluatorTemplates": {
+      "straightFlush": "同花顺 ({high}高)",
+      "fourOfAKind": "四条 {rank}",
+      "fullHouse": "葫芦 ({r1}带{r2})",
+      "flush": "同花 {suit} ({high}高)",
+      "straight": "顺子 ({high}高)",
+      "threeOfAKind": "三条 {rank}",
+      "twoPair": "两对 ({r1}和{r2})",
+      "pair": "对子 {rank} ({kicker}踢脚)",
+      "highCard": "高牌 {r1}",
+      "highCardSingle": "高牌 {r1}",
+      "pairSingle": "对子 {rank}",
+      "highCardDouble": "高牌 {r1} ({r2})"
+    }
+  },
+  "playControls": {
+    "selectPrompt": "请选定 1~5 张牌出牌",
+    "selectedPrefix": "已选",
+    "discard": "弃牌换牌",
+    "playHand": "提交出牌",
+    "remaining": "剩余",
+    "chipsWord": "筹码",
+    "multWord": "倍率",
+    "remainingCount": "剩余 {count} 次",
+    "estScore": "预估得分",
+    "base": "基础",
+    "cardPoints": "牌面",
+    "pts": "分",
+    "target": "目标",
+    "current": "当前",
+    "needed": "尚需",
+    "beatBlindNotice": "💥 必定击穿当前盲注！",
+    "remainingScore": "还差 {needed} 分"
+  },
+  "scoring": {
+    "tallyTitle": "出牌结算明细",
+    "tallyHeader": "出牌结算",
+    "modelBreakBurst": "💥 MODEL BREAK 认知核爆!",
+    "chips": "底筹",
+    "mult": "倍率",
+    "cog": "认知乘数",
+    "gain": "本次得分",
+    "roundScoreGain": "总得分斩获",
+    "totalScore": "最终得分",
+    "continuePlay": "继续出牌 / 进入下一环节 ▶",
+    "nextStep": "查看下一步骤 ▶",
+    "confirm": "确定",
+    "baseHandMessage": "{desc} Lv.{level}: {chips} 筹码 × {mult} 倍率",
+    "cardBonusMessage": "牌面点数额外 +{chips} 筹码",
+    "tellFastMessage": "⚡ 闪电秒出 (<600ms) +25 筹码破绽",
+    "tellSlowMessage": "⏳ 深度迟疑 (>3.0s) +2 诱饵倍率",
+    "modelBreakMessage": "💥 诱发 MODEL BREAK x{xMult} 认知爆发乘数！",
+    "deceptionBonusMessage": "🎭 欺骗成功 +{chips} 筹码奖励",
+    "reverseBaitMessage": "🎣 反向钓鱼 +{mult} 诱捕倍率",
+    "totalMessage": "结算总计: {chips} 筹码 × {mult} 倍率 × {cog}x = {total} 分",
+    "stepTemplates": {
+      "baseHand": "{handDesc} Lv.{level}: {chips} 筹码 × {mult} 倍率",
+      "cardRankBonus": "牌面点数额外 +{chips} 筹码",
+      "extraChips": "{suit}{rank} 芯片 +{chips} 筹码",
+      "foil": "✨ {suit}{rank} 量子箔 +50 筹码",
+      "holo": "🌈 {suit}{rank} 全息 +10 倍率",
+      "poly": "🔮 {suit}{rank} 多彩 ×1.5 总倍率",
+      "fastTell": "⚡ 闪电秒出 (<600ms) +25 筹码破绽",
+      "slowTell": "⏳ 深度迟疑 (>3.0s) +2 诱饵倍率",
+      "modelBreakStrong": "💥 MODEL BREAK! AI 误判强牌 ({conf}%): 认知倍率 ×{mult}!",
+      "modelBreakMonster": "💥 MODEL BREAK! AI 严重误判偷鸡 ({bluff}%) 撞上超级大牌: 认知倍率 ×{mult}!",
+      "counterBait": "⚡ 绝地反捕！AI 误判偷鸡 ({bluff}%): 认知倍率 ×{mult}!",
+      "cognitiveDiscrepancy": "👁️ AI 认知偏离: 认知倍率 ×{mult}",
+      "jokerTriggerDefault": "{icon} {name} 触发!",
+      "totalResult": "{chips} 筹码 × {mult} 倍率 × {cog} 认知 = {score} 点!"
+    }
+  },
+  "shop": {
+    "title": "赛博暗网黑市",
+    "titleModal": "赛博暗网黑市",
+    "subTitle": "挑选小丑与强力认知增益",
+    "subReplay": "【全息时空回放货架】",
+    "autopilotActive": "🤖 JEV 自动代打模式运行中",
+    "thinking": "推演中...",
+    "stepPurchase": "本步 JEV 决策采购:",
+    "soldOut": "库存已售罄，请刷新或进入下一关",
+    "soldOutInline": "黑市商品已售罄，请刷新或迎战下一盲注",
+    "reroll": "刷新",
+    "nextBlind": "下一盲注",
+    "enterNextBlind": "迎战下一盲注",
+    "buy": "购买",
+    "full": "槽满",
+    "purchased": "★ 本步购入",
+    "recommended": "推荐",
+    "slotsFull": "小丑槽位已满 (上限 5 张)！",
+    "categoryJoker": "常驻卡槽",
+    "categoryJokerDesc": "被动增益 · 占用小丑卡槽",
+    "categoryUpgrade": "一次性使用",
+    "categoryUpgradeDesc": "即买即用 · 提升牌型等级",
+    "categoryMod": "对卡片起作用",
+    "categoryModDesc": "直接生效 · 强化修改手牌",
+    "notEnoughCash": "资金不足！",
+    "notEnoughCashReroll": "刷新资金不足！",
+    "purchasedSuccess": "已购入 {name} (-)",
+    "purchaseFailed": "购买未成功，请重试",
+    "restocked": "黑市已刷新！",
+    "rerollFailed": "刷新失败，请检查资金",
+    "archiveReadOnly": "黑市全息货架记录（只读）"
+  },
+  "resultRoguelike": {
+    "victoryTitle": "★ 战局通关 · 彻底突破 ★",
+    "defeatTitle": "✖ 挑战惜败 · 战局终结 ✖",
+    "victorySub": "成功穿透 8 层底注盲注，击溃终极 AI 认知大模型！",
+    "defeatSub": "止步于 ANTE {ante}{blindName}，手牌耗尽未能打破目标分数。",
+    "finalAnte": "最终底注",
+    "totalScore": "战局总分",
+    "peakHand": "最高单手",
+    "handsPlayed": "出牌总数",
+    "discardsUsed": "弃牌换牌",
+    "purchases": "黑市采购",
+    "modelBreaks": "心理诱爆 (Model Break)",
+    "timesSuffix": " 次",
+    "finalJokerLineup": "★ 终局小丑阵容 ({count}/5)",
+    "startNewRun": "🎮 重新开始挑战",
+    "historyButton": "📜 战报",
+    "replayFromStart": "|◀ 从头回放",
+    "exitReplay": "退出回放"
+  },
+  "auth": {
+    "loginButton": "登录",
+    "logout": "退出登录",
+    "signedInAs": "已登录为",
+    "cloudConnected": "云端已连接",
+    "modalTitle": "终端鉴权",
+    "modalDescription": "连接您的 Google 或 GitHub 账号，即可将牌局数据、历史档案与胜率统计持久化到云端 PostgreSQL 数据库，跨设备实时同步。",
+    "loginGoogle": "使用 Google 账号登录",
+    "loginGithub": "使用 GitHub 账号登录",
+    "loggingIn": "正在连接鉴权中心..."
+  },
+  "history": {
+    "title": "战局历史档案库",
+    "subtitle": "云端 & 本地双轨深度归档",
+    "cloudSync": "同步本地战局至云端",
+    "syncing": "正在同步...",
+    "syncedSuccess": "已成功同步战局至云端数据库！",
+    "cloudBadge": "云端存储",
+    "backToGame": "← 返回牌局",
+    "allRuns": "全部战局",
+    "victories": "🏆 胜局",
+    "defeats": "💀 惜败",
+    "inProgress": "⏳ 进行中",
+    "empty": "暂无战局归档记录。开始一局游戏后将自动实时记录！",
+    "exportJson": "导出 JSON",
+    "exportAll": "备份全部",
+    "importJson": "导入 JSON",
+    "clearAll": "清空历史",
+    "clearConfirm": "确定要清空 IndexedDB 中的全部战局档案吗？此操作无法撤销。",
+    "deleteRun": "删除",
+    "replayRun": "▶ 战局回放",
+    "statusVictory": "胜局达成",
+    "statusDefeat": "挑战惜败",
+    "statusRunning": "进行中",
+    "anteReached": "达成底注",
+    "totalScore": "累积分数",
+    "peakScore": "单手最高",
+    "handsPlayed": "出牌次数",
+    "discardsUsed": "弃牌次数",
+    "purchases": "黑市采购",
+    "duration": "用时",
+    "replayTitle": "赛博全息回放舱",
+    "replayStep": "步骤",
+    "prevStep": "◀ 上一步",
+    "nextStep": "下一步 ▶",
+    "play": "▶ 播放",
+    "pause": "⏸ 暂停",
+    "firstStep": "◀◀ 开局",
+    "lastStep": "终局 ▶▶",
+    "speed1x": "1x 拟真",
+    "speed2x": "2x 极速",
+    "jokersHeld": "持有小丑芯片",
+    "scoringFormula": "计分拆解公式",
+    "chips": "底筹",
+    "mult": "倍率",
+    "handBonus": "本次得分",
+    "actionLog": "时序事件日志",
+    "importedSuccess": "成功导入战局档案至本地数据库！",
+    "importFailed": "导入失败，文件格式有误",
+    "runsUnit": "局记录",
+    "stepsUnit": "步骤"
+  },
+  "historyReplay": {
+    "stepLabels": {
+      "PLAY_HAND": "出牌结算",
+      "DISCARD": "弃牌换牌",
+      "SHOP_PURCHASE": "暗网黑市采购",
+      "SELL_JOKER": "出售小丑",
+      "NEXT_BLIND": "迎战盲注",
+      "MODEL_BREAK": "诱爆 MODEL BREAK",
+      "VICTORY": "★ 战局通关",
+      "DEFEAT": "💀 挑战失败",
+      "GAME_INIT": "开局初始"
+    },
+    "statusVictory": "🏆 胜局",
+    "statusDefeat": "💀 惜败",
+    "statusRunning": "⏳ 进行中",
+    "cyberReplay": "赛博高保真全息回放",
+    "battleHud": "博弈牌桌全息还原",
+    "autoView": "智能视窗",
+    "shopView": "🏪 黑市货架",
+    "tallyView": "★ 出牌结算",
+    "resultView": "🏆 战局结果",
+    "tableMatch": "牌桌对决",
+    "cardPlay": "打出",
+    "cardDiscard": "弃牌",
+    "stepAction": "当前步骤状态",
+    "tacticalLogs": "战局时序历史日志",
+    "loadingReplay": "加载回放数据中...",
+    "tableStatus": "★ 牌桌手牌 ({cards} 张) • 剩余出牌: {hands} • 弃牌: {discards}",
+    "autoplay": "自动播放",
+    "scoreLabel": "总分"
+  },
+  "devPlayground": {
+    "title": "TypeSafe Jev 认知实验台",
+    "subtitle": "开发者控制台：测试认知模型演进与心理操纵",
+    "quickPresets": "快捷预设：",
+    "presetA": "预设 A: 连续秒加注 ×2 → 弱牌秒加注",
+    "presetB": "预设 B: 输钱后巨额 All-In 上头",
+    "presetC": "预设 C: 长考被动跟注",
+    "inputState": "[1] 输入可观察状态",
+    "currentAction": "当前动作：",
+    "actionDelay": "动作耗时：",
+    "fastTell": "(快速特征)",
+    "slowTell": "(慢速长考)",
+    "potSize": "底池大小：",
+    "betAmount": "下注金额：",
+    "providerEngine": "推理引擎选择：",
+    "pastHands": "历史对局 ({count})：",
+    "addHand": "增加一手",
+    "won": "获胜",
+    "lost": "失败",
+    "runningInference": "正在执行 JEV 推理...",
+    "runEvaluation": "执行 JEV 认知推理 →",
+    "realtimeOutput": "[2] 实时认知输出",
+    "dominantRead": "主导判断：",
+    "probabilityDistribution": "细分概率分布：",
+    "awaitingInput": "等待输入状态",
+    "awaitingDesc": "在左侧配置玩家动作后，点击“执行 JEV 认知推理”，即可实时观察 AI 的心理模型推演。"
+  }
+}

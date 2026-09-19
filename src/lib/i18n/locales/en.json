@@ -1,0 +1,595 @@
+{
+  "common": {
+    "langToggle": "中文",
+    "chips": "CHIPS",
+    "bet": "BET",
+    "pot": "POT",
+    "hand": "HAND",
+    "active": "ACTIVE",
+    "scanning": "SCANNING",
+    "deceived": "DECEIVED",
+    "folded": "FOLDED",
+    "boss": "BOSS",
+    "bossBattle": "BOSS BATTLE",
+    "aiUnderstanding": "AI UNDERSTANDING",
+    "continue": "CONTINUE",
+    "backToGame": "← BACK TO GAME",
+    "devPlayground": "[DEV] JEV PLAYGROUND",
+    "devConsole": "[DEV] JEV TELEMETRY",
+    "hideConsole": "▲ HIDE DEBUG CONSOLE",
+    "showConsole": "▼ [DEV] JEV BELIEF TELEMETRY",
+    "home": "HOME",
+    "history": "HIST",
+    "battleHud": "COGNITIVE BATTLE HUD",
+    "tapCardsToSelect": "TAP CARDS TO SELECT (PLAY UP TO 5 OR DISCARD)",
+    "none": "None",
+    "action": "Action",
+    "visual": "Visual",
+    "understanding": "Understanding",
+    "gameStateSnapshot": "GAME STATE SNAPSHOT",
+    "activeBuffs": "ACTIVE BUFFS",
+    "normalizedJevBelief": "NORMALIZED JEV BELIEF",
+    "aiStatus": "AI STATUS",
+    "noActiveBelief": "No active belief"
+  },
+  "title": {
+    "gameTitle": "BLUFF.AI",
+    "gameTitleSub": "COGNITIVE POKER",
+    "subtitle": "TYPE-SAFE COGNITIVE EXPERIMENT",
+    "tagline": "3-Card Poker × AI Mind Games × Roguelike Buff",
+    "description": "A psychological mind game against an adaptive neural model. Build betting patterns. Plant false tells. Shatter the machine's certainty.",
+    "statHands": "HANDS",
+    "statReader": "READER",
+    "statMercy": "MERCY",
+    "startRun": "START RUN",
+    "continueRun": "CONTINUE RUN",
+    "newRun": "NEW RUN"
+  },
+  "game": {
+    "initializing": "INITIALIZING AI LAB SESSION...",
+    "yourCards": "YOUR THREE CARDS",
+    "handWon": "★ HAND WON! +",
+    "handLost": "✖ HAND LOST! -",
+    "splitPot": "◆ SPLIT POT ",
+    "chipsSuffix": " CHIPS",
+    "viewResults": "VIEW EXPERIMENT RESULTS →",
+    "aiThinksYouAre": "AI THINKS YOU ARE:",
+    "observingInitialTells": "AI BELIEF ENGINE: OBSERVING INITIAL TELLS",
+    "mindReadDecrypted": "MIND READ DECRYPTED:",
+    "rawTelemetry": "RAW JEV TELEMETRY",
+    "aggression": "AGGRESSION",
+    "predictability": "PREDICTABILITY",
+    "tilt": "TILT"
+  },
+  "behaviors": {
+    "STRONG_REPRESENTATION": "STRONG HAND",
+    "BLUFF_REPRESENTATION": "BLUFFING",
+    "BAIT": "BAITING / TRAP",
+    "PROBE": "PROBING",
+    "DEFENSIVE": "DEFENSIVE",
+    "TILT": "TILT / IRRATIONAL",
+    "UNCLEAR": "UNCLEAR",
+    "GENUINE_STRONG": "GENUINE STRONG",
+    "CALCULATED_BLUFF": "CALCULATED BLUFF",
+    "TEMPO_MANIPULATION": "TEMPO MANIPULATION",
+    "DESPERATION_DIG": "DESPERATION DIG"
+  },
+  "actions": {
+    "call": "CALL",
+    "raise": "RAISE ×2",
+    "fold": "FOLD",
+    "allIn": "ALL IN",
+    "giveUp": "GIVE UP"
+  },
+  "boss": {
+    "defaultQuote": "I CAN PREDICT YOUR EVERY CHIP.",
+    "taunt1": "HUMANS ALWAYS FLINCH UNDER PRESSURE.",
+    "taunt2": "ANOTHER WEAK BLUFF DETECTED.",
+    "taunt3": "YOUR PATTERN REPETITION IS INEVITABLE.",
+    "readerName": "THE READER",
+    "readerAi": "THE READER AI",
+    "readerBoss": "THE READER Lv. ????",
+    "quotePrefix": "“YOU ARE ",
+    "quoteSuffix": "”",
+    "controlledByMe": "READING YOU"
+  },
+  "buffs": {
+    "title": "CHOOSE AN EXPERIMENT",
+    "subtitle": "INSTALL A COGNITIVE EXPLOIT FOR THE NEXT HAND",
+    "select": "SELECT EXPERIMENT",
+    "FALSE_TELL": {
+      "name": "FALSE TELL",
+      "tagline": "False Habit",
+      "description": "Repeated actions are weighted 1.5x heavier into the AI's rigid beliefs."
+    },
+    "MEMORY_POISON": {
+      "name": "MEMORY POISON",
+      "tagline": "Memory Poison",
+      "description": "Injects 3x memory weight for the latest aggressive hand to induce critical misjudgment."
+    },
+    "COUNTER_READ": {
+      "name": "COUNTER READ",
+      "tagline": "Counter Read",
+      "description": "If AI confidence > 75% when deceived, MODEL BREAK chips reward and damage are doubled."
+    },
+    "MIND_READ": {
+      "name": "MIND READ",
+      "tagline": "Mind Read",
+      "description": "Cracks AI cognitive layer. Unlocks full multi-class probability breakdown and psychological scores."
+    }
+  },
+  "modelBreak": {
+    "aiConfidence": "AI CONFIDENCE IN YOUR HAND",
+    "actualHolding": "ACTUAL HOLDING REVEALED",
+    "strength": "STRENGTH",
+    "wrong": "WRONG!",
+    "title": "MODEL BREAK",
+    "subtitle": "COGNITIVE MODEL SHATTERED!",
+    "bonus": "DECEPTION BONUS AWARDED",
+    "chipsReward": "CHIPS",
+    "damage": "BOSS UNDERSTANDING",
+    "continueRun": "CONTINUE RUN"
+  },
+  "result": {
+    "summaryTitle": "PSYCHOLOGICAL EXPERIMENT SUMMARY",
+    "aiReadability": "AI READABILITY",
+    "machineReadError": "MACHINE READ ERROR",
+    "modelBreaks": "MODEL BREAKS",
+    "highConfMisjudge": "HIGH-CONF MISJUDGE",
+    "cognitiveArchetype": "COGNITIVE ARCHETYPE",
+    "biggestLieExhibit": "BIGGEST LIE EXHIBIT",
+    "aiConfidenceLabel": "AI CONFIDENCE",
+    "actualLabel": "ACTUAL: 7 HIGH GARBAGE → AI FOLDED",
+    "finalChips": "FINAL CHIP COUNT:",
+    "watermark": "CAN YOU TRICK THE REASONING ENGINE? · BLUFF.AI",
+    "sharePoster": "SHARE 9:16 POSTER (PNG)",
+    "generatingPoster": "GENERATING POSTER...",
+    "playAgain": "PLAY AGAIN",
+    "archetypes": {
+      "patternManipulator": {
+        "title": "PATTERN MANIPULATOR",
+        "desc": "You deliberately established strict habits, only to shatter them at the crucial moment."
+      },
+      "cognitiveAnomaly": {
+        "title": "COGNITIVE ANOMALY",
+        "desc": "The AI model could not find a coherent boundary for your deceptive behavior."
+      },
+      "coldBloodedBaiter": {
+        "title": "COLD-BLOODED BAITER",
+        "desc": "You lured the machine with apparent vulnerability and struck with decisive force."
+      },
+      "transparentSpecimen": {
+        "title": "TRANSPARENT SPECIMEN",
+        "desc": "The neural architecture predicted your actions with clinical precision."
+      }
+    }
+  },
+  "autopilot": {
+    "cockpitTitle": "JEV AUTOPILOT COCKPIT",
+    "cockpitSub": "COGNITIVE DECISION MATRIX",
+    "engaged": "AUTOPILOT ENGAGED",
+    "standby": "CO-PILOT ASSIST",
+    "autoToggleOn": "AUTO: ON",
+    "autoToggleOff": "AUTO: OFF",
+    "execute": "EXEC",
+    "executing": "EXECUTING...",
+    "speed1x": "1x REALTIME",
+    "speed2x": "2x TURBO",
+    "telemetryLog": "JEV REASONING STREAM",
+    "noDecisions": "Analyzing neural game tree...",
+    "mobileBanner": "🤖 JEV AUTOPILOT",
+    "openCockpit": "OPEN COCKPIT",
+    "closeCockpit": "CLOSE",
+    "historicalTelemetry": "HISTORICAL TELEMETRY",
+    "candidateBranches": "DECISION CANDIDATES",
+    "pathsUnit": "PATHS",
+    "noTelemetry": "No telemetry recorded",
+    "confirmTitle": "JEV AUTOPILOT",
+    "confirmPrompt": "Enable JEV Autopilot delegation?",
+    "confirmDesc": "When enabled, the JEV cognitive agent will autonomously manage card plays, discards, and shop strategy. You can pause or take control anytime in-game.",
+    "enableOption": "🤖 ENABLE JEV AUTOPILOT",
+    "manualOption": "🎮 PLAY MANUALLY",
+    "featureAutoPlay": "Neural autonomous play & discard execution",
+    "featureAutoShop": "Synergy-driven shop purchasing & reroll strategy",
+    "featureSeamless": "Seamlessly take over or pause anytime in-game",
+    "starting": "STARTING RUN...",
+    "cancel": "CANCEL",
+    "categories": {
+      "BEST": "BEST PLAY",
+      "SAFE": "SAFE DIG",
+      "BLUFF": "EXPLOIT BLUFF",
+      "SYNERGY": "SYNERGY",
+      "GREED": "INTEREST BANK"
+    }
+  },
+  "blinds": {
+    "ante": "ANTE",
+    "smallBlind": "SMALL BLIND",
+    "bigBlind": "BIG BLIND",
+    "boss": "BOSS",
+    "scoreToBeat": "SCORE TO BEAT",
+    "hands": "HANDS",
+    "discards": "DISCARDS",
+    "bossRoster": {
+      "THE_CYNIC": {
+        "name": "THE CYNIC",
+        "ability": "Deeply suspicious, aggressively calls bluffs with elevated confidence"
+      },
+      "THE_NARCISSIST": {
+        "name": "THE NARCISSIST",
+        "ability": "Overconfident in own model, highly susceptible to reverse baits"
+      },
+      "THE_BLIND_SPOT": {
+        "name": "THE BLIND SPOT",
+        "ability": "Sluggish pattern memory, delayed reaction to sequential tells"
+      },
+      "THE_OVERCLOCKER": {
+        "name": "THE OVERCLOCKER",
+        "ability": "Overclocked compute, higher target score, hyper-accelerated analysis"
+      }
+    }
+  },
+  "jokers": {
+    "title": "COGNITIVE JOKERS",
+    "passiveSlots": "PASSIVE SLOTS",
+    "passiveTag": "Passive Effect · Max 5 Slots",
+    "sell": "SELL",
+    "rarity": {
+      "COMMON": "COMMON",
+      "UNCOMMON": "UNCOMMON",
+      "RARE": "RARE",
+      "LEGENDARY": "LEGENDARY"
+    },
+    "items": {
+      "PAVLOVS_BELL": {
+        "name": "Pavlov's Bell",
+        "description": "If 2 consecutive actions match your pattern, +25 Mult.",
+        "trigger": "🔔 Pavlov's Bell +25 Mult!"
+      },
+      "CONFIRMATION_BIAS": {
+        "name": "Confirmation Bias",
+        "description": "When AI confidence >= 50%, gain x1.6 Mult (x2.0 if >= 70%).",
+        "triggerPeak": "👁️ Confirmation Bias Peak x2.0!",
+        "triggerNormal": "👁️ Confirmation Bias x1.6!"
+      },
+      "POKER_FACE": {
+        "name": "Poker Face",
+        "description": "If you act within 1.0s to 2.5s, +50 Chips.",
+        "trigger": "🗿 Poker Face +50 Chips!"
+      },
+      "PHANTOM_TELL": {
+        "name": "Phantom Tell",
+        "description": "If played hand is High Card, set base chips to 80.",
+        "trigger": "👻 Phantom Tell boosted to 80 Chips!"
+      },
+      "COGNITIVE_OVERLOAD": {
+        "name": "Cognitive Overload",
+        "description": "Gains +0.5x Mult each time MODEL BREAK is triggered (Currently active).",
+        "triggerUpgrade": "⚡ Cognitive Overload upgraded to x{xMult}!",
+        "triggerPlay": "⚡ Cognitive Overload x{xMult} Mult!"
+      },
+      "FAKE_HESITATION": {
+        "name": "Fake Hesitation",
+        "description": "Waiting > 2.5s before playing grants +35 Mult and +15 Chips.",
+        "trigger": "⏳ Fake Hesitation +15 Chips, +35 Mult!"
+      },
+      "FIBONACCI_NEURON": {
+        "name": "Fibonacci Neuron",
+        "description": "Each played card with rank 2, 3, 5, or 8 gives +8 Mult.",
+        "trigger": "🧬 Fibonacci Neuron x{count} +{mult} Mult!"
+      },
+      "RED_PILL": {
+        "name": "Red Pill",
+        "description": "Played Hearts or Diamonds give +20 Chips each.",
+        "trigger": "💊 Red Pill +{chips} Chips!"
+      },
+      "BLACK_ICE": {
+        "name": "Black ICE",
+        "description": "Played Spades or Clubs give +4 Mult each.",
+        "trigger": "🧊 Black ICE +{mult} Mult!"
+      },
+      "SMOKE_SCREEN": {
+        "name": "Smoke Screen",
+        "description": "Discarding Ace or King gives +60 Chips on the next hand played.",
+        "triggerArmed": "💨 Smoke Screen armed: next hand +60 Chips!",
+        "triggerActive": "💨 Smoke Screen activated +60 Chips!"
+      },
+      "REVERSE_PSYCHOLOGY": {
+        "name": "Reverse Psychology",
+        "description": "If AI predicts you are in TILT, gain x2.0 Mult.",
+        "trigger": "🔄 Reverse Psychology x2.0 Mult!"
+      },
+      "THE_GLITCH": {
+        "name": "The Glitch",
+        "description": "MODEL BREAK Cognitive Multiplier is boosted by +50%.",
+        "trigger": "👾 The Glitch: Cognitive Distort Mult x1.5!"
+      },
+      "ECHO_CHAMBER": {
+        "name": "Echo Chamber",
+        "description": "The last played card retriggers its chip value and +15 Mult.",
+        "trigger": "📡 Echo Chamber retriggered {card}: +{chips} Chips, +15 Mult!"
+      },
+      "LOGIC_DEADLOCK": {
+        "name": "Logic Deadlock",
+        "description": "If played hand is High Card, gain x2.5 Mult; other hands gain x1.3 Mult.",
+        "triggerHighCard": "🔒 Logic Deadlock: High Card Reversal x2.5 Mult!",
+        "triggerNormal": "🔒 Logic Deadlock: Logic Pull x1.3 Mult!"
+      },
+      "CHROMATIC_ABERRATION": {
+        "name": "Chromatic Aberration",
+        "description": "If hand contains both black and red suits, gain x1.8 Mult.",
+        "trigger": "🎨 Chromatic Aberration: Two-tone harmony x1.8 Mult!"
+      },
+      "NEURAL_FEEDBACK": {
+        "name": "Neural Feedback",
+        "description": "Each played face card or Ace grants x1.3 Mult.",
+        "trigger": "🧠 Neural Feedback: {count} Face cards x{xMult} Mult!"
+      },
+      "QUANTUM_ENTANGLEMENT": {
+        "name": "Quantum Entanglement",
+        "description": "If played hand is Pair, +40 Chips and x1.6 Mult.",
+        "trigger": "⚛️ Quantum Entanglement: Pair Transition +40 Chips x1.6 Mult!"
+      },
+      "TURING_SHIFTER": {
+        "name": "Turing Shifter",
+        "description": "If AI belief differs from actual hand type, gain x2.2 Mult.",
+        "trigger": "🌌 Turing Shifter: Cognitive Blind Spot x2.2 Mult!"
+      }
+    }
+  },
+  "pokerHands": {
+    "STRAIGHT_FLUSH": "Straight Flush",
+    "FOUR_OF_A_KIND": "Four of a Kind",
+    "FULL_HOUSE": "Full House",
+    "FLUSH": "Flush",
+    "STRAIGHT": "Straight",
+    "THREE_OF_A_KIND": "Three of a Kind",
+    "TWO_PAIR": "Two Pair",
+    "PAIR": "Pair",
+    "HIGH_CARD": "High Card",
+    "high": "High",
+    "kicker": "kicker",
+    "evaluatorTemplates": {
+      "straightFlush": "Straight Flush ({high} High)",
+      "fourOfAKind": "Four of a Kind {rank}s",
+      "fullHouse": "Full House ({r1}s full of {r2}s)",
+      "flush": "Flush {suit} ({high} High)",
+      "straight": "Straight ({high} High)",
+      "threeOfAKind": "Three of a Kind {rank}s",
+      "twoPair": "Two Pair ({r1}s and {r2}s)",
+      "pair": "Pair of {rank}s ({kicker} kicker)",
+      "pairSingle": "Pair of {rank}s",
+      "highCard": "High Card {r1}",
+      "highCardSingle": "High Card {r1}",
+      "highCardDouble": "High Card {r1} ({r2})"
+    }
+  },
+  "playControls": {
+    "selectPrompt": "SELECT 1-5 CARDS TO PLAY",
+    "selectedPrefix": "SELECTED",
+    "discard": "DISCARD",
+    "playHand": "PLAY HAND",
+    "remaining": "LEFT",
+    "chipsWord": "Chips",
+    "multWord": "Mult",
+    "remainingCount": "{count} LEFT",
+    "estScore": "EST. SCORE",
+    "base": "BASE",
+    "cardPoints": "CARDS",
+    "pts": "PTS",
+    "target": "TARGET",
+    "current": "CURRENT",
+    "needed": "NEEDED",
+    "beatBlindNotice": "💥 GUARANTEES BLIND CLEAR!",
+    "remainingScore": "{needed} PTS TO CLEAR"
+  },
+  "scoring": {
+    "tallyTitle": "HAND SCORING TALLY",
+    "tallyHeader": "HAND TALLY",
+    "modelBreakBurst": "💥 MODEL BREAK COGNITIVE DETONATION!",
+    "chips": "CHIPS",
+    "mult": "MULT",
+    "cog": "COG",
+    "gain": "GAIN",
+    "roundScoreGain": "ROUND SCORE GAIN",
+    "totalScore": "TOTAL SCORE",
+    "continuePlay": "CONTINUE PLAY ▶",
+    "nextStep": "NEXT STEP ▶",
+    "confirm": "CONTINUE",
+    "baseHandMessage": "{desc} Lv.{level}: {chips} Chips × {mult} Mult",
+    "cardBonusMessage": "Card rank bonus +{chips} Chips",
+    "tellFastMessage": "⚡ Lightning fast (<600ms) +25 Chips tell",
+    "tellSlowMessage": "⏳ Deep hesitation (>3.0s) +2 Bait Mult",
+    "modelBreakMessage": "💥 MODEL BREAK triggered x{xMult} Cognitive Mult!",
+    "deceptionBonusMessage": "🎭 Deception bonus +{chips} Chips",
+    "reverseBaitMessage": "🎣 Reverse bait +{mult} Mult",
+    "totalMessage": "TOTAL: {chips} Chips × {mult} Mult × {cog}x = {total} PTS",
+    "stepTemplates": {
+      "baseHand": "{handDesc} Lv.{level}: {chips} Chips × {mult} Mult",
+      "cardRankBonus": "Card rank bonus +{chips} Chips",
+      "extraChips": "{suit}{rank} Chip +{chips} Chips",
+      "foil": "✨ {suit}{rank} Quantum Foil +50 Chips",
+      "holo": "🌈 {suit}{rank} Holographic +10 Mult",
+      "poly": "🔮 {suit}{rank} Polychrome ×1.5 Mult",
+      "fastTell": "⚡ Lightning speed (<600ms) +25 Chips tell",
+      "slowTell": "⏳ Heavy hesitation (>3.0s) +2 Bait Mult",
+      "modelBreakStrong": "💥 MODEL BREAK! AI misjudged strong hand ({conf}%): Cog Mult ×{mult}!",
+      "modelBreakMonster": "💥 MODEL BREAK! AI falsely called bluff ({bluff}%) against monster hand: Cog Mult ×{mult}!",
+      "counterBait": "⚡ Reverse bait! AI misjudged bluff ({bluff}%): Cog Mult ×{mult}!",
+      "cognitiveDiscrepancy": "👁️ AI Cognitive Discrepancy: Cog Mult ×{mult}",
+      "jokerTriggerDefault": "{icon} {name} triggered!",
+      "totalResult": "{chips} Chips × {mult} Mult × {cog} Cog = {score} PTS!"
+    }
+  },
+  "shop": {
+    "title": "DARKNET BLACK MARKET",
+    "titleModal": "DARKNET SHOP",
+    "subTitle": "Pick Jokers & powerful cognitive buffs",
+    "subReplay": "【Holographic Temporal Replay Rack】",
+    "autopilotActive": "🤖 JEV AUTOPILOT ACTIVE",
+    "thinking": "Analyzing...",
+    "stepPurchase": "STEP PURCHASE:",
+    "soldOut": "SOLD OUT! REROLL OR ADVANCE",
+    "soldOutInline": "Black market goods sold out, reroll or face next blind",
+    "reroll": "REROLL",
+    "nextBlind": "NEXT BLIND",
+    "enterNextBlind": "ENTER NEXT BLIND",
+    "buy": "BUY",
+    "full": "FULL",
+    "purchased": "★ PURCHASED",
+    "recommended": "REC",
+    "slotsFull": "Joker slots full (Max 5)!",
+    "categoryJoker": "PASSIVE SLOT",
+    "categoryJokerDesc": "Passive boost · Uses Joker slot",
+    "categoryUpgrade": "SINGLE-USE",
+    "categoryUpgradeDesc": "Consumed on buy · Levels up hand",
+    "categoryMod": "CARD MOD",
+    "categoryModDesc": "Direct effect · Modifies playing cards",
+    "notEnoughCash": "Not enough cash!",
+    "notEnoughCashReroll": "Not enough cash to reroll!",
+    "purchasedSuccess": "Purchased {name} (-)",
+    "purchaseFailed": "Purchase failed, please try again",
+    "restocked": "Shop restocked!",
+    "rerollFailed": "Reroll failed, please check cash",
+    "archiveReadOnly": "BLACK MARKET ARCHIVE (READ ONLY)"
+  },
+  "resultRoguelike": {
+    "victoryTitle": "★ RUN COMPLETE · FULL BREAKTHROUGH ★",
+    "defeatTitle": "✖ DEFEAT · RUN ENDED ✖",
+    "victorySub": "Penetrated 8 Ante blinds, shattered the ultimate AI neural model!",
+    "defeatSub": "Stopped at ANTE {ante}{blindName}, ran out of hands before reaching target score.",
+    "finalAnte": "FINAL ANTE",
+    "totalScore": "TOTAL SCORE",
+    "peakHand": "Peak Hand",
+    "handsPlayed": "Hands Played",
+    "discardsUsed": "Discards",
+    "purchases": "Purchases",
+    "modelBreaks": "Model Breaks",
+    "timesSuffix": "",
+    "finalJokerLineup": "★ FINAL JOKER LINEUP ({count}/5)",
+    "startNewRun": "START NEW RUN",
+    "historyButton": "HIST",
+    "replayFromStart": "|◀ REPLAY FROM START",
+    "exitReplay": "EXIT"
+  },
+  "auth": {
+    "loginButton": "LOGIN",
+    "logout": "LOGOUT",
+    "signedInAs": "Signed in as",
+    "cloudConnected": "CLOUD CONNECTED",
+    "modalTitle": "IDENTITY TERMINAL",
+    "modalDescription": "Connect your Google or GitHub account to persist match records, replays, and statistics to the cloud database across devices.",
+    "loginGoogle": "SIGN IN WITH GOOGLE",
+    "loginGithub": "SIGN IN WITH GITHUB",
+    "loggingIn": "CONNECTING..."
+  },
+  "history": {
+    "title": "MATCH HISTORY",
+    "subtitle": "CLOUD & LOCAL DUAL-STORAGE ARCHIVE",
+    "cloudSync": "SYNC LOCAL TO CLOUD",
+    "syncing": "SYNCING...",
+    "syncedSuccess": "Successfully synced runs to cloud database!",
+    "cloudBadge": "CLOUD ARCHIVE",
+    "backToGame": "← BACK TO GAME",
+    "allRuns": "ALL",
+    "victories": "VICTORIES",
+    "defeats": "DEFEATS",
+    "inProgress": "IN PROGRESS",
+    "empty": "No match records found yet. Play a run to start archiving!",
+    "exportJson": "EXPORT JSON",
+    "exportAll": "EXPORT ALL",
+    "importJson": "IMPORT JSON",
+    "clearAll": "CLEAR ALL",
+    "clearConfirm": "Are you sure you want to erase all match history from IndexedDB? This cannot be undone.",
+    "deleteRun": "DELETE",
+    "replayRun": "▶ REPLAY RUN",
+    "statusVictory": "VICTORY",
+    "statusDefeat": "DEFEAT",
+    "statusRunning": "IN PROGRESS",
+    "anteReached": "ANTE REACHED",
+    "totalScore": "TOTAL SCORE",
+    "peakScore": "PEAK SCORE",
+    "handsPlayed": "HANDS",
+    "discardsUsed": "DISCARDS",
+    "purchases": "PURCHASES",
+    "duration": "DURATION",
+    "replayTitle": "CYBER REPLAY DECK",
+    "replayStep": "STEP",
+    "prevStep": "◀ PREV",
+    "nextStep": "NEXT ▶",
+    "play": "▶ PLAY",
+    "pause": "⏸ PAUSE",
+    "firstStep": "◀◀ START",
+    "lastStep": "END ▶▶",
+    "speed1x": "1x",
+    "speed2x": "2x",
+    "jokersHeld": "JOKERS HELD",
+    "scoringFormula": "SCORING FORMULA",
+    "chips": "CHIPS",
+    "mult": "MULT",
+    "handBonus": "SCORE GAINED",
+    "actionLog": "EVENT LOG",
+    "importedSuccess": "Match record successfully imported into IndexedDB!",
+    "importFailed": "Import failed, invalid file format",
+    "runsUnit": "runs",
+    "stepsUnit": "steps"
+  },
+  "historyReplay": {
+    "stepLabels": {
+      "PLAY_HAND": "PLAY HAND",
+      "DISCARD": "DISCARD",
+      "SHOP_PURCHASE": "SHOP PURCHASE",
+      "SELL_JOKER": "SELL JOKER",
+      "NEXT_BLIND": "NEXT BLIND",
+      "MODEL_BREAK": "MODEL BREAK",
+      "VICTORY": "★ VICTORY",
+      "DEFEAT": "💀 DEFEAT",
+      "GAME_INIT": "GAME INIT"
+    },
+    "statusVictory": "🏆 VICTORY",
+    "statusDefeat": "💀 DEFEAT",
+    "statusRunning": "⏳ IN PROGRESS",
+    "cyberReplay": "CYBER HIGH-FIDELITY REPLAY",
+    "battleHud": "COGNITIVE BATTLE HUD",
+    "autoView": "AUTO VIEW",
+    "shopView": "🏪 SHOP",
+    "tallyView": "★ TALLY",
+    "resultView": "🏆 RESULT",
+    "tableMatch": "TABLE",
+    "cardPlay": "PLAY",
+    "cardDiscard": "DISCARD",
+    "stepAction": "STEP ACTION",
+    "tacticalLogs": "TACTICAL STEP LOGS",
+    "loadingReplay": "LOADING REPLAY DATA...",
+    "tableStatus": "★ Hand Cards ({cards}) • Hands Left: {hands} • Discards: {discards}",
+    "autoplay": "AUTOPLAY",
+    "scoreLabel": "SCORE"
+  },
+  "devPlayground": {
+    "title": "TYPESAFE JEV PLAYGROUND",
+    "subtitle": "Developer Console: Test cognitive model evolution and psychological tells",
+    "quickPresets": "QUICK PRESETS:",
+    "presetA": "A: FAST RAISE ×2 → WEAK FAST RAISE",
+    "presetB": "B: POST-LOSS ALL-IN TILT",
+    "presetC": "C: SLOW PASSIVE CALL",
+    "inputState": "[1] INPUT OBSERVABLE STATE",
+    "currentAction": "CURRENT ACTION:",
+    "actionDelay": "ACTION DELAY:",
+    "fastTell": "(FAST TELL)",
+    "slowTell": "(SLOW)",
+    "potSize": "POT SIZE:",
+    "betAmount": "BET AMOUNT:",
+    "providerEngine": "PROVIDER ENGINE:",
+    "pastHands": "PAST HANDS ({count}):",
+    "addHand": "ADD HAND",
+    "won": "WON",
+    "lost": "LOST",
+    "runningInference": "RUNNING JEV INFERENCE...",
+    "runEvaluation": "RUN JEV EVALUATION →",
+    "realtimeOutput": "[2] REAL-TIME BELIEF OUTPUT",
+    "dominantRead": "DOMINANT READ:",
+    "probabilityDistribution": "PROBABILITY DISTRIBUTION:",
+    "awaitingInput": "AWAITING STATE INPUT",
+    "awaitingDesc": "Configure player actions on the left, then click \"RUN JEV EVALUATION\" to observe AI model dynamics in real-time."
+  }
+}
