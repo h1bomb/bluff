@@ -192,15 +192,17 @@ export default function TitlePage() {
           actions={actions}
         />
 
-        {/* Dev tool link at the bottom */}
-        <div className="mt-8 flex items-center gap-4 text-[9px] retro text-zinc-600">
-          <Link
-            href="/dev/jev"
-            className="hover:text-emerald-400 underline transition-colors"
-          >
-            {t.common.devPlayground}
-          </Link>
-        </div>
+        {/* Dev tool link at the bottom (local development only) */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="mt-8 flex items-center gap-4 text-[9px] retro text-zinc-600">
+            <Link
+              href="/dev/jev"
+              className="hover:text-emerald-400 underline transition-colors"
+            >
+              {t.common.devPlayground}
+            </Link>
+          </div>
+        )}
       </div>
 
       <AutopilotConfirmModal

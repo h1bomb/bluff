@@ -7,6 +7,14 @@ const typesafe = new TypeSafeJevProvider();
 const heuristic = new HeuristicDecisionProvider();
 
 export async function POST(req: Request) {
+  // Security guard: Disable dev playground API in production by default
+  if (process.env.NODE_ENV === 'production' && process.env.ENABLE_DEV_PLAYGROUND !== 'true') {
+    return NextResponse.json(
+      { success: false, error: 'Dev playground API is disabled in production environment for security.' },
+      { status: 403 }
+    );
+  }
+
   try {
     const body = await req.json();
     const { observableState, useProvider = 'auto' } = body as {
@@ -18,10 +26,13 @@ export async function POST(req: Request) {
     let belief;
     let used = 'heuristic';
 
-    if (useProvider === 'typesafe') {
+    // In production, prevent unauthenticated LLM quota drain even if playground is enabled
+    const allowLlm = process.env.NODE_ENV !== 'production' || process.env.DEV_PLAYGROUND_ALLOW_LLM === 'true';
+
+    if (useProvider === 'typesafe' && allowLlm) {
       belief = await typesafe.evaluatePlayer(observableState);
       used = 'typesafe';
-    } else if (useProvider === 'heuristic') {
+    } else if (useProvider === 'heuristic' || !allowLlm) {
       belief = await heuristic.evaluatePlayer(observableState);
       used = 'heuristic';
     } else {

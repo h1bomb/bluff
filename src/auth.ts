@@ -35,10 +35,19 @@ if (isGitHubConfigured) {
   );
 }
 
+const isProd = process.env.NODE_ENV === 'production';
+const authSecret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+
+if (isProd && !authSecret && !process.env.NEXT_PHASE) {
+  console.error(
+    '[SECURITY CRITICAL] AUTH_SECRET or NEXTAUTH_SECRET is missing in production environment. JWT sessions will not use fallback.'
+  );
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: prisma ? PrismaAdapter(prisma) : undefined,
   providers,
-  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || 'bluff_default_secret_for_local_development_only',
+  secret: authSecret || (isProd ? undefined : 'bluff_default_secret_for_local_development_only'),
   session: {
     strategy: 'jwt',
   },
