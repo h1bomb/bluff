@@ -13,6 +13,12 @@
   <a href="./README.md">English</a> | 简体中文
 </p>
 
+<p align="center">
+  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fh1bomb%2Fbluff&project-name=bluff&repository-name=bluff&env=DATABASE_URL,AUTH_SECRET,AUTH_GOOGLE_ID,AUTH_GOOGLE_SECRET,AUTH_GITHUB_ID,AUTH_GITHUB_SECRET&envDescription=Configure%20PostgreSQL%20database%20and%20NextAuth%20OAuth%20credentials&envLink=https%3A%2F%2Fgithub.com%2Fh1bomb%2Fbluff%2Fblob%2Fmain%2Fdocs%2Fvercel-deployment.md">
+    <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+  </a>
+</p>
+
 ---
 
 ## 简介

@@ -104,6 +104,16 @@ npx auth secret
 
 ## 6. 第五步：部署到 Vercel
 
+### 方式 A：一键快速部署 (推荐)
+
+点击下方按钮，Vercel 会自动引导你完成代码 Fork、项目创建并提示输入所需的环境变量：
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fh1bomb%2Fbluff&project-name=bluff&repository-name=bluff&env=DATABASE_URL,AUTH_SECRET,AUTH_GOOGLE_ID,AUTH_GOOGLE_SECRET,AUTH_GITHUB_ID,AUTH_GITHUB_SECRET&envDescription=Configure%20PostgreSQL%20database%20and%20NextAuth%20OAuth%20credentials&envLink=https%3A%2F%2Fgithub.com%2Fh1bomb%2Fbluff%2Fblob%2Fmain%2Fdocs%2Fvercel-deployment.md)
+
+---
+
+### 方式 B：在 Vercel 控制台手动导入
+
 1. 登录 [Vercel 控制台](https://vercel.com/new)。
 2. 选择 **Import Git Repository** 并选择你的 `bluff` 仓库。
 3. **Framework Preset** 选择 **Next.js**。
