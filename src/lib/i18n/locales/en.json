@@ -479,6 +479,7 @@
     "cloudConnected": "CLOUD CONNECTED",
     "modalTitle": "IDENTITY TERMINAL",
     "modalDescription": "Connect your Google or GitHub account to persist match records, replays, and statistics to the cloud database across devices.",
+    "loginRequiredToPlay": "Third-party login is required before starting a game to persist match records and statistics.",
     "loginGoogle": "SIGN IN WITH GOOGLE",
     "loginGithub": "SIGN IN WITH GITHUB",
     "loggingIn": "CONNECTING..."

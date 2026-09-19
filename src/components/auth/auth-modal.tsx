@@ -8,9 +8,10 @@ import { audioManager } from '@/lib/audio/audio-manager';
 export interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
+  reason?: string;
 }
 
-export function AuthModal({ isOpen, onClose }: AuthModalProps) {
+export function AuthModal({ isOpen, onClose, reason }: AuthModalProps) {
   const { t } = useLanguageStore();
   const authT = (t as unknown as { auth?: Record<string, string> }).auth;
   const [loadingProvider, setLoadingProvider] = useState<'google' | 'github' | null>(null);
@@ -73,6 +74,13 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             ✕
           </button>
         </div>
+
+        {/* Reason Alert if present */}
+        {reason && (
+          <div className="p-2 border border-yellow-500/80 bg-yellow-950/40 text-yellow-300 retro text-[10px] leading-tight">
+            ★ {reason}
+          </div>
+        )}
 
         {/* Description */}
         <p className="retro text-[11px] text-zinc-300 leading-relaxed">

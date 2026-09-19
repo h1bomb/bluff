@@ -7,31 +7,39 @@ import Hero3 from '@/components/ui/8bit/blocks/hero3';
 import { useGameStore } from '@/store/game-store';
 import { useLanguageStore } from '@/store/language-store';
 import { useAutopilotStore } from '@/store/autopilot-store';
+import { useSession } from 'next-auth/react';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { SoundToggle } from '@/components/ui/sound-toggle';
 import { UserProfileBadge } from '@/components/auth/user-profile-badge';
+import { AuthModal } from '@/components/auth/auth-modal';
 import { AutopilotConfirmModal } from '@/components/game/autopilot/autopilot-confirm-modal';
 import { getActiveSession } from '@/lib/history/db';
 import type { ActiveGameSession } from '@/lib/history/types';
 
 export default function TitlePage() {
   const router = useRouter();
+  const { data: session } = useSession();
   const startGame = useGameStore(s => s.startGame);
   const setAutopilot = useAutopilotStore(s => s.setAutopilot);
   const { t } = useLanguageStore();
   const [activeSession, setActiveSession] = useState<ActiveGameSession | null>(null);
   const [pendingAction, setPendingAction] = useState<'new' | 'continue' | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getActiveSession().then((session) => {
-      if (session && session.replayRun?.status === 'IN_PROGRESS') {
-        setActiveSession(session);
+    getActiveSession().then((sessionData) => {
+      if (sessionData && sessionData.replayRun?.status === 'IN_PROGRESS') {
+        setActiveSession(sessionData);
       }
     });
   }, []);
 
   const handleActionClick = (action: 'new' | 'continue') => {
+    if (!session?.user) {
+      setShowAuthModal(true);
+      return;
+    }
     setPendingAction(action);
   };
 
@@ -133,6 +141,12 @@ export default function TitlePage() {
         isLoading={isLoading}
         onConfirm={handleConfirmAutopilot}
         onClose={() => setPendingAction(null)}
+      />
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        reason={t.auth?.loginRequiredToPlay || '进入对局前需先进行三方登录，以便持久化记录战局与统计数据。'}
       />
     </main>
   );

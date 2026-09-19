@@ -479,6 +479,7 @@
     "cloudConnected": "云端已连接",
     "modalTitle": "终端鉴权",
     "modalDescription": "连接您的 Google 或 GitHub 账号，即可将牌局数据、历史档案与胜率统计持久化到云端 PostgreSQL 数据库，跨设备实时同步。",
+    "loginRequiredToPlay": "进入对局前需先进行三方登录，以便持久化记录战局与统计数据。",
     "loginGoogle": "使用 Google 账号登录",
     "loginGithub": "使用 GitHub 账号登录",
     "loggingIn": "正在连接鉴权中心..."

@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useGameStore } from '@/store/game-store';
 import { useLanguageStore } from '@/store/language-store';
 import { useAutopilotStore } from '@/store/autopilot-store';
@@ -15,12 +17,20 @@ import { GameOverlays } from '@/components/game/game-overlays';
 import { AutopilotConfirmModal } from '@/components/game/autopilot/autopilot-confirm-modal';
 
 export default function GamePage() {
+  const router = useRouter();
+  const { status: authStatus } = useSession();
   const { t, language } = useLanguageStore();
   const gameStore = useGameStore();
   const autopilotStore = useAutopilotStore();
   const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false);
   const [showConfirmNewRun, setShowConfirmNewRun] = useState<boolean>(false);
   const [isStartingNewRun, setIsStartingNewRun] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (authStatus === 'unauthenticated') {
+      router.replace('/');
+    }
+  }, [authStatus, router]);
 
   const {
     publicState,
