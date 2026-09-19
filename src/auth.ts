@@ -20,6 +20,7 @@ if (isGoogleConfigured) {
     Google({
       clientId: googleClientId,
       clientSecret: googleClientSecret,
+      allowDangerousEmailAccountLinking: true,
     })
   );
 }
@@ -29,6 +30,7 @@ if (isGitHubConfigured) {
     GitHub({
       clientId: githubClientId,
       clientSecret: githubClientSecret,
+      allowDangerousEmailAccountLinking: true,
     })
   );
 }
@@ -56,6 +58,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   pages: {
     signIn: '/',
+    error: '/',
   },
   trustHost: true,
+  debug: true,
 });

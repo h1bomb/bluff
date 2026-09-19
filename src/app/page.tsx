@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Hero3 from '@/components/ui/8bit/blocks/hero3';
 import { useGameStore } from '@/store/game-store';
@@ -15,6 +15,70 @@ import { AuthModal } from '@/components/auth/auth-modal';
 import { AutopilotConfirmModal } from '@/components/game/autopilot/autopilot-confirm-modal';
 import { getActiveSession } from '@/lib/history/db';
 import type { ActiveGameSession } from '@/lib/history/types';
+
+function AuthErrorBanner({ onRetry }: { onRetry: () => void }) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const error = searchParams.get('error');
+
+  if (!error) return null;
+
+  const getErrorMessage = (err: string) => {
+    switch (err) {
+      case 'OAuthAccountNotLinked':
+        return '该邮箱先前已使用其他方式（如 GitHub）登录。已为您开启同邮箱自动关联，请点击下方按钮重新登录。';
+      case 'OAuthCallbackError':
+      case 'CallbackRouteError':
+        return '三方登录回调验证失败，请确认授权配置或重试。';
+      case 'Configuration':
+        return '登录服务配置有误，请检查服务端环境变量。';
+      case 'AccessDenied':
+        return '已取消登录授权。';
+      default:
+        return `登录遇到异常（错误码：${err}）。`;
+    }
+  };
+
+  const handleDismiss = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('error');
+    router.replace(url.pathname);
+  };
+
+  return (
+    <div className="w-full mb-4 p-3 border-2 border-red-500/80 bg-red-950/80 text-red-200 text-xs font-mono retro relative z-20 flex flex-col gap-2 shadow-[0_0_20px_rgba(239,68,68,0.3)]">
+      <div className="flex items-center justify-between font-bold text-red-400">
+        <span className="flex items-center gap-1.5">
+          <span className="animate-pulse">⚠</span> AUTH ERROR
+        </span>
+        <button
+          onClick={handleDismiss}
+          className="text-zinc-400 hover:text-white px-1.5 py-0.5 hover:bg-red-900/50"
+        >
+          ✕
+        </button>
+      </div>
+      <p className="text-[11px] leading-relaxed text-zinc-300">{getErrorMessage(error)}</p>
+      <div className="flex gap-2 mt-1">
+        <button
+          onClick={() => {
+            handleDismiss();
+            onRetry();
+          }}
+          className="flex-1 py-1.5 bg-red-600 hover:bg-red-500 text-white text-[11px] font-bold retro border border-red-400 transition-colors"
+        >
+          重新登录
+        </button>
+        <button
+          onClick={handleDismiss}
+          className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[11px] retro border border-zinc-600 transition-colors"
+        >
+          忽略
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function TitlePage() {
   const router = useRouter();
@@ -104,6 +168,9 @@ export default function TitlePage() {
       </div>
 
       <div className="w-full max-w-[430px] flex flex-col items-center justify-center">
+        <Suspense fallback={null}>
+          <AuthErrorBanner onRetry={() => setShowAuthModal(true)} />
+        </Suspense>
         <Hero3
           title={
             <div className="flex flex-col items-center justify-center gap-2 w-full select-none">
