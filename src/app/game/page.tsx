@@ -172,9 +172,9 @@ export default function GamePage() {
       />
 
       {/* Main Container - Left & Right Columns with Matching Height */}
-      <div className="w-full max-w-[920px] h-full flex flex-row items-center justify-center gap-3 md:gap-4 pt-7 pb-1">
+      <div className="w-full max-w-[920px] h-full flex flex-row items-center justify-center gap-3 md:gap-4 pt-11 sm:pt-12 pb-2">
         {/* LEFT: Main Arcade Screen */}
-        <div className="w-full max-w-[440px] bg-zinc-950 border-2 border-emerald-500/80 p-2 sm:p-2.5 shadow-[0_0_20px_rgba(16,185,129,0.2)] relative flex flex-col justify-between h-[min(880px,calc(100dvh-2.5rem))] gap-1 shrink-0 overflow-hidden">
+        <div className="w-full max-w-[440px] bg-zinc-950 border-2 border-emerald-500/80 p-2 sm:p-2.5 shadow-[0_0_20px_rgba(16,185,129,0.2)] relative flex flex-col justify-between h-[min(860px,calc(100dvh-3.75rem))] gap-1 shrink-0 overflow-hidden">
           <CabinetHeader
             publicState={publicState}
             isRoguelike={isRoguelike}
@@ -215,7 +215,7 @@ export default function GamePage() {
 
         {/* RIGHT: Autopilot Cockpit Panel on Desktop - Rendered ONLY when Autopilot is toggled ON */}
         {isRoguelike && isAutopilotEnabled && (
-          <div className="hidden md:flex flex-col w-[380px] lg:w-[410px] h-[min(880px,calc(100dvh-2.5rem))] shrink-0 animate-in fade-in duration-200">
+          <div className="hidden md:flex flex-col w-[380px] lg:w-[410px] h-[min(860px,calc(100dvh-3.75rem))] shrink-0 animate-in fade-in duration-200">
             <AutopilotCockpit className="h-full" onExecuteDecision={handleExecuteDecision} />
           </div>
         )}
