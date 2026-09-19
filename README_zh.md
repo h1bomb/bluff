@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fh1bomb%2Fbluff&project-name=bluff&repository-name=bluff&env=DATABASE_URL,AUTH_SECRET,AUTH_GOOGLE_ID,AUTH_GOOGLE_SECRET,AUTH_GITHUB_ID,AUTH_GITHUB_SECRET&envDescription=Configure%20PostgreSQL%20database%20and%20NextAuth%20OAuth%20credentials&envLink=https%3A%2F%2Fgithub.com%2Fh1bomb%2Fbluff%2Fblob%2Fmain%2Fdocs%2Fvercel-deployment.md">
+  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fh1bomb%2Fbluff&project-name=bluff&repository-name=bluff&env=DATABASE_URL,AUTH_SECRET,AUTH_GOOGLE_ID,AUTH_GOOGLE_SECRET,AUTH_GITHUB_ID,AUTH_GITHUB_SECRET&envDescription=Configure%20PostgreSQL%20database%20and%20NextAuth%20OAuth%20credentials&envLink=https%3A%2F%2Fgithub.com%2Fh1bomb%2Fbluff%2Fblob%2Fmain%2Fdocs%2Fvercel-deployment-zh.md">
     <img src="https://vercel.com/button" alt="Deploy with Vercel" />
   </a>
 </p>
@@ -104,7 +104,7 @@ cp .env.example .env.local
 pnpm prisma db push
 ```
 
-> 📖 **完整部署与排错指南**：详细的图文步骤（包含 Google Cloud 同意屏幕配置、Vercel 变量添加、同邮箱多渠道账号合并与日志排错），请参阅 [Vercel 部署与第三方登录配置指南](./docs/vercel-deployment.md)。
+> 📖 **完整部署与排错指南**：详细的图文步骤（包含 Google Cloud 同意屏幕配置、Vercel 变量添加、同邮箱多渠道账号合并与日志排错），请参阅 [Vercel 部署与第三方登录配置指南](./docs/vercel-deployment-zh.md)。
 
 ### 配置 JEV AI 密钥（可选）
 
@@ -178,7 +178,7 @@ Balatro 风格的 Roguelike 模式：
  
 详细的游戏说明与部署文档请查看：
 
-- 🚀 [Vercel 部署与第三方登录配置指南](./docs/vercel-deployment.md)
+- 🚀 [Vercel 部署与第三方登录配置指南 (中文)](./docs/vercel-deployment-zh.md) ([English](./docs/vercel-deployment.md))
 - 📖 [游戏说明 (中文)](./docs/game-guide-zh.md)
 - 📖 [Game Guide (English)](./docs/game-guide-en.md)
 

@@ -178,7 +178,7 @@ A Balatro-style roguelike mode:
 
 For detailed game guides and deployment instructions, see:
 
-- 🚀 [Vercel Deployment & OAuth Setup Guide](./docs/vercel-deployment.md)
+- 🚀 [Vercel Deployment & OAuth Setup Guide](./docs/vercel-deployment.md) ([中文](./docs/vercel-deployment-zh.md))
 - 📖 [Game Guide (English)](./docs/game-guide-en.md)
 - 📖 [游戏说明 (中文)](./docs/game-guide-zh.md)
 
