@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/8bit/badge';
 import { ObservablePlayerState, PlayerBelief, PokerAction } from '@/game/types';
 import { useLanguageStore } from '@/store/language-store';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
+import { SoundToggle } from '@/components/ui/sound-toggle';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/8bit/card';
 
 export default function JevPlayground() {
   const { t } = useLanguageStore();
@@ -128,7 +130,8 @@ export default function JevPlayground() {
               {t.devPlayground.subtitle}
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <SoundToggle />
             <LanguageSwitcher />
             <Button variant="outline" size="sm" asChild>
               <Link href="/game">{t.common.backToGame}</Link>

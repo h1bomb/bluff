@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
+import { SoundToggle } from '@/components/ui/sound-toggle';
 import { ModelBreakPayload } from '@/game/types';
 import { TranslationDictionary } from '@/lib/i18n/translations';
 import { ModelBreakOverlay } from './model-break-overlay';
@@ -91,6 +92,7 @@ export function GameOverlays({
           </button>
         )}
 
+        <SoundToggle showSliders={true} />
         <LanguageSwitcher />
       </div>
 

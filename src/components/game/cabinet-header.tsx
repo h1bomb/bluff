@@ -3,8 +3,6 @@ import { PublicGameState } from '@/game/types';
 import { AutopilotDecision } from '@/game/autopilot/types';
 import { TranslationDictionary } from '@/lib/i18n/translations';
 
-import { SoundToggle } from '@/components/ui/sound-toggle';
-
 interface CabinetHeaderProps {
   publicState: PublicGameState;
   isRoguelike: boolean;
@@ -62,7 +60,6 @@ export function CabinetHeader({
           </span>
         </div>
         <div className="flex items-center gap-1.5">
-          <SoundToggle showSliders={true} />
           <span className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-700 text-zinc-300 retro text-[8px] font-bold">
             {publicState.phase}
           </span>

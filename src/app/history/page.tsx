@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { HistoryList } from '@/components/history/history-list';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
+import { SoundToggle } from '@/components/ui/sound-toggle';
 import { UserProfileBadge } from '@/components/auth/user-profile-badge';
 import { useLanguageStore } from '@/store/language-store';
 
@@ -34,6 +35,7 @@ export default function HistoryPage() {
 
         <div className="flex items-center gap-2">
           <UserProfileBadge />
+          <SoundToggle />
           <LanguageSwitcher />
         </div>
       </div>
