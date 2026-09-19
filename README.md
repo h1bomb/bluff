@@ -1,8 +1,17 @@
-# 🃏 BLUFF
+<p align="center">
+  <img src="./docs/assets/logo.png" alt="BLUFF Logo" width="140" style="border-radius: 16px;" />
+</p>
 
-> **AI can't read your cards.**
+# <p align="center">🃏 BLUFF</p>
 
-English | [简体中文](./README_zh.md)
+<p align="center">
+  <strong>AI can't read your cards.</strong><br/>
+  <em>A Cyber-Roguelike Poker Duel with Cognitive AI & Autopilot</em>
+</p>
+
+<p align="center">
+  English | <a href="./README_zh.md">简体中文</a>
+</p>
 
 ---
 
@@ -26,7 +35,9 @@ English | [简体中文](./README_zh.md)
 
 ## Screenshots
 
-> _(Coming soon)_
+<p align="center">
+  <img src="./docs/assets/screenshot_1.png" alt="BLUFF Gameplay & JEV Autopilot Cockpit" width="100%" />
+</p>
 
 ---
 

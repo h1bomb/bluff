@@ -1,8 +1,17 @@
-# 🃏 BLUFF
+<p align="center">
+  <img src="./docs/assets/logo.png" alt="BLUFF Logo" width="140" style="border-radius: 16px;" />
+</p>
 
-> **AI读不懂你的牌。**
+# <p align="center">🃏 BLUFF</p>
 
-[English](./README.md) | 简体中文
+<p align="center">
+  <strong>AI 读不懂你的牌。</strong><br/>
+  <em>融合认知 AI 心理博弈与自动驾驶的赛博肉鸽扑克对决</em>
+</p>
+
+<p align="center">
+  <a href="./README.md">English</a> | 简体中文
+</p>
 
 ---
 
@@ -26,7 +35,9 @@
 
 ## 截图
 
-> _（开发中）_
+<p align="center">
+  <img src="./docs/assets/screenshot_1.png" alt="BLUFF 战局对决与 JEV 自动驾驶座舱" width="100%" />
+</p>
 
 ---
 
