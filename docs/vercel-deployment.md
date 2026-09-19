@@ -45,34 +45,44 @@ BLUFF 采用 Prisma ORM + PostgreSQL 存储用户档案与战局回放数据。�
 ## 3. 第二步：配置 Google OAuth 凭证
 
 1. 访问 [Google Cloud Console](https://console.cloud.google.com/)。
-2. 创建或选择一个项目。
-3. 前往 **APIs & Services (API 与服务) -> Credentials (凭据)**。
-4. 点击 **Create Credentials (创建凭据) -> OAuth client ID (OAuth 客户端 ID)**。
-5. 应用类型选择 **Web application (Web 应用)**。
-6. 设置 **Authorized redirect URIs (已获授权的重定向 URI)**：
-   - 本地开发：`http://localhost:3000/api/auth/callback/google`
-   - Vercel 生产环境：`https://<你的项目域名>.vercel.app/api/auth/callback/google`
-7. 创建后获取：
-   - `AUTH_GOOGLE_ID`: 客户端 ID
-   - `AUTH_GOOGLE_SECRET`: 客户端密钥
+2. 创建或选择一个项目（如 `bluff-game`）。
+3. **配置 OAuth 同意屏幕 (OAuth consent screen)**：
+   - 如果首次配置，前往 **APIs & Services -> OAuth consent screen**。
+   - **User Type (用户类型)**：选择 **External (外部)**，点击 **Create**。
+   - 填写 **App name** (如 `BLUFF`)、**User support email** 和 **Developer contact email**。
+   - **Scopes (权限范围)**：点击 **Add or Remove Scopes**，勾选 `.../auth/userinfo.email`、`.../auth/userinfo.profile` 和 `openid`。
+   - **Test users (测试用户)**：如果应用状态处于「Testing (测试中)」，**务必在此处添加你的个人 Google 邮箱**，否则该账号在登录时会被 Google 拦截。
+4. **创建 OAuth 凭据**：
+   - 前往 **APIs & Services -> Credentials (凭据)**。
+   - 点击 **Create Credentials (创建凭据) -> OAuth client ID**。
+   - **Application type (应用类型)**：选择 **Web application (Web 应用)**。
+   - **Name**：填写名称（如 `BLUFF Web Client`）。
+   - **Authorized redirect URIs (已获授权的重定向 URI)**：点击 **Add URI** 添加以下地址：
+     - 本地开发：`http://localhost:3000/api/auth/callback/google`
+     - Vercel 生产环境：`https://<你的项目域名>.vercel.app/api/auth/callback/google`
+5. 点击 **Create** 后弹窗显示：
+   - **Client ID** -> 保存为 `AUTH_GOOGLE_ID`（格式通常为 `xxx.apps.googleusercontent.com`）
+   - **Client Secret** -> 保存为 `AUTH_GOOGLE_SECRET`（格式通常为 `GOCSPX-xxx`）
 
 ---
 
 ## 4. 第三步：配置 GitHub OAuth 凭证
 
 1. 登录 GitHub，访问 [GitHub Developer Settings](https://github.com/settings/developers)。
-2. 选择 **OAuth Apps** -> 点击 **New OAuth App**。
-3. 填写信息：
+2. 选择左侧 **OAuth Apps** -> 点击右上角 **New OAuth App**。
+3. 填写应用信息：
    - **Application name**: `BLUFF`
-   - **Homepage URL**: `https://<你的项目域名>.vercel.app`（本地开发写 `http://localhost:3000`）
-   - **Authorization callback URL**:
+   - **Homepage URL**: `https://<你的项目域名>.vercel.app`（本地开发可填 `http://localhost:3000`）
+   - **Application description**: 可选
+   - **Authorization callback URL (关键)**：
      - 本地开发：`http://localhost:3000/api/auth/callback/github`
      - Vercel 生产环境：`https://<你的项目域名>.vercel.app/api/auth/callback/github`
 4. 点击 **Register application**。
-5. 点击 **Generate a new client secret** 生成密钥。
-6. 获取：
-   - `AUTH_GITHUB_ID`: Client ID
-   - `AUTH_GITHUB_SECRET`: Client Secret
+5. 注册成功后进入详情页：
+   - 复制 **Client ID** -> 保存为 `AUTH_GITHUB_ID`（如 `Ov23li9...`）
+   - 点击 **Generate a new client secret** -> 复制生成的密钥，保存为 `AUTH_GITHUB_SECRET`（如 `18ee0d2...`）
+   > [!IMPORTANT]
+   > Client Secret 仅在生成时展示一次，离开页面后无法再次查看，请及时复制保存。
 
 ---
 
@@ -154,9 +164,29 @@ TYPESAFE_API_KEY="your_api_key_optional"
 
 ---
 
-## 💡 常见问题与提示
+## 💡 常见问题与排错指南
 
-1. **未配置数据库也能玩吗？**
-   - 可以！BLUFF 拥有内置的防断兜底机制。如果未配置 `DATABASE_URL` 或未登录，游戏会自动使用浏览器本地 IndexedDB 保存战局，完全不影响核心对战。
-2. **部署后登录重定向错误？**
-   - 请检查 Google Cloud Console 和 GitHub OAuth App 中的 Callback URL 是否与 Vercel 提供的实际域名精确匹配（需包含 `https://` 且必须以 `/api/auth/callback/google` 或 `/api/auth/callback/github` 结尾）。
+### 1. 修改了 Vercel 环境变量后，登录依然失效？
+- **原因**：在 Vercel 项目的 `Settings -> Environment Variables` 中添加或修改环境变量后，**不会自动作用于已有的部署实例**。
+- **解决方法**：前往 Vercel 控制台中的 **Deployments** 页面，找到最新的部署记录，点击右侧的 **`...` 按钮 -> Redeploy**，或者向 GitHub 推送一次新的 commit 触发全新构建，环境变量才会注入生效。
+
+### 2. Google 登录跳转回来，但没有进入登录态？
+- **排查一：同一邮箱已被 GitHub 先行注册**
+  - NextAuth 默认禁止不同提供商自动绑定同一邮箱以防安全风险。BLUFF 项目在 `src/auth.ts` 中已开启 `allowDangerousEmailAccountLinking: true`，支持同邮箱多渠道无缝自动合并。
+- **排查二：查看 Vercel 运行时日志**
+  1. 打开 [vercel.com](https://vercel.com) 进入对应项目。
+  2. 点击 **Deployments** 标签页，点击最新的生产部署记录。
+  3. 点击 **Logs**（或 **Runtime Logs**）标签页。
+  4. 搜索框输入 `api/auth`，点击登录重试，即可看到详细的 OAuth 请求与错误堆栈。
+
+### 3. Google 登录报错「Access blocked: This app has not been verified」或「403 访问被拒绝」？
+- **原因**：Google Cloud Console 中的 OAuth Consent Screen 还处于「Testing (测试中)」状态。
+- **解决方法**：
+  - 前往 **Google Cloud Console -> APIs & Services -> OAuth consent screen -> Test users**。
+  - 点击 **Add users**，将你测试用的 Google 邮箱添加进去保存；或者直接点击 **Publish App (发布应用)** 将其转为公开可用。
+
+### 4. 部署后登录重定向错误（redirect_uri_mismatch）？
+- 请检查 Google Cloud Console 和 GitHub OAuth App 中的 Callback URL 是否与 Vercel 提供的实际域名精确匹配（需包含 `https://` 且必须以 `/api/auth/callback/google` 或 `/api/auth/callback/github` 结尾）。
+
+### 5. 未配置数据库也能玩吗？
+- 可以！BLUFF 拥有内置的防断兜底机制。如果未配置 `DATABASE_URL` 或处于未登录体验状态，游戏会自动使用浏览器本地 IndexedDB 保存战局，单机核心对战不受任何影响。

@@ -47,9 +47,47 @@ cd bluff
 # 安装依赖
 pnpm install
 
-# 配置环境变量（可选，用于 AI 模型功能）
+### 🔑 配置环境变量与第三方登录 (OAuth & 数据库)
+
+BLUFF 支持 **Google** 和 **GitHub** 第三方登录，并将用户档案与对局记录持久化到云端 PostgreSQL 数据库（推荐 [Neon](https://neon.tech)）。
+
+复制环境变量模板：
+```bash
 cp .env.example .env.local
 ```
+
+编辑 `.env.local` 填入配置：
+
+| 环境变量 | 必需度 | 说明 | 获取方式 / 示例 |
+|---------|--------|------|-----------------|
+| `DATABASE_URL` | 推荐 | PostgreSQL 连接串 | [Neon](https://neon.tech) 获取，例如 `postgresql://user:pass@ep-xxx.neon.tech/neondb?sslmode=require` |
+| `AUTH_SECRET` | 必需 | NextAuth 加密密钥 | 终端执行 `openssl rand -base64 32` 或 `npx auth secret` 生成 |
+| `AUTH_GOOGLE_ID` | 选配* | Google 客户端 ID | [Google Cloud Console](https://console.cloud.google.com/) 创建 OAuth 2.0 Web 应用 |
+| `AUTH_GOOGLE_SECRET` | 选配* | Google 客户端密钥 | 同上 |
+| `AUTH_GITHUB_ID` | 选配* | GitHub Client ID | [GitHub Developer Settings](https://github.com/settings/developers) 创建 OAuth App |
+| `AUTH_GITHUB_SECRET` | 选配* | GitHub Client Secret | 同上 |
+| `TYPESAFE_API_KEY` | 可选 | TypeSafe AI 密钥 | [TypeSafe AI](https://typesafe.ai) 获取，用于启用大模型心理博弈 |
+
+*\* 注：若要启用对应登录渠道，只需配对填入该渠道的 ID 与 Secret。*
+
+#### 🌐 关键：配置 OAuth 重定向回调地址 (Callback URLs)
+
+在 Google 和 GitHub 控制台注册应用时，**授权重定向 URI (Authorization callback URL)** 必须精确配置为：
+
+- **本地开发**：
+  - Google: `http://localhost:3000/api/auth/callback/google`
+  - GitHub: `http://localhost:3000/api/auth/callback/github`
+- **Vercel 生产环境**：
+  - Google: `https://<你的项目域名>.vercel.app/api/auth/callback/google`
+  - GitHub: `https://<你的项目域名>.vercel.app/api/auth/callback/github`
+
+#### 📦 初始化数据库表结构
+配置好 `DATABASE_URL` 后，在终端执行以下命令将 5 张表（User、Account、Session、VerificationToken、GameRun）自动推送到数据库：
+```bash
+pnpm prisma db push
+```
+
+> 📖 **完整部署与排错指南**：详细的图文步骤（包含 Google Cloud 同意屏幕配置、Vercel 变量添加、同邮箱多渠道账号合并与日志排错），请参阅 [Vercel 部署与第三方登录配置指南](./docs/vercel-deployment.md)。
 
 ### 配置 JEV AI 密钥（可选）
 

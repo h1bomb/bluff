@@ -47,9 +47,47 @@ cd bluff
 # Install dependencies
 pnpm install
 
-# Configure environment variables (optional, for AI model features)
+### 🔑 Environment Variables & Third-Party OAuth Setup
+
+BLUFF supports **Google** and **GitHub** third-party authentication, storing user profiles and game run replays in a cloud PostgreSQL database (such as [Neon](https://neon.tech)).
+
+Copy the environment template:
+```bash
 cp .env.example .env.local
 ```
+
+Edit `.env.local` with the following variables:
+
+| Variable | Requirement | Description | How to Obtain / Example |
+|----------|-------------|-------------|-------------------------|
+| `DATABASE_URL` | Recommended | PostgreSQL connection string | Obtained from [Neon](https://neon.tech), e.g. `postgresql://user:pass@ep-xxx.neon.tech/neondb?sslmode=require` |
+| `AUTH_SECRET` | Required | NextAuth session encryption secret | Run `openssl rand -base64 32` or `npx auth secret` in your terminal |
+| `AUTH_GOOGLE_ID` | Optional* | Google OAuth Client ID | From [Google Cloud Console](https://console.cloud.google.com/) OAuth 2.0 Web Application |
+| `AUTH_GOOGLE_SECRET` | Optional* | Google OAuth Client Secret | Same as above |
+| `AUTH_GITHUB_ID` | Optional* | GitHub OAuth Client ID | From [GitHub Developer Settings](https://github.com/settings/developers) OAuth App |
+| `AUTH_GITHUB_SECRET` | Optional* | GitHub OAuth Client Secret | Same as above |
+| `TYPESAFE_API_KEY` | Optional | TypeSafe AI API Key | From [TypeSafe AI](https://typesafe.ai) for LLM-powered opponent analysis |
+
+*\* Note: To enable a specific sign-in provider, provide both its ID and Secret.*
+
+#### 🌐 Important: Authorized Redirect / Callback URLs
+
+When registering your OAuth application in the Google and GitHub developer consoles, set the **Authorization callback URL** to:
+
+- **Local Development**:
+  - Google: `http://localhost:3000/api/auth/callback/google`
+  - GitHub: `http://localhost:3000/api/auth/callback/github`
+- **Vercel Production**:
+  - Google: `https://<your-project>.vercel.app/api/auth/callback/google`
+  - GitHub: `https://<your-project>.vercel.app/api/auth/callback/github`
+
+#### 📦 Initialize Database Schema
+After setting `DATABASE_URL`, synchronize the 5 Prisma tables (`User`, `Account`, `Session`, `VerificationToken`, `GameRun`) to your database:
+```bash
+pnpm prisma db push
+```
+
+> 📖 **Full Guide**: For detailed step-by-step instructions (including Google OAuth Consent Screen configuration, Vercel deployments, account linking, and log diagnostics), see [Vercel Deployment & OAuth Setup Guide](./docs/vercel-deployment.md).
 
 ### Configure JEV AI Key (Optional)
 
