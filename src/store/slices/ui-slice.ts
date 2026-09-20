@@ -1,9 +1,11 @@
 import { GameStoreState } from '../game-store';
+import { JevQuotaInfo } from '@/services/game-api';
 
 export interface UiSlice {
   dismissScoreTally: () => void;
   dismissModelBreak: () => void;
   clearLatestToast: () => void;
+  setJevQuota: (quota: JevQuotaInfo | null) => void;
 }
 
 export const createUiSlice = (
@@ -19,5 +21,9 @@ export const createUiSlice = (
 
   clearLatestToast: () => {
     set({ latestToast: null });
+  },
+
+  setJevQuota: (quota) => {
+    set({ jevQuota: quota });
   },
 });

@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
+import { auth } from '@/auth';
 import { SessionStore } from '@/game/engine/session-store';
+import { sessionKeyFor } from '@/game/engine/session-key';
 import {
   advanceFromShopToNextBlind,
   buyShopItem,
@@ -12,15 +14,21 @@ import {
   setSelectedCards,
   toggleSelectCard,
 } from '@/game/engine/game-engine';
-import { TypeSafeJevProvider } from '@/jev/typesafe-provider';
+import { selectDecisionProvider } from '@/jev/provider-selector';
+import { resolveQuotaIdentity } from '@/jev/identity';
 import { GameState, GameUIEvent, PokerAction } from '@/game/types';
 import { ActionSchema } from './schema';
 import { resolveSession } from './session-resolver';
 
-const provider = new TypeSafeJevProvider();
-
 export async function POST(req: Request) {
   try {
+    const session = await auth();
+    const userId = session?.user?.id ?? null;
+    // Guests get a small daily Jev allowance keyed by IP hash; signed-in
+    // users get the full quota. Exhaustion falls back to heuristic.
+    const identity = resolveQuotaIdentity(userId, req.headers);
+    const { provider, wasThrottled, quotaSnapshot } = selectDecisionProvider(identity);
+
     const body = await req.json();
     const parsed = ActionSchema.safeParse(body);
 
@@ -32,9 +40,10 @@ export async function POST(req: Request) {
     }
 
     const { gameId, action, delayMs, sequence, cardId, cardIds, item, jokerId, clientState } = parsed.data;
-    
+    const sessionKey = sessionKeyFor(userId, gameId);
+
     // Initial fetch to check existence
-    let game = resolveSession(gameId, clientState);
+    let game = resolveSession(sessionKey, clientState);
 
     if (!game) {
       return NextResponse.json(
@@ -44,7 +53,7 @@ export async function POST(req: Request) {
     }
 
     const respond = (updated: GameState, extra?: Record<string, unknown>) => {
-      SessionStore.set(gameId, updated);
+      SessionStore.set(sessionKey, updated);
       const events = extra?.events as GameUIEvent[] | undefined;
       return NextResponse.json({
         success: true,
@@ -69,7 +78,7 @@ export async function POST(req: Request) {
     // 2. Roguelike Discard
     if (action === 'DISCARD') {
       const idsToDiscard = cardIds && cardIds.length > 0 ? cardIds : (game?.selectedCardIds || []);
-      game = resolveSession(gameId, clientState, idsToDiscard)!;
+      game = resolveSession(sessionKey, clientState, idsToDiscard)!;
       if (idsToDiscard.length > 0) {
         game = setSelectedCards(game, idsToDiscard);
       }
@@ -80,7 +89,7 @@ export async function POST(req: Request) {
     // 3. Roguelike Play Hand
     if (action === 'PLAY_HAND') {
       let idsToPlay = cardIds && cardIds.length >= 1 && cardIds.length <= 5 ? cardIds : (game?.selectedCardIds || []);
-      game = resolveSession(gameId, clientState, idsToPlay)!;
+      game = resolveSession(sessionKey, clientState, idsToPlay)!;
 
       const matchingCards = (game?.player?.cards || []).filter((c) => idsToPlay.includes(c.id));
       if ((matchingCards.length < 1 || matchingCards.length > 5) && (game?.player?.cards || []).length >= 1) {
@@ -89,7 +98,12 @@ export async function POST(req: Request) {
 
       game = setSelectedCards(game, idsToPlay);
       const { game: updated, events, scoreResult } = await playSelectedCards(game, delayMs ?? 500, provider);
-      return respond(updated, { events, scoreResult });
+      return respond(updated, {
+        events,
+        scoreResult,
+        ...(wasThrottled() ? { jevThrottled: true } : {}),
+        ...(quotaSnapshot() ? { jevQuota: quotaSnapshot() } : {}),
+      });
     }
 
     // 4. Roguelike Buy Shop Item
@@ -99,7 +113,7 @@ export async function POST(req: Request) {
       }
       const { game: updated, success, message } = buyShopItem(game, item);
       if (success) {
-        SessionStore.set(gameId, updated);
+        SessionStore.set(sessionKey, updated);
       }
       return NextResponse.json({
         success,
@@ -121,7 +135,7 @@ export async function POST(req: Request) {
     if (action === 'REROLL_SHOP') {
       const { game: updated, success, message } = rerollShop(game);
       if (success) {
-        SessionStore.set(gameId, updated);
+        SessionStore.set(sessionKey, updated);
       }
       return NextResponse.json({
         success,
@@ -151,7 +165,11 @@ export async function POST(req: Request) {
       provider
     );
 
-    return respond(updatedGame, { events });
+    return respond(updatedGame, {
+      events,
+      ...(wasThrottled() ? { jevThrottled: true } : {}),
+      ...(quotaSnapshot() ? { jevQuota: quotaSnapshot() } : {}),
+    });
   } catch (err: unknown) {
     console.error('Error in /api/game/action:', err);
     const message = err instanceof Error ? err.message : 'Internal action processing error';

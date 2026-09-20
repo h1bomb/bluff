@@ -4,6 +4,7 @@ import { captureCurrentAutopilotSnapshot, syncRunProgress, updateAutopilotState 
 import { createDiscardStep, createPlayHandStep } from '@/lib/history/recorder';
 import { Card, GameUIEvent } from '@/game/types';
 import { resolveCardIdsToPlay } from '../helpers/card-selection';
+import { useLanguageStore } from '../language-store';
 
 export interface CardSlice {
   toggleSelectCard: (cardId: string) => Promise<void>;
@@ -178,6 +179,15 @@ export const createCardSlice = (
             showModelBreak: true,
             currentModelBreakPayload: modelBreakEvent.payload,
           });
+        }
+
+        // Notify once when Jev quota is exhausted and the game falls back to heuristic
+        if (data.jevThrottled && !get().jevThrottled) {
+          set({ jevThrottled: true, latestToast: useLanguageStore.getState().t.game.jevQuotaToast });
+        }
+
+        if (data.jevQuota) {
+          get().setJevQuota(data.jevQuota);
         }
 
         updateAutopilotState(data.publicState);

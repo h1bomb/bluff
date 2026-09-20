@@ -47,6 +47,7 @@
   },
   "game": {
     "initializing": "INITIALIZING AI LAB SESSION...",
+    "jevQuotaToast": "JEV QUOTA EXCEEDED · SWITCHED TO LOCAL HEURISTIC AI",
     "yourCards": "YOUR THREE CARDS",
     "handWon": "★ HAND WON! +",
     "handLost": "✖ HAND LOST! -",
@@ -482,7 +483,13 @@
     "loginRequiredToPlay": "Third-party login is required before starting a game to persist match records and statistics.",
     "loginGoogle": "SIGN IN WITH GOOGLE",
     "loginGithub": "SIGN IN WITH GITHUB",
-    "loggingIn": "CONNECTING..."
+    "loggingIn": "CONNECTING...",
+    "guestRun": "TRY AS GUEST · 100 JEV/DAY",
+    "unlockJev": "SIGN IN FOR FULL JEV QUOTA",
+    "guestBadge": "GUEST",
+    "unlockJevBadge": "UPGRADE JEV QUOTA",
+    "unlockJevReason": "Guests get 100 free Jev cognitive evaluations per day. Sign in to raise it to 600/day and unlock cloud run sync and replays.",
+    "quotaGuestHint": "Sign in to raise Jev quota to 600/day"
   },
   "history": {
     "title": "MATCH HISTORY",

@@ -47,6 +47,7 @@
   },
   "game": {
     "initializing": "正在初始化 AI 心理实验室...",
+    "jevQuotaToast": "JEV 配额已达上限 · 本局后续切换为本地启发式 AI",
     "yourCards": "你的三张手牌",
     "handWon": "★ 对局获胜！+",
     "handLost": "✖ 对局落败！-",
@@ -482,7 +483,13 @@
     "loginRequiredToPlay": "进入对局前需先进行三方登录，以便持久化记录战局与统计数据。",
     "loginGoogle": "使用 Google 账号登录",
     "loginGithub": "使用 GitHub 账号登录",
-    "loggingIn": "正在连接鉴权中心..."
+    "loggingIn": "正在连接鉴权中心...",
+    "guestRun": "游客试玩 (JEV 100次/天)",
+    "unlockJev": "登录解锁 JEV 完整配额",
+    "guestBadge": "游客模式",
+    "unlockJevBadge": "升级 JEV 配额",
+    "unlockJevReason": "游客每天可免费使用 100 次 Jev 认知推理；登录后提升至 600 次/天，并解锁云端战局同步与历史回放。",
+    "quotaGuestHint": "登录后 JEV 配额提升至 600 次/天"
   },
   "history": {
     "title": "战局历史档案库",

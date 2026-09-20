@@ -4,6 +4,11 @@ import path from 'path';
 export default defineConfig({
   test: {
     globals: true,
+    env: {
+      // Never touch the real database from tests: force the in-memory
+      // quota/prisma fallbacks regardless of local .env values.
+      DATABASE_URL: '',
+    },
     server: {
       deps: {
         inline: ['next-auth'],

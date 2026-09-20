@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useGameStore } from '@/store/game-store';
 import { useLanguageStore } from '@/store/language-store';
 import { useAutopilotStore } from '@/store/autopilot-store';
+import { fetchJevQuota } from '@/services/game-api';
 import { AutopilotDecision } from '@/game/autopilot/types';
 import { AutopilotCockpit } from '@/components/game/autopilot-cockpit';
 import { hasMindReadBuff } from '@/game/buffs/engine';
@@ -15,22 +15,27 @@ import { CabinetHeader } from '@/components/game/cabinet-header';
 import { GameScreenDispatcher } from '@/components/game/game-screen-dispatcher';
 import { GameOverlays } from '@/components/game/game-overlays';
 import { AutopilotConfirmModal } from '@/components/game/autopilot/autopilot-confirm-modal';
+import { AuthModal } from '@/components/auth/auth-modal';
 
 export default function GamePage() {
-  const router = useRouter();
   const { status: authStatus } = useSession();
   const { t, language } = useLanguageStore();
   const gameStore = useGameStore();
   const autopilotStore = useAutopilotStore();
+  const jevQuota = useGameStore(s => s.jevQuota);
+  const setJevQuota = useGameStore(s => s.setJevQuota);
   const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false);
   const [showConfirmNewRun, setShowConfirmNewRun] = useState<boolean>(false);
   const [isStartingNewRun, setIsStartingNewRun] = useState<boolean>(false);
+  const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
 
+  // Load the current identity's Jev daily quota on mount / auth change
   useEffect(() => {
-    if (authStatus === 'unauthenticated') {
-      router.replace('/');
-    }
-  }, [authStatus, router]);
+    if (authStatus === 'loading') return;
+    fetchJevQuota().then((quota) => {
+      if (quota) setJevQuota(quota);
+    });
+  }, [authStatus, setJevQuota]);
 
   const {
     publicState,
@@ -152,6 +157,39 @@ export default function GamePage() {
     <main className="h-screen max-h-screen bg-black text-white flex flex-col items-center justify-center p-2 sm:p-3 relative select-none overflow-hidden">
       <div className="crt-screen absolute inset-0 pointer-events-none" />
 
+      {/* Top-left status area: guest badge + Jev quota */}
+      <div className="absolute top-2 left-2 z-50 flex items-center gap-2">
+        {authStatus === 'unauthenticated' && (
+          <button
+            onClick={() => setShowAuthModal(true)}
+            className="flex items-center gap-1.5 px-2 py-1 bg-zinc-950/95 border border-amber-500/70 hover:border-amber-300 retro text-[9px] active:scale-95 transition-all"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+            <span className="text-amber-300">{t.auth?.guestBadge || 'GUEST'}</span>
+            <span className="text-zinc-600">·</span>
+            <span className="text-emerald-400">{t.auth?.unlockJevBadge || 'UNLOCK JEV'}</span>
+          </button>
+        )}
+
+        {jevQuota && (
+          <button
+            onClick={() => {
+              if (jevQuota.isGuest) setShowAuthModal(true);
+            }}
+            disabled={!jevQuota.isGuest}
+            className={`flex items-center gap-1.5 px-2 py-1 bg-zinc-950/95 border retro text-[9px] transition-all ${
+              jevQuota.remaining <= 0
+                ? 'border-rose-500/70 text-rose-300'
+                : 'border-emerald-500/60 text-emerald-300'
+            } ${jevQuota.isGuest ? 'hover:border-emerald-300 active:scale-95 cursor-pointer' : 'cursor-default'}`}
+            title={jevQuota.isGuest ? (t.auth?.quotaGuestHint || 'Sign in for 600/day') : undefined}
+          >
+            <span className={`w-1.5 h-1.5 rounded-full ${jevQuota.remaining <= 0 ? 'bg-rose-400' : 'bg-emerald-400'}`} />
+            <span>JEV {jevQuota.remaining}/{jevQuota.limit}</span>
+          </button>
+        )}
+      </div>
+
       <GameOverlays
         isRoguelike={isRoguelike}
         isAutopilotEnabled={isAutopilotEnabled}
@@ -226,6 +264,12 @@ export default function GamePage() {
         isLoading={isStartingNewRun}
         onConfirm={handleConfirmNewRun}
         onClose={() => setShowConfirmNewRun(false)}
+      />
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        reason={t.auth?.unlockJevReason || 'Sign in to unlock the Jev cognitive engine. Guest mode runs on the local heuristic AI.'}
       />
     </main>
   );

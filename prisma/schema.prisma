@@ -74,3 +74,11 @@ model GameRun {
 
   @@index([userId, startTime(sort: Desc)])
 }
+
+// Daily Jev (paid AI) usage counter. id = "{quotaKey}:{yyyy-mm-dd}" (UTC),
+// where quotaKey is "u:{userId}" for signed-in users or "g:{ipHash}" for guests.
+model JevUsage {
+  id        String   @id
+  count     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}

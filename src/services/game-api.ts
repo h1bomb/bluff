@@ -32,3 +32,20 @@ export async function pickBuffApi(gameId: string, buffId: BuffId) {
   });
   return res.json();
 }
+
+export interface JevQuotaInfo {
+  used: number;
+  limit: number;
+  remaining: number;
+  isGuest: boolean;
+}
+
+export async function fetchJevQuota(): Promise<JevQuotaInfo | null> {
+  try {
+    const res = await fetch('/api/game/quota');
+    const data = await res.json();
+    return data?.success && data.jevQuota ? (data.jevQuota as JevQuotaInfo) : null;
+  } catch {
+    return null;
+  }
+}

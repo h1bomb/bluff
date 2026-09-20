@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { auth } from '@/auth';
 import { SessionStore } from '@/game/engine/session-store';
+import { sessionKeyFor } from '@/game/engine/session-key';
 import { sanitizePublicState, selectBuffAndNextHand } from '@/game/engine/game-engine';
 import { BuffId } from '@/game/types';
 
@@ -11,6 +13,9 @@ const BuffSchema = z.object({
 
 export async function POST(req: Request) {
   try {
+    const session = await auth();
+    const userId = session?.user?.id ?? null;
+
     const body = await req.json();
     const parsed = BuffSchema.safeParse(body);
 
@@ -22,7 +27,8 @@ export async function POST(req: Request) {
     }
 
     const { gameId, buffId } = parsed.data;
-    const game = SessionStore.get(gameId);
+    const sessionKey = sessionKeyFor(userId, gameId);
+    const game = SessionStore.get(sessionKey);
 
     if (!game) {
       return NextResponse.json(
@@ -32,7 +38,7 @@ export async function POST(req: Request) {
     }
 
     const updatedGame = selectBuffAndNextHand(game, buffId as BuffId);
-    SessionStore.set(gameId, updatedGame);
+    SessionStore.set(sessionKey, updatedGame);
     const publicState = sanitizePublicState(updatedGame);
 
     return NextResponse.json({

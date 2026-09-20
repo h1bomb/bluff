@@ -82,7 +82,7 @@ function AuthErrorBanner({ onRetry }: { onRetry: () => void }) {
 
 export default function TitlePage() {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status: authStatus } = useSession();
   const startGame = useGameStore(s => s.startGame);
   const setAutopilot = useAutopilotStore(s => s.setAutopilot);
   const { t } = useLanguageStore();
@@ -100,10 +100,7 @@ export default function TitlePage() {
   }, []);
 
   const handleActionClick = (action: 'new' | 'continue') => {
-    if (!session?.user) {
-      setShowAuthModal(true);
-      return;
-    }
+    if (authStatus === 'loading') return;
     setPendingAction(action);
   };
 
@@ -123,6 +120,39 @@ export default function TitlePage() {
       router.push('/game');
     }
   };
+
+  const isGuest = authStatus === 'unauthenticated' || (!session?.user && authStatus !== 'loading');
+
+  const guestActions = activeSession
+    ? [
+        {
+          label: `▶ ${t.title.continueRun} (ANTE ${activeSession.publicState.ante ?? 1})`,
+          variant: 'default' as const,
+          onClick: () => handleActionClick('continue'),
+        },
+        {
+          label: t.title.newRun,
+          variant: 'outline' as const,
+          onClick: () => handleActionClick('new'),
+        },
+        {
+          label: t.auth?.unlockJev || 'SIGN IN FOR FULL JEV QUOTA',
+          variant: 'outline' as const,
+          onClick: () => setShowAuthModal(true),
+        },
+      ]
+    : [
+        {
+          label: t.auth?.guestRun || 'TRY AS GUEST · 100 JEV/DAY',
+          variant: 'default' as const,
+          onClick: () => handleActionClick('new'),
+        },
+        {
+          label: t.auth?.unlockJev || 'SIGN IN FOR FULL JEV QUOTA',
+          variant: 'outline' as const,
+          onClick: () => setShowAuthModal(true),
+        },
+      ];
 
   const actions = activeSession
     ? [
@@ -189,7 +219,7 @@ export default function TitlePage() {
             { label: t.title.statReader, value: '1' },
             { label: t.title.statMercy, value: '0' },
           ]}
-          actions={actions}
+          actions={isGuest ? guestActions : actions}
         />
 
         {/* Dev tool link at the bottom (local development only) */}
@@ -215,7 +245,7 @@ export default function TitlePage() {
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
-        reason={t.auth?.loginRequiredToPlay || '进入对局前需先进行三方登录，以便持久化记录战局与统计数据。'}
+        reason={t.auth?.unlockJevReason || 'Sign in to unlock the Jev cognitive engine. Guest mode runs on the local heuristic AI.'}
       />
     </main>
   );

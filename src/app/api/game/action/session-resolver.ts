@@ -2,13 +2,19 @@ import { SessionStore } from '@/game/engine/session-store';
 import { restoreGameStateFromPublic } from '@/game/engine/game-engine';
 import { Card, GameState, PublicGameState } from '@/game/types';
 
-export function resolveSession(gameId: string, clientState?: PublicGameState, requiredCardIds?: string[]): GameState | undefined {
-  let game = SessionStore.get(gameId);
+/**
+ * Resolves the server-side game state for an identity-bound session key
+ * (see session-key.ts). Falls back to the client-supplied snapshot so games
+ * survive serverless cold starts; the key ensures a snapshot can only ever
+ * restore a session within the caller's own identity scope.
+ */
+export function resolveSession(sessionKey: string, clientState?: PublicGameState, requiredCardIds?: string[]): GameState | undefined {
+  let game = SessionStore.get(sessionKey);
 
   // Resilient Session Auto-Healing: restore if server hot-reloaded
   if (!game && clientState) {
     game = restoreGameStateFromPublic(clientState);
-    SessionStore.set(gameId, game);
+    SessionStore.set(sessionKey, game);
   }
 
   // Auto-heal session if game.player.cards does not contain the cards but clientState does
@@ -18,7 +24,7 @@ export function resolveSession(gameId: string, clientState?: PublicGameState, re
     const hasAllInClient = requiredCardIds.every((id: string) => clientCards.some((c: Card) => c.id === id));
     if (!hasAllInGame && hasAllInClient) {
       game = restoreGameStateFromPublic(clientState);
-      SessionStore.set(gameId, game);
+      SessionStore.set(sessionKey, game);
     }
   }
 

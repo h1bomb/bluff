@@ -4,6 +4,7 @@ import { captureCurrentAutopilotSnapshot, syncRunProgress, updateAutopilotState 
 import { createNextBlindStep, createInitialRunRecord, formatBlindName } from '@/lib/history/recorder';
 import { saveActiveSession, getActiveSession, clearActiveSession } from '@/lib/history/db';
 import { BuffId, PokerAction, GameUIEvent } from '@/game/types';
+import { useLanguageStore } from '../language-store';
 
 export interface LifecycleSlice {
   startGame: (mode?: 'classic' | 'roguelike') => Promise<void>;
@@ -106,13 +107,22 @@ export const createLifecycleSlice = (
         const events: GameUIEvent[] = data.events || [];
         const modelBreakEvent = events.find(e => e.type === 'MODEL_BREAK');
         const patternEvent = events.find(e => e.type === 'PATTERN_DETECTED');
+        const throttledToast =
+          data.jevThrottled && !get().jevThrottled
+            ? useLanguageStore.getState().t.game.jevQuotaToast
+            : null;
+
+        if (data.jevQuota) {
+          get().setJevQuota(data.jevQuota);
+        }
 
         set({
           publicState: data.publicState,
           loading: false,
           sequence: data.sequence ?? sequence + 1,
           eventsQueue: events,
-          latestToast: patternEvent ? patternEvent.pattern : null,
+          latestToast: patternEvent ? patternEvent.pattern : throttledToast,
+          ...(throttledToast ? { jevThrottled: true } : {}),
         });
 
         if (modelBreakEvent && modelBreakEvent.type === 'MODEL_BREAK') {
