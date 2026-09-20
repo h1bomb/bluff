@@ -87,10 +87,12 @@ export default function TitlePage() {
   const { data: session, status: authStatus } = useSession();
   const startGame = useGameStore(s => s.startGame);
   const resetGame = useGameStore(s => s.resetGame);
+  const resumeActiveGame = useGameStore(s => s.resumeActiveGame);
   const setAutopilot = useAutopilotStore(s => s.setAutopilot);
   const { t } = useLanguageStore();
   const [activeSession, setActiveSession] = useState<ActiveGameSession | null>(null);
   const [pendingAction, setPendingAction] = useState<'new' | 'continue' | null>(null);
+  const [isConfirming, setIsConfirming] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   // Pre-warmed game created while the autopilot modal is open. Token guards
   // against a stale completion wiping a newer pre-warm.
@@ -103,7 +105,9 @@ export default function TitlePage() {
         setActiveSession(sessionData);
       }
     });
-  }, []);
+    // Prefetch the game route so the transition on confirm is instant.
+    router.prefetch('/game');
+  }, [router]);
 
   const handleActionClick = (action: 'new' | 'continue') => {
     if (authStatus === 'loading') return;
@@ -122,22 +126,26 @@ export default function TitlePage() {
           if (prev) saveActiveSession(prev).catch(() => {});
         }
       });
+    } else {
+      // Pre-warm continue: hydrate the store from IndexedDB while the user
+      // picks a mode, so the game page renders without an initializing gap.
+      resumeActiveGame();
     }
     setPendingAction(action);
   };
 
   const handleConfirmAutopilot = (enableAutopilot: boolean) => {
+    if (!pendingAction || isConfirming) return;
     setAutopilot(enableAutopilot);
     prewarmRef.current = null;
-    if (pendingAction === 'new') {
+    setIsConfirming(true);
+    router.push('/game');
+    // Close the modal only after the transition has had time to paint the
+    // game route, so the title page never flashes between modal and game.
+    setTimeout(() => {
       setPendingAction(null);
-      // Navigate immediately — the game page shows its initializing state
-      // while the pre-warmed startGame resolves into the store.
-      router.push('/game');
-    } else if (pendingAction === 'continue') {
-      setPendingAction(null);
-      router.push('/game');
-    }
+      setIsConfirming(false);
+    }, 600);
   };
 
   const handleCloseModal = () => {
@@ -271,6 +279,7 @@ export default function TitlePage() {
 
       <AutopilotConfirmModal
         isOpen={!!pendingAction}
+        isLoading={isConfirming}
         onConfirm={handleConfirmAutopilot}
         onClose={handleCloseModal}
       />
