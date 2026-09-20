@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useRef, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Hero3 from '@/components/ui/8bit/blocks/hero3';
@@ -14,7 +14,7 @@ import { SoundToggle } from '@/components/ui/sound-toggle';
 import { UserProfileBadge } from '@/components/auth/user-profile-badge';
 import { AuthModal } from '@/components/auth/auth-modal';
 import { AutopilotConfirmModal } from '@/components/game/autopilot/autopilot-confirm-modal';
-import { getActiveSession } from '@/lib/history/db';
+import { getActiveSession, saveActiveSession } from '@/lib/history/db';
 import type { ActiveGameSession } from '@/lib/history/types';
 
 function AuthErrorBanner({ onRetry }: { onRetry: () => void }) {
@@ -86,12 +86,16 @@ export default function TitlePage() {
   const router = useRouter();
   const { data: session, status: authStatus } = useSession();
   const startGame = useGameStore(s => s.startGame);
+  const resetGame = useGameStore(s => s.resetGame);
   const setAutopilot = useAutopilotStore(s => s.setAutopilot);
   const { t } = useLanguageStore();
   const [activeSession, setActiveSession] = useState<ActiveGameSession | null>(null);
   const [pendingAction, setPendingAction] = useState<'new' | 'continue' | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // Pre-warmed game created while the autopilot modal is open. Token guards
+  // against a stale completion wiping a newer pre-warm.
+  const latestNewToken = useRef(0);
+  const prewarmRef = useRef<{ token: number; done: boolean; cancelled: boolean } | null>(null);
 
   useEffect(() => {
     getActiveSession().then((sessionData) => {
@@ -103,24 +107,52 @@ export default function TitlePage() {
 
   const handleActionClick = (action: 'new' | 'continue') => {
     if (authStatus === 'loading') return;
+    if (action === 'new') {
+      // Pre-warm: create the run in the background while the user picks a
+      // mode in the modal, so confirming navigates to an (almost) ready game.
+      const token = ++latestNewToken.current;
+      const prev = activeSession;
+      const entry = { token, done: false, cancelled: false };
+      prewarmRef.current = entry;
+      // startGame never rejects (it catches and logs internally).
+      startGame().then(() => {
+        entry.done = true;
+        if (entry.cancelled && latestNewToken.current === token) {
+          resetGame();
+          if (prev) saveActiveSession(prev).catch(() => {});
+        }
+      });
+    }
     setPendingAction(action);
   };
 
-  const handleConfirmAutopilot = async (enableAutopilot: boolean) => {
+  const handleConfirmAutopilot = (enableAutopilot: boolean) => {
     setAutopilot(enableAutopilot);
+    prewarmRef.current = null;
     if (pendingAction === 'new') {
-      setIsLoading(true);
-      try {
-        await startGame();
-        router.push('/game');
-      } finally {
-        setIsLoading(false);
-        setPendingAction(null);
-      }
+      setPendingAction(null);
+      // Navigate immediately — the game page shows its initializing state
+      // while the pre-warmed startGame resolves into the store.
+      router.push('/game');
     } else if (pendingAction === 'continue') {
       setPendingAction(null);
       router.push('/game');
     }
+  };
+
+  const handleCloseModal = () => {
+    const entry = prewarmRef.current;
+    prewarmRef.current = null;
+    if (entry) {
+      entry.cancelled = true;
+      // Discard a pre-warm that already finished; an in-flight one is
+      // discarded by its completion callback above.
+      if (entry.done && latestNewToken.current === entry.token) {
+        resetGame();
+        if (activeSession) saveActiveSession(activeSession).catch(() => {});
+      }
+    }
+    setPendingAction(null);
   };
 
   const isGuest = authStatus === 'unauthenticated' || (!session?.user && authStatus !== 'loading');
@@ -239,9 +271,8 @@ export default function TitlePage() {
 
       <AutopilotConfirmModal
         isOpen={!!pendingAction}
-        isLoading={isLoading}
         onConfirm={handleConfirmAutopilot}
-        onClose={() => setPendingAction(null)}
+        onClose={handleCloseModal}
       />
 
       <AuthModal

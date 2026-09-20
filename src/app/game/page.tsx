@@ -75,6 +75,7 @@ export default function GamePage() {
 
   useGameSession({
     publicState,
+    loading,
     latestToast,
     resumeActiveGame,
     startGame,

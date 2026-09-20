@@ -3,6 +3,7 @@ import { PublicGameState } from '@/game/types';
 
 interface UseGameSessionParams {
   publicState: PublicGameState | null;
+  loading: boolean;
   latestToast: string | null;
   resumeActiveGame: () => Promise<boolean>;
   startGame: (mode: 'roguelike' | 'classic') => Promise<void>;
@@ -12,6 +13,7 @@ interface UseGameSessionParams {
 
 export function useGameSession({
   publicState,
+  loading,
   latestToast,
   resumeActiveGame,
   startGame,
@@ -19,14 +21,16 @@ export function useGameSession({
   updateDecisions,
 }: UseGameSessionParams) {
   useEffect(() => {
-    if (!publicState) {
+    // Skip while a startGame is already in flight (e.g. pre-warmed on the
+    // title page) — otherwise we'd create a duplicate run.
+    if (!publicState && !loading) {
       resumeActiveGame().then((resumed) => {
         if (!resumed) {
           startGame('roguelike');
         }
       });
     }
-  }, [publicState, resumeActiveGame, startGame]);
+  }, [publicState, loading, resumeActiveGame, startGame]);
 
   useEffect(() => {
     if (latestToast) {
