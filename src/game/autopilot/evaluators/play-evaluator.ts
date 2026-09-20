@@ -3,7 +3,8 @@ import { evaluateHand } from '../../poker/evaluator';
 import { calculateHandScore } from '../../scoring/calculator';
 import { AutopilotDecision } from '../types';
 import { getCombinations } from '../../../lib/math/combinations';
-import { getSimulatedDelayMs, getSuitBonus } from '../joker-heuristics';
+import { getSimulatedDelayMs } from '../joker-heuristics';
+import { findDeadCards } from '../hand-analysis';
 
 export function evaluatePlayHandDecisions(publicState: PublicGameState): AutopilotDecision[] {
   const decisions: AutopilotDecision[] = [];
@@ -11,8 +12,10 @@ export function evaluatePlayHandDecisions(publicState: PublicGameState): Autopil
   const targetScore = publicState.targetScore ?? (publicState.blind?.targetScore ?? 300);
   const currentScore = publicState.currentRoundScore ?? 0;
   const neededScore = Math.max(1, targetScore - currentScore);
+  const handsLeft = publicState.handsLeft ?? 0;
+  const discardsLeft = publicState.discardsLeft ?? 0;
   const jokers = publicState.jokers || [];
-  
+
   const simulatedDelayMs = getSimulatedDelayMs(jokers);
 
   if (cards.length >= 1) {
@@ -33,11 +36,12 @@ export function evaluatePlayHandDecisions(publicState: PublicGameState): Autopil
         consecutiveActions: publicState.consecutiveActions || [],
         discardedHistory: [],
       });
-      const jokerBonus = getSuitBonus(combo, jokers);
       return {
         combo,
         evaluated,
-        score: scoreRes.finalScore + jokerBonus,
+        // Joker effects are already fully applied inside calculateHandScore —
+        // adding ad-hoc bonuses on top would double-count them.
+        score: scoreRes.finalScore,
         scoreRes,
       };
     });
@@ -59,8 +63,43 @@ export function evaluatePlayHandDecisions(publicState: PublicGameState): Autopil
     });
 
     const best = evaluatedCombos[0];
+    const isWin = !!best && best.score >= neededScore;
+
+    // Dump line: when no combo can clear, the best combo can't even keep pace,
+    // and no discards remain, spend the hand cycling junk cards to dig for a
+    // winning draw while keeping the pair/run/flush core for the next hand.
+    if (best && !isWin && discardsLeft === 0 && handsLeft >= 2 && best.score < neededScore / handsLeft) {
+      const dumpCards = findDeadCards(cards).slice(0, 5);
+      if (dumpCards.length >= 3) {
+        const dumpScore = calculateHandScore({
+          handCards: dumpCards,
+          handLevels: publicState.handLevels,
+          jokers: publicState.jokers,
+          belief: publicState.belief,
+          actionDelayMs: simulatedDelayMs,
+          consecutiveActions: publicState.consecutiveActions || [],
+          discardedHistory: [],
+        }).finalScore;
+        decisions.push({
+          id: `decision_play_dump_${dumpCards.map((c) => c.id).join('_')}`,
+          type: 'PLAY_HAND',
+          category: 'GREED',
+          title: `DUMP: ${dumpCards.map((c) => `${c.suit}${c.rank}`).join(' ')}`,
+          titleZh: `弃养挖牌: ${dumpCards.map((c) => `${c.suit}${c.rank}`).join(' ')}`,
+          subtitle: `Cycle ${dumpCards.length} dead cards, keep the core for next hand`,
+          subtitleZh: `打出 ${dumpCards.length} 张死牌换抽，保留核心牌型组件备战下手`,
+          confidence: 70,
+          simulatedDelayMs,
+          cards: dumpCards,
+          cardIds: dumpCards.map((c) => c.id),
+          expectedScore: dumpScore,
+          reasoning: `No combo can clear ${neededScore} and no discards remain. Playing ${dumpCards.length} dead cards maximizes redraw while preserving the scoring core.`,
+          reasoningZh: `当前无组合可清版且弃牌已用完，打出 ${dumpCards.length} 张死牌最大化换抽，同时保留得分核心组件。`,
+        });
+      }
+    }
+
     if (best) {
-      const isWin = best.score >= neededScore;
       const winConfidence = isWin
         ? Math.min(98, 90 + Math.floor((best.score / neededScore) * 3))
         : Math.min(85, Math.max(40, Math.round((best.score / neededScore) * 55) + 15));
@@ -109,7 +148,10 @@ export function evaluatePlayHandDecisions(publicState: PublicGameState): Autopil
 
     const aiConfidence = publicState.belief?.behavior?.confidence ?? 0;
     const aiBehavior = publicState.belief?.behavior?.value;
-    if (aiConfidence >= 0.75 || aiBehavior === 'STRONG_REPRESENTATION') {
+    const aiSmellsBluff = (publicState.belief?.bluff ?? 0) >= 0.5;
+    // Never gamble on a bluff when a guaranteed clear exists — take the win.
+    // And when the AI already suspects a bluff, the Model Break won't trigger.
+    if (!isWin && !aiSmellsBluff && (aiConfidence >= 0.75 || aiBehavior === 'STRONG_REPRESENTATION')) {
       const weakCombos = evaluatedCombos.filter((c) => c.evaluated.strength <= 0.30);
       if (weakCombos.length > 0 && aiConfidence >= 0.75) {
         const worst = weakCombos[weakCombos.length - 1];
@@ -127,9 +169,11 @@ export function evaluatePlayHandDecisions(publicState: PublicGameState): Autopil
           simulatedDelayMs: hasPavlov ? 420 : 500,
           cards: worst.combo,
           cardIds: worst.combo.map((c) => c.id),
-          expectedScore: worst.score * 8,
+          // worst.score already includes the cognitive multiplier that
+          // calculateHandScore applies for this weak hand vs the AI's read.
+          expectedScore: worst.score,
           reasoning: `The AI is hyper-confident you hold a monster hand (${Math.round(aiConfidence * 100)}%). Playing a weak hand triggers a catastrophic Model Break!`,
-          reasoningZh: `AI 此时极度坚信你手握怪物牌（置信度 ${Math.round(aiConfidence * 100)}%），用弱牌诱发 MODEL BREAK 可触发高达 10x 认知乘数！`,
+          reasoningZh: `AI 此时极度坚信你手握怪物牌（置信度 ${Math.round(aiConfidence * 100)}%），用弱牌诱发 MODEL BREAK 触发巨额认知乘数！`,
         });
       }
     }

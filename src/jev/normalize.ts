@@ -81,7 +81,7 @@ export function normalizeBelief(raw: Partial<PlayerBelief>): PlayerBelief {
     },
     bluff: clamp(raw.bluff ?? normalizedProbs.BLUFF_REPRESENTATION ?? normalizedProbs.CALCULATED_BLUFF ?? 0),
     baiting: clamp(raw.baiting ?? normalizedProbs.BAIT ?? normalizedProbs.TEMPO_MANIPULATION ?? 0),
-    reversePrediction: clamp(raw.reversePrediction ?? 0.1),
+    reversePrediction: clamp(raw.reversePrediction ?? normalizedProbs.TEMPO_MANIPULATION ?? normalizedProbs.BAIT ?? 0.1),
     aggression: clamp(raw.aggression ?? 0.5),
     predictability: clamp(raw.predictability ?? 0.5),
     tilt: clamp(raw.tilt ?? normalizedProbs.TILT ?? 0),

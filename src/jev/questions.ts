@@ -22,10 +22,6 @@ export const JEV_QUESTIONS = {
     'Is the player sandbagging or slow-playing a dominant hand to lure the AI into overconfidence?'
   ),
 
-  reverse: noul(
-    "Is the player actively acting contrary to the AI's publicly visible prediction to trigger a cognitive discrepancy bonus?"
-  ),
-
   aggression: score(
     "Assess the player's play intensity from 0 (passive discard cycling) to 3 (all-in aggressive high-risk play):",
     [

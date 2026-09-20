@@ -1,6 +1,7 @@
-import { Card, PublicGameState } from '../../types';
+import { PublicGameState } from '../../types';
 import { evaluateHand } from '../../poker/evaluator';
 import { AutopilotDecision } from '../types';
+import { findDeadCards } from '../hand-analysis';
 
 export function evaluateDiscardDecisions(publicState: PublicGameState, bestPlay?: AutopilotDecision): AutopilotDecision[] {
   const decisions: AutopilotDecision[] = [];
@@ -12,31 +13,7 @@ export function evaluateDiscardDecisions(publicState: PublicGameState, bestPlay?
   const neededScore = Math.max(1, targetScore - currentScore);
 
   if (discardsLeft > 0 && cards.length >= 2) {
-    const suitCounts: Record<string, Card[]> = {};
-    cards.forEach((c) => {
-      suitCounts[c.suit] = suitCounts[c.suit] || [];
-      suitCounts[c.suit].push(c);
-    });
-
-    let dominantSuit = '';
-    let maxSuitCount = 0;
-    Object.entries(suitCounts).forEach(([s, clist]) => {
-      if (clist.length > maxSuitCount) {
-        maxSuitCount = clist.length;
-        dominantSuit = s;
-      }
-    });
-
-    const deadCards = cards.filter((c) => {
-      if (c.suit === dominantSuit && maxSuitCount >= 2) return false;
-      const sameRank = cards.filter((other) => other.rank === c.rank);
-      if (sameRank.length >= 2) return false;
-      const hasConnector = cards.some(
-        (other) => other.id !== c.id && Math.abs(other.rank - c.rank) <= 2
-      );
-      if (hasConnector && c.rank >= 9) return false;
-      return true;
-    });
+    const deadCards = findDeadCards(cards);
 
     let discardSelection = deadCards.slice(0, 5);
     if (discardSelection.length === 0 && cards.length >= 3) {

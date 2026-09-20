@@ -59,7 +59,6 @@ export class TypeSafeJevProvider implements DecisionProvider {
       const behaviorAnswer = answers.behavior;
       const bluffAnswer = answers.bluff;
       const baitingAnswer = answers.baiting;
-      const reverseAnswer = answers.reverse;
       const aggressionAnswer = answers.aggression;
       const predictabilityAnswer = answers.predictability;
       const tiltAnswer = answers.tilt;
@@ -84,7 +83,8 @@ export class TypeSafeJevProvider implements DecisionProvider {
         },
         bluff: bluffAnswer.noul,
         baiting: baitingAnswer.noul,
-        reversePrediction: reverseAnswer.noul,
+        // reversePrediction is derived from the tempo-manipulation
+        // probability inside normalizeBelief.
         aggression: aggressionAnswer.score / 3,
         predictability: predictabilityAnswer.score / 3,
         tilt: tiltAnswer.score / 3,

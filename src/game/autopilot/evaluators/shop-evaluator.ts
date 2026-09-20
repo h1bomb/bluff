@@ -1,7 +1,35 @@
 import { PublicGameState } from '../../types';
 import { AutopilotDecision } from '../types';
 import { ShopItem } from '../../shop/types';
-import { JOKER_TIERS } from '../joker-heuristics';
+import { JOKER_TIERS, getJokerSynergyBonus } from '../joker-heuristics';
+
+// The hand type the run is actually winning with: most frequently played
+// recently, tie-broken by leveled progression, defaulting to FLUSH.
+function getDominantHandType(publicState: PublicGameState): string {
+  const counts = new Map<string, number>();
+  for (const ht of publicState.consecutiveActions ?? []) {
+    counts.set(ht, (counts.get(ht) ?? 0) + 1);
+  }
+  const levelOf = (ht: string) =>
+    publicState.handLevels?.[ht as keyof typeof publicState.handLevels]?.level ?? 1;
+
+  if (counts.size > 0) {
+    return [...counts.entries()].sort((a, b) => {
+      if (b[1] !== a[1]) return b[1] - a[1];
+      return levelOf(b[0]) - levelOf(a[0]);
+    })[0][0];
+  }
+
+  let dominant = 'FLUSH';
+  let maxLevel = 1;
+  Object.entries(publicState.handLevels ?? {}).forEach(([ht, cfg]) => {
+    if (cfg && cfg.level > maxLevel) {
+      maxLevel = cfg.level;
+      dominant = ht;
+    }
+  });
+  return dominant;
+}
 
 export function evaluateShopDecisions(publicState: PublicGameState, shopInventory?: ShopItem[]): AutopilotDecision[] {
   const decisions: AutopilotDecision[] = [];
@@ -11,17 +39,7 @@ export function evaluateShopDecisions(publicState: PublicGameState, shopInventor
   const maxJokers = publicState.maxJokers ?? 5;
   const rerollCost = publicState.rerollCost ?? 2;
 
-  const handLevels = publicState.handLevels;
-  let dominantHandType = 'FLUSH';
-  let maxLevel = 1;
-  if (handLevels) {
-    Object.entries(handLevels).forEach(([ht, cfg]) => {
-      if (cfg && cfg.level > maxLevel) {
-        maxLevel = cfg.level;
-        dominantHandType = ht;
-      }
-    });
-  }
+  const dominantHandType = getDominantHandType(publicState);
 
   let affordableCount = 0;
 
@@ -29,12 +47,14 @@ export function evaluateShopDecisions(publicState: PublicGameState, shopInventor
     if (item.itemType === 'JOKER') {
       const itemKey = (item.payload?.jokerKey || '').toUpperCase();
       const tier = JOKER_TIERS[itemKey] || 50;
-      const isSynergy = tier >= 80;
+      const synergy = getJokerSynergyBonus(itemKey, jokers);
+      const effectiveTier = tier + synergy;
+      const isSynergy = effectiveTier >= 80;
 
       if (jokers.length < maxJokers) {
         if (money < item.cost) return;
         affordableCount++;
-        const conf = isSynergy ? 95 : 82;
+        const conf = isSynergy ? 95 : Math.min(94, Math.max(40, 82 + synergy));
 
         decisions.push({
           id: `decision_buy_${item.id}`,
@@ -59,7 +79,7 @@ export function evaluateShopDecisions(publicState: PublicGameState, shopInventor
 
         if (weakest) {
           const weakTier = JOKER_TIERS[weakest.jokerKey?.toUpperCase()] || 40;
-          if (tier > weakTier + 15 && money + (weakest.sellValue ?? 2) >= item.cost) {
+          if (effectiveTier > weakTier + 15 && money + (weakest.sellValue ?? 2) >= item.cost) {
             decisions.push({
               id: `decision_sell_${weakest.id}_for_${item.id}`,
               type: 'SELL_JOKER',
