@@ -28,16 +28,16 @@ function AuthErrorBanner({ onRetry }: { onRetry: () => void }) {
   const getErrorMessage = (err: string) => {
     switch (err) {
       case 'OAuthAccountNotLinked':
-        return t.auth?.errorOAuthAccountNotLinked || '该邮箱先前已使用其他方式（如 GitHub）登录。已为您开启同邮箱自动关联，请点击下方按钮重新登录。';
+        return t.auth.errorOAuthAccountNotLinked;
       case 'OAuthCallbackError':
       case 'CallbackRouteError':
-        return t.auth?.errorCallback || '三方登录回调验证失败，请确认授权配置或重试。';
+        return t.auth.errorCallback;
       case 'Configuration':
-        return t.auth?.errorConfiguration || '登录服务配置有误，请检查服务端环境变量。';
+        return t.auth.errorConfiguration;
       case 'AccessDenied':
-        return t.auth?.errorAccessDenied || '已取消登录授权。';
+        return t.auth.errorAccessDenied;
       default:
-        return format(t.auth?.errorGeneric, { code: err }) || `登录遇到异常（错误码：${err}）。`;
+        return format(t.auth.errorGeneric, { code: err });
     }
   };
 

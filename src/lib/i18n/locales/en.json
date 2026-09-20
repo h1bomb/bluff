@@ -251,7 +251,8 @@
         "name": "THE OVERCLOCKER",
         "ability": "Overclocked compute, higher target score, hyper-accelerated analysis"
       }
-    }
+    },
+    "bossBlind": "Boss Blind"
   },
   "jokers": {
     "title": "COGNITIVE JOKERS",
@@ -475,7 +476,41 @@
     "purchaseFailed": "Purchase failed, please try again",
     "restocked": "Shop restocked!",
     "rerollFailed": "Reroll failed, please check cash",
-    "archiveReadOnly": "BLACK MARKET ARCHIVE (READ ONLY)"
+    "archiveReadOnly": "BLACK MARKET ARCHIVE (READ ONLY)",
+    "upgradeNames": {
+      "STRAIGHT_FLUSH": "Straight Flush Apex Scroll",
+      "FOUR_OF_A_KIND": "Four of a Kind Data Scroll",
+      "FULL_HOUSE": "Full House Data Scroll",
+      "FLUSH": "Flush Data Scroll",
+      "STRAIGHT": "Straight Data Scroll",
+      "THREE_OF_A_KIND": "Three of a Kind Data Scroll",
+      "TWO_PAIR": "Two Pair Data Scroll",
+      "PAIR": "Pair Data Scroll",
+      "HIGH_CARD": "High Card Data Scroll"
+    },
+    "upgradeDescription": "Upgrades {name} +1 Level.",
+    "mods": {
+      "QUANTUM_FOIL": {
+        "name": "Quantum Foil Coating",
+        "description": "Apply FOIL modifier to a card (+30 chips)"
+      },
+      "HOLOGRAPHIC_COAT": {
+        "name": "Holographic Coating",
+        "description": "Apply HOLO modifier to a card (+10 mult)"
+      },
+      "POLYCHROME_FINISH": {
+        "name": "Polychrome Finish",
+        "description": "Apply POLY modifier to a card (×1.5 mult)"
+      },
+      "SUIT_TRANSMUTE": {
+        "name": "Suit Transmuter",
+        "description": "Swap a card between ♠↔♥ suit"
+      },
+      "MEMORY_PURGE": {
+        "name": "Memory Purge",
+        "description": "Delete a card from your hand permanently"
+      }
+    }
   },
   "resultRoguelike": {
     "victoryTitle": "★ RUN COMPLETE · FULL BREAKTHROUGH ★",

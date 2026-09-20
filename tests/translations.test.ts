@@ -65,8 +65,8 @@ describe('i18n translations', () => {
   it('localizes blind display names for both languages incl. legacy strings', () => {
     expect(localizeBlindDisplay('首领盲注: 超频核心', 'en')).toBe(`Boss Blind: ${BOSS_ROSTER[3].name}`);
     expect(localizeBlindDisplay(`Boss Blind: ${BOSS_ROSTER[3].name}`, 'zh')).toBe('首领盲注: 超频核心');
-    expect(localizeBlindDisplay('小盲注', 'en')).toBe('Small Blind');
-    expect(localizeBlindDisplay('BIG', 'zh')).toBe('大盲注');
+    expect(localizeBlindDisplay('小盲注', 'en')).toBe(enJson.blinds.smallBlind);
+    expect(localizeBlindDisplay('BIG', 'zh')).toBe(zhJson.blinds.bigBlind);
     expect(localizeBlindDisplay('Some Unknown Blind', 'zh')).toBe('Some Unknown Blind');
   });
 

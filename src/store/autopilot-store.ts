@@ -43,7 +43,7 @@ export const useAutopilotStore = create<AutopilotState>((set, get) => ({
   thoughtLogs: [
     {
       timestamp: new Date().toLocaleTimeString(),
-      zh: 'JEY 认知矩阵已初始化',
+      zh: 'JEV 认知矩阵已初始化',
       en: 'JEV COGNITIVE MATRIX INITIALIZED',
     },
     {

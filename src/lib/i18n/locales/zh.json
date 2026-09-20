@@ -251,7 +251,8 @@
         "name": "超频核心",
         "ability": "超频计算，目标分数更高，分析思考极为迅猛"
       }
-    }
+    },
+    "bossBlind": "首领盲注"
   },
   "jokers": {
     "title": "认知小丑",
@@ -475,7 +476,41 @@
     "purchaseFailed": "购买未成功，请重试",
     "restocked": "黑市已刷新！",
     "rerollFailed": "刷新失败，请检查资金",
-    "archiveReadOnly": "黑市全息货架记录（只读）"
+    "archiveReadOnly": "黑市全息货架记录（只读）",
+    "upgradeNames": {
+      "STRAIGHT_FLUSH": "同花顺神级卷轴",
+      "FOUR_OF_A_KIND": "四条数据卷轴",
+      "FULL_HOUSE": "葫芦数据卷轴",
+      "FLUSH": "同花数据卷轴",
+      "STRAIGHT": "顺子数据卷轴",
+      "THREE_OF_A_KIND": "三条数据卷轴",
+      "TWO_PAIR": "两对数据卷轴",
+      "PAIR": "对子数据卷轴",
+      "HIGH_CARD": "高牌数据卷轴"
+    },
+    "upgradeDescription": "提升【{name}】+1 等级（提升筹码与倍数）。",
+    "mods": {
+      "QUANTUM_FOIL": {
+        "name": "量子镀层芯片",
+        "description": "为一张手牌镀上量子箔层（+30 筹码）"
+      },
+      "HOLOGRAPHIC_COAT": {
+        "name": "全息涂层芯片",
+        "description": "为一张手牌涂上全息涂层（+10 倍率）"
+      },
+      "POLYCHROME_FINISH": {
+        "name": "聚合棱镜芯片",
+        "description": "为一张手牌镶嵌聚合棱镜（×1.5 倍率）"
+      },
+      "SUIT_TRANSMUTE": {
+        "name": "花色转换器",
+        "description": "将一张手牌的花色在 ♠↔♥ 之间转换"
+      },
+      "MEMORY_PURGE": {
+        "name": "内存清理",
+        "description": "永久删除手中一张废牌，精炼牌库"
+      }
+    }
   },
   "resultRoguelike": {
     "victoryTitle": "★ 战局通关 · 彻底突破 ★",

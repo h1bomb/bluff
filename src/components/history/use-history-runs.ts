@@ -113,8 +113,8 @@ export function useHistoryRuns(t: TranslationDictionary) {
         await loadRuns();
         setTimeout(() => setStatusMessage(null), 3000);
       } catch (err: unknown) {
-        const errorMsg = err instanceof Error ? err.message : t.history.importFailed;
-        alert(errorMsg);
+        console.error('Run import failed:', err);
+        alert(t.history.importFailed);
       }
     };
     reader.readAsText(file);

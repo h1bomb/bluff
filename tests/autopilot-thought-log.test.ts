@@ -109,11 +109,11 @@ describe('Autopilot Thought Log Localization & Fallback Translation', () => {
     // Initial logs should be bilingual objects
     expect(store.thoughtLogs.length).toBeGreaterThanOrEqual(2);
     const initialLog = store.thoughtLogs.find(
-      (l) => typeof l === 'object' && l.zh.includes('JEY')
+      (l) => typeof l === 'object' && l.zh.includes('JEV')
     );
     expect(initialLog).toBeDefined();
     if (initialLog && typeof initialLog === 'object') {
-      expect(initialLog.zh).toContain('JEY');
+      expect(initialLog.zh).toContain('JEV');
       expect(initialLog.en).toContain('JEV');
     }
 
