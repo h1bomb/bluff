@@ -20,6 +20,24 @@ export const createCardSlice = (
   toggleSelectCard: async (cardId: string) => {
     const { publicState, sequence } = get();
     if (!publicState) return;
+
+    // Optimistic local update — selection is pure UI state; PLAY_HAND and
+    // DISCARD always send explicit cardIds, so the server never depends on
+    // its own copy of selectedCardIds. Mirrors the max-5 rule in
+    // game/engine/card-manager.ts.
+    const current = publicState.selectedCardIds || [];
+    const next = current.includes(cardId)
+      ? current.filter((id) => id !== cardId)
+      : current.length < 5
+        ? [...current, cardId]
+        : current;
+    if (next === current) return;
+    set((state: GameStoreState) => ({
+      publicState: state.publicState ? { ...state.publicState, selectedCardIds: next } : null,
+    }));
+
+    // Background sync so a restored session keeps the selection. The response
+    // must not clobber a newer local selection made while it was in flight.
     try {
       const data = await sendGameAction({
         gameId: publicState.gameId,
@@ -29,7 +47,11 @@ export const createCardSlice = (
         clientState: publicState,
       });
       if (data.success && data.publicState) {
-        set({ publicState: data.publicState, sequence: data.sequence ?? sequence + 1 });
+        const localSelection = get().publicState?.selectedCardIds ?? next;
+        set({
+          publicState: { ...data.publicState, selectedCardIds: localSelection },
+          sequence: data.sequence ?? sequence + 1,
+        });
       }
     } catch (err) {
       console.error('Failed to toggle select card:', err);
