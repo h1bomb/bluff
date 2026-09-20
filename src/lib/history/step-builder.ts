@@ -34,7 +34,7 @@ export function formatReplayScore(scoreResult: ScoreCalculationResult | null | u
   if (!scoreResult) return undefined;
   return {
     handType: scoreResult.evaluatedHand?.handType || 'HIGH_CARD',
-    handTypeZh: scoreResult.evaluatedHand?.description || scoreResult.evaluatedHand?.handType,
+    handTypeZh: scoreResult.evaluatedHand?.descriptionZh || scoreResult.evaluatedHand?.description || scoreResult.evaluatedHand?.handType,
     handLevel: scoreResult.handLevel || 1,
     baseChips: scoreResult.baseChips || 0,
     baseMult: scoreResult.baseMult || 0,

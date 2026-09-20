@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { TranslationDictionary } from '@/lib/i18n/translations';
+import { TranslationDictionary, format } from '@/lib/i18n/translations';
 import { AutopilotThoughtLogEntry } from '@/lib/history/types';
 
 export function translateChineseLogToEnglish(text: string): string {
@@ -162,7 +162,7 @@ export function translateEnglishLogToChinese(text: string): string {
     result = result.replace(/[🔄\s]*Shop refreshed[，,]\s*re-evaluating options/, '🔄 黑市已刷新，战术矩阵重新评估中');
   }
   if (result.includes('COGNITIVE MATRIX INITIALIZED')) {
-    result = 'JEY 认知矩阵已初始化';
+    result = 'JEV 认知矩阵已初始化';
   }
   if (result.includes('AWAITING NEURAL INPUT VECTORS')) {
     result = '等待神经决策输入向量...';
@@ -227,7 +227,7 @@ export function AutopilotThoughtLog({
           <span>{t.autopilot.telemetryLog}</span>
         </span>
         <span className="text-zinc-500 font-mono text-[9px]">
-          {thoughtLogs.length} LOGS
+          {format(t.autopilot.logsCount, { n: thoughtLogs.length })}
         </span>
       </div>
 

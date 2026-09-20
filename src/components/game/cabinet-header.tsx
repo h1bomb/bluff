@@ -1,7 +1,7 @@
 import React from 'react';
 import { PublicGameState } from '@/game/types';
 import { AutopilotDecision } from '@/game/autopilot/types';
-import { TranslationDictionary } from '@/lib/i18n/translations';
+import { blindTypeLabel, phaseLabel, TranslationDictionary } from '@/lib/i18n/translations';
 
 interface CabinetHeaderProps {
   publicState: PublicGameState;
@@ -56,12 +56,12 @@ export function CabinetHeader({
             </span>
           </div>
           <span className="retro text-[8px] text-zinc-500 font-mono tracking-widest">
-            ANTE {publicState.ante ?? 1} • {publicState.blind?.blindType || 'BLIND'}
+            ANTE {publicState.ante ?? 1} • {blindTypeLabel(t, publicState.blind?.blindType)}
           </span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-700 text-zinc-300 retro text-[8px] font-bold">
-            {publicState.phase}
+            {phaseLabel(t, publicState.phase)}
           </span>
         </div>
       </div>

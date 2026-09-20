@@ -5,13 +5,14 @@ import confetti from 'canvas-confetti';
 import { JokerInstance } from '@/game/jokers/types';
 import { useLanguageStore } from '@/store/language-store';
 import { format } from '@/lib/i18n/translations';
+import { localizeBlindDisplay } from '@/lib/history/snapshot';
 import { Button } from '@/components/ui/8bit/button';
 import { audioManager } from '@/lib/audio/audio-manager';
 
 interface ResultInlineViewProps {
   isVictory: boolean;
   ante: number;
-  blindName?: string;
+  blindName?: unknown;
   totalScore: number;
   peakRoundScore?: number;
   totalHandsPlayed?: number;
@@ -63,16 +64,7 @@ export function ResultInlineView({
     }
   }, [isVictory]);
 
-  const resolvedBlindName =
-    typeof blindName === 'object' && blindName !== null
-      ? (blindName as { nameZh?: string; name?: string; bossNameZh?: string; bossName?: string }).nameZh ||
-        (blindName as { nameZh?: string; name?: string; bossNameZh?: string; bossName?: string }).name ||
-        (blindName as { nameZh?: string; name?: string; bossNameZh?: string; bossName?: string }).bossNameZh ||
-        (blindName as { nameZh?: string; name?: string; bossNameZh?: string; bossName?: string }).bossName ||
-        ''
-      : typeof blindName === 'string'
-      ? blindName
-      : '';
+  const resolvedBlindName = localizeBlindDisplay(blindName, language);
 
   return (
     <div

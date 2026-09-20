@@ -33,7 +33,7 @@ export function AutopilotControlBar({ isEnabled, speed, toggleAutopilot, setSpee
         <button
           onClick={() => setSpeed(speed === '1x' ? '2x' : '1x')}
           className="px-1.5 py-0.5 border border-zinc-700 bg-zinc-800 text-zinc-300 hover:text-yellow-300 retro text-[8px] font-mono"
-          title="Execution Speed"
+          title={t.autopilot.speed}
         >
           {speed === '1x' ? t.autopilot.speed1x : t.autopilot.speed2x}
         </button>

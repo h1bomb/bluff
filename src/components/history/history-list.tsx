@@ -94,7 +94,7 @@ export function HistoryList({ onClose }: HistoryListProps) {
 
       {loading ? (
         <div className="p-8 text-center retro text-xs text-emerald-400 animate-pulse">
-          Loading history archives...
+          {t.history.loading}
         </div>
       ) : filteredRuns.length === 0 ? (
         <div className="p-8 border border-dashed border-zinc-800 bg-zinc-950/60 text-center flex flex-col items-center gap-2">

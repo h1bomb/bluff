@@ -58,7 +58,7 @@ export function UserProfileBadge() {
           <span className="text-xs">👤</span>
         )}
         <span className="max-w-[80px] sm:max-w-[120px] truncate">{displayName}</span>
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" title="Cloud Connected" />
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" title={t.auth?.cloudConnected || 'Cloud Connected'} />
       </button>
 
       {showMenu && (

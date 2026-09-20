@@ -72,6 +72,7 @@ export async function processPlayerAction(
     events.push({
       type: 'PATTERN_DETECTED',
       pattern: `AI learned: ${observableState.patterns.repeatedSequences.join(', ')}`,
+      patterns: observableState.patterns.repeatedSequences,
     });
   }
 

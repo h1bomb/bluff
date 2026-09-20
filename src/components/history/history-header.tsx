@@ -35,11 +35,11 @@ export function HistoryHeader({
             {isCloudConnected ? (
               <span className="text-[10px] retro font-bold text-emerald-400 bg-emerald-950 border border-emerald-500 px-2 py-0.5 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                POSTGRESQL CLOUD
+                {t.history.cloudBadge}
               </span>
             ) : (
               <span className="text-[10px] retro font-bold text-zinc-500 bg-zinc-900 border border-zinc-800 px-2 py-0.5">
-                INDEXEDDB LOCAL
+                {t.history.localBadge}
               </span>
             )}
           </div>

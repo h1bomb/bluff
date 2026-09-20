@@ -21,6 +21,12 @@
     "home": "HOME",
     "history": "HIST",
     "battleHud": "COGNITIVE BATTLE HUD",
+    "audioControls": "AUDIO CONTROLS",
+    "master": "MASTER",
+    "sfx": "SFX",
+    "bgm": "BGM",
+    "testSfx": "TEST SFX ♫",
+    "playBgm": "PLAY BGM ▶",
     "tapCardsToSelect": "TAP CARDS TO SELECT (PLAY UP TO 5 OR DISCARD)",
     "none": "None",
     "action": "Action",
@@ -48,6 +54,21 @@
   "game": {
     "initializing": "INITIALIZING AI LAB SESSION...",
     "jevQuotaToast": "JEV QUOTA EXCEEDED · SWITCHED TO LOCAL HEURISTIC AI",
+    "patternToast": "AI LEARNED YOUR PATTERNS",
+    "phases": {
+      "DEAL": "DEAL",
+      "PLAYER_TURN": "PLAYER TURN",
+      "DISCARDING": "DISCARDING",
+      "SCORING": "SCORING",
+      "AI_READING": "AI READING",
+      "AI_TURN": "AI TURN",
+      "SHOWDOWN": "SHOWDOWN",
+      "MODEL_BREAK": "MODEL BREAK",
+      "BUFF_SELECTION": "BUFF PICK",
+      "SHOP": "SHOP",
+      "GAME_OVER": "GAME OVER",
+      "RUN_COMPLETE": "RUN COMPLETE"
+    },
     "yourCards": "YOUR THREE CARDS",
     "handWon": "★ HAND WON! +",
     "handLost": "✖ HAND LOST! -",
@@ -201,7 +222,9 @@
       "BLUFF": "EXPLOIT BLUFF",
       "SYNERGY": "SYNERGY",
       "GREED": "INTEREST BANK"
-    }
+    },
+    "speed": "EXECUTION SPEED",
+    "logsCount": "{n} LOGS"
   },
   "blinds": {
     "ante": "ANTE",
@@ -489,7 +512,15 @@
     "guestBadge": "GUEST",
     "unlockJevBadge": "UPGRADE JEV QUOTA",
     "unlockJevReason": "Guests get 100 free Jev cognitive evaluations per day. Sign in to raise it to 600/day and unlock cloud run sync and replays.",
-    "quotaGuestHint": "Sign in to raise Jev quota to 600/day"
+    "quotaGuestHint": "Sign in to raise Jev quota to 600/day",
+    "errorTitle": "AUTH ERROR",
+    "errorOAuthAccountNotLinked": "This email previously signed in with another provider (e.g. GitHub). Same-email linking is enabled — please retry below.",
+    "errorCallback": "OAuth callback verification failed. Check the provider configuration or retry.",
+    "errorConfiguration": "Sign-in service is misconfigured. Check server environment variables.",
+    "errorAccessDenied": "Sign-in authorization was cancelled.",
+    "errorGeneric": "Sign-in failed unexpectedly (code: {code}).",
+    "retryLogin": "RETRY SIGN-IN",
+    "dismiss": "DISMISS"
   },
   "history": {
     "title": "MATCH HISTORY",
@@ -498,6 +529,9 @@
     "syncing": "SYNCING...",
     "syncedSuccess": "Successfully synced runs to cloud database!",
     "cloudBadge": "CLOUD ARCHIVE",
+    "localBadge": "LOCAL ARCHIVE",
+    "loading": "LOADING HISTORY ARCHIVES...",
+    "speed": "PLAYBACK SPEED",
     "backToGame": "← BACK TO GAME",
     "allRuns": "ALL",
     "victories": "VICTORIES",
@@ -560,6 +594,7 @@
     "cyberReplay": "CYBER HIGH-FIDELITY REPLAY",
     "battleHud": "COGNITIVE BATTLE HUD",
     "autoView": "AUTO VIEW",
+    "stepLabel": "STEP {i}/{n}",
     "shopView": "🏪 SHOP",
     "tallyView": "★ TALLY",
     "resultView": "🏆 RESULT",

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Hero3 from '@/components/ui/8bit/blocks/hero3';
 import { useGameStore } from '@/store/game-store';
 import { useLanguageStore } from '@/store/language-store';
+import { format } from '@/lib/i18n/translations';
 import { useAutopilotStore } from '@/store/autopilot-store';
 import { useSession } from 'next-auth/react';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
@@ -19,6 +20,7 @@ import type { ActiveGameSession } from '@/lib/history/types';
 function AuthErrorBanner({ onRetry }: { onRetry: () => void }) {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { t } = useLanguageStore();
   const error = searchParams.get('error');
 
   if (!error) return null;
@@ -26,16 +28,16 @@ function AuthErrorBanner({ onRetry }: { onRetry: () => void }) {
   const getErrorMessage = (err: string) => {
     switch (err) {
       case 'OAuthAccountNotLinked':
-        return '该邮箱先前已使用其他方式（如 GitHub）登录。已为您开启同邮箱自动关联，请点击下方按钮重新登录。';
+        return t.auth?.errorOAuthAccountNotLinked || '该邮箱先前已使用其他方式（如 GitHub）登录。已为您开启同邮箱自动关联，请点击下方按钮重新登录。';
       case 'OAuthCallbackError':
       case 'CallbackRouteError':
-        return '三方登录回调验证失败，请确认授权配置或重试。';
+        return t.auth?.errorCallback || '三方登录回调验证失败，请确认授权配置或重试。';
       case 'Configuration':
-        return '登录服务配置有误，请检查服务端环境变量。';
+        return t.auth?.errorConfiguration || '登录服务配置有误，请检查服务端环境变量。';
       case 'AccessDenied':
-        return '已取消登录授权。';
+        return t.auth?.errorAccessDenied || '已取消登录授权。';
       default:
-        return `登录遇到异常（错误码：${err}）。`;
+        return format(t.auth?.errorGeneric, { code: err }) || `登录遇到异常（错误码：${err}）。`;
     }
   };
 
@@ -49,7 +51,7 @@ function AuthErrorBanner({ onRetry }: { onRetry: () => void }) {
     <div className="w-full mb-4 p-3 border-2 border-red-500/80 bg-red-950/80 text-red-200 text-xs font-mono retro relative z-20 flex flex-col gap-2 shadow-[0_0_20px_rgba(239,68,68,0.3)]">
       <div className="flex items-center justify-between font-bold text-red-400">
         <span className="flex items-center gap-1.5">
-          <span className="animate-pulse">⚠</span> AUTH ERROR
+          <span className="animate-pulse">⚠</span> {t.auth?.errorTitle || 'AUTH ERROR'}
         </span>
         <button
           onClick={handleDismiss}
@@ -67,13 +69,13 @@ function AuthErrorBanner({ onRetry }: { onRetry: () => void }) {
           }}
           className="flex-1 py-1.5 bg-red-600 hover:bg-red-500 text-white text-[11px] font-bold retro border border-red-400 transition-colors"
         >
-          重新登录
+          {t.auth?.retryLogin || '重新登录'}
         </button>
         <button
           onClick={handleDismiss}
           className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[11px] retro border border-zinc-600 transition-colors"
         >
-          忽略
+          {t.auth?.dismiss || '忽略'}
         </button>
       </div>
     </div>

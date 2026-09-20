@@ -51,5 +51,7 @@ export function getActionBadge(type: string | undefined, t: TranslationDictionar
 }
 
 export function resolveLocalizedText(zh: string | undefined, en: string | undefined, lang: string) {
-  return lang === 'zh' ? zh : en;
+  // Prefer the current language, but never render a blank string when the
+  // other locale has the text.
+  return (lang === 'zh' ? zh || en : en || zh) || '';
 }

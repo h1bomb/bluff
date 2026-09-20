@@ -97,7 +97,7 @@ export function ReplayTransportBar({
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
-          <button onClick={onFirst} title="First Step" className="px-2 py-1 bg-zinc-900 border border-zinc-700 text-zinc-300 retro text-[8px] active:scale-95">
+          <button onClick={onFirst} title={t.history.firstStep} className="px-2 py-1 bg-zinc-900 border border-zinc-700 text-zinc-300 retro text-[8px] active:scale-95">
             |◀
           </button>
           <button onClick={onPrev} disabled={stepIndex === 0} className="px-2 py-1 bg-zinc-900 border border-zinc-700 text-zinc-300 retro text-[8px] disabled:opacity-30 active:scale-95">
@@ -109,10 +109,10 @@ export function ReplayTransportBar({
           <button onClick={onNext} disabled={stepIndex >= totalSteps - 1} className="px-2 py-1 bg-zinc-900 border border-zinc-700 text-zinc-300 retro text-[8px] disabled:opacity-30 active:scale-95">
             {t.history.nextStep}
           </button>
-          <button onClick={onLast} title="Last Step" className="px-2 py-1 bg-zinc-900 border border-zinc-700 text-zinc-300 retro text-[8px] active:scale-95">
+          <button onClick={onLast} title={t.history.lastStep} className="px-2 py-1 bg-zinc-900 border border-zinc-700 text-zinc-300 retro text-[8px] active:scale-95">
             ▶|
           </button>
-          <button onClick={onSpeedToggle} className="px-2 py-1 bg-zinc-900 border border-zinc-700 text-yellow-400 font-mono text-[9px] font-bold active:scale-95" title="Playback Speed">
+          <button onClick={onSpeedToggle} className="px-2 py-1 bg-zinc-900 border border-zinc-700 text-yellow-400 font-mono text-[9px] font-bold active:scale-95" title={t.history.speed}>
             {speed}x
           </button>
         </div>

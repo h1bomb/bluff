@@ -1,7 +1,7 @@
 import React from 'react';
 import { GameRunRecord, GameReplayStep, ReplayAutopilotSnapshot } from '@/lib/history/types';
 import { PublicGameState } from '@/game/types';
-import { TranslationDictionary } from '@/lib/i18n/translations';
+import { TranslationDictionary, blindTypeLabel, format } from '@/lib/i18n/translations';
 import { ScoreTargetBar } from '@/components/game/score-target-bar';
 import { AIOpponentCard } from '@/components/game/ai-opponent-card';
 import { BossReader } from '@/components/game/boss-reader';
@@ -54,7 +54,7 @@ export function ReplayCabinet({
         <div onClick={onOpenMobileDrawer} className="lg:hidden w-full bg-zinc-950 border border-emerald-500/70 p-1.5 mb-1.5 flex items-center justify-between gap-2 cursor-pointer hover:bg-zinc-900 text-xs retro shrink-0">
           <div className="flex items-center gap-1.5 min-w-0">
             <span className="text-emerald-400">🤖</span>
-            <span className="text-[9px] text-zinc-400 font-bold">{autopilotSnapshot.isEnabled ? 'AUTO ON' : 'STANDBY'}:</span>
+            <span className="text-[9px] text-zinc-400 font-bold">{autopilotSnapshot.isEnabled ? t.autopilot.engaged : t.autopilot.standby}:</span>
             <span className="text-[9px] text-emerald-300 truncate font-bold">
               {resolveLocalizedText(autopilotSnapshot.decisions[0].titleZh, autopilotSnapshot.decisions[0].title, language)}
             </span>
@@ -73,11 +73,11 @@ export function ReplayCabinet({
             <span className="retro text-xs font-black text-emerald-400 tracking-wider">{t.historyReplay.battleHud}</span>
           </div>
           <span className="retro text-[8px] text-zinc-500 font-mono tracking-widest">
-            ANTE {publicState.ante ?? 1} • {publicState.blind?.blindType || 'BLIND'}
+            ANTE {publicState.ante ?? 1} • {blindTypeLabel(t, publicState.blind?.blindType)}
           </span>
         </div>
         <span className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-700 text-zinc-300 retro text-[8px] font-bold">
-          STEP {stepIndex + 1}/{totalSteps}
+          {format(t.historyReplay.stepLabel, { i: stepIndex + 1, n: totalSteps })}
         </span>
       </div>
 
@@ -96,7 +96,7 @@ export function ReplayCabinet({
 
         {showSpecial && isResultStep ? (
           <div className="flex-1 flex flex-col justify-center my-0.5">
-            <ResultInlineView isVictory={currentStep?.actionType === 'RUN_COMPLETE' || isVictory} ante={publicState.ante ?? run.summary.finalAnte ?? 1} blindName={publicState.blind?.bossName || publicState.blind?.blindType || run.summary.finalBlind} totalScore={run.summary.totalScore} peakRoundScore={run.summary.peakRoundScore} totalHandsPlayed={run.summary.totalHandsPlayed} totalDiscards={run.summary.totalDiscards} totalPurchases={run.summary.totalPurchases} modelBreaksCount={run.summary.modelBreaksCount} jokers={publicState.jokers || run.summary.jokersSnapshot || []} onFirstStep={onFirstStep} onClose={onClose} isReplayMode={true} />
+            <ResultInlineView isVictory={currentStep?.actionType === 'RUN_COMPLETE' || isVictory} ante={publicState.ante ?? run.summary.finalAnte ?? 1} blindName={publicState.blind || run.summary.finalBlind} totalScore={run.summary.totalScore} peakRoundScore={run.summary.peakRoundScore} totalHandsPlayed={run.summary.totalHandsPlayed} totalDiscards={run.summary.totalDiscards} totalPurchases={run.summary.totalPurchases} modelBreaksCount={run.summary.modelBreaksCount} jokers={publicState.jokers || run.summary.jokersSnapshot || []} onFirstStep={onFirstStep} onClose={onClose} isReplayMode={true} />
           </div>
         ) : showSpecial && isShopStep ? (
           <div className="flex-1 flex flex-col gap-1.5 my-0.5">

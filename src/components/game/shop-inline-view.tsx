@@ -6,6 +6,7 @@ import { generateShopInventory } from '@/game/shop/definitions';
 import { JokerInstance } from '@/game/jokers/types';
 import { BlindInfo } from '@/game/types';
 import { useLanguageStore } from '@/store/language-store';
+import { blindTypeLabel } from '@/lib/i18n/translations';
 import { AutopilotDecision } from '@/game/autopilot/types';
 import { ShopHeader } from './shop/shop-header';
 import { ShopActionBar } from './shop/shop-action-bar';
@@ -68,10 +69,8 @@ export function ShopInlineView({
 
   const nextBlindName = nextBlind
     ? nextBlind.blindType === 'BOSS'
-      ? (language === 'zh' ? (nextBlind.bossNameZh || nextBlind.bossName) : nextBlind.bossName) || t.blinds.boss
-      : nextBlind.blindType === 'SMALL'
-      ? (language === 'zh' ? t.blinds.smallBlind : 'SMALL')
-      : (language === 'zh' ? t.blinds.bigBlind : 'BIG')
+      ? (language === 'zh' ? (nextBlind.bossNameZh || nextBlind.bossName) : (nextBlind.bossName || nextBlind.bossNameZh)) || t.blinds.boss
+      : blindTypeLabel(t, nextBlind.blindType)
     : null;
 
   const nextBlindFullText = nextBlind

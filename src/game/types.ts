@@ -165,7 +165,7 @@ export interface ModelBreakPayload {
 export type GameUIEvent =
   | { type: 'AI_READING' }
   | { type: 'BELIEF_UPDATED'; belief: PlayerBelief }
-  | { type: 'PATTERN_DETECTED'; pattern: string }
+  | { type: 'PATTERN_DETECTED'; pattern: string; patterns?: string[] }
   | { type: 'MODEL_BREAK'; payload: ModelBreakPayload }
   | { type: 'BUFF_TRIGGERED'; buffId: BuffId; message: string }
   | { type: 'BOSS_TAUNT'; message: string }

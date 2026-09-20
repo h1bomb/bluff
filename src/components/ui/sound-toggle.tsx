@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useAudioStore } from '@/store/audio-store';
+import { useLanguageStore } from '@/store/language-store';
 import { audioManager } from '@/lib/audio/audio-manager';
 import { Volume2, VolumeX, Sliders } from 'lucide-react';
 
@@ -13,6 +14,7 @@ interface SoundToggleProps {
 export function SoundToggle({ className = '', showSliders = true }: SoundToggleProps) {
   const { isMuted, masterVolume, sfxVolume, bgmVolume, toggleMute, setMasterVolume, setSfxVolume, setBgmVolume } =
     useAudioStore();
+  const { t } = useLanguageStore();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = (e: React.MouseEvent) => {
@@ -72,7 +74,7 @@ export function SoundToggle({ className = '', showSliders = true }: SoundToggleP
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-zinc-800 pb-1 text-emerald-400 font-bold">
-              <span>AUDIO CONTROLS</span>
+              <span>{t.common.audioControls}</span>
               <button
                 onClick={() => setIsOpen(false)}
                 className="text-zinc-500 hover:text-zinc-300 px-1"
@@ -84,7 +86,7 @@ export function SoundToggle({ className = '', showSliders = true }: SoundToggleP
             {/* Master Volume */}
             <div className="flex flex-col gap-1">
               <div className="flex justify-between text-zinc-400">
-                <span>MASTER</span>
+                <span>{t.common.master}</span>
                 <span className="font-mono">{Math.round(masterVolume * 100)}%</span>
               </div>
               <input
@@ -101,7 +103,7 @@ export function SoundToggle({ className = '', showSliders = true }: SoundToggleP
             {/* SFX Volume */}
             <div className="flex flex-col gap-1">
               <div className="flex justify-between text-zinc-400">
-                <span>SFX</span>
+                <span>{t.common.sfx}</span>
                 <span className="font-mono">{Math.round(sfxVolume * 100)}%</span>
               </div>
               <input
@@ -118,7 +120,7 @@ export function SoundToggle({ className = '', showSliders = true }: SoundToggleP
             {/* BGM Volume */}
             <div className="flex flex-col gap-1">
               <div className="flex justify-between text-zinc-400">
-                <span>BGM</span>
+                <span>{t.common.bgm}</span>
                 <span className="font-mono">{Math.round(bgmVolume * 100)}%</span>
               </div>
               <input
@@ -139,7 +141,7 @@ export function SoundToggle({ className = '', showSliders = true }: SoundToggleP
                 }}
                 className="py-1 px-1 border border-zinc-700 hover:border-emerald-500 text-zinc-400 hover:text-emerald-300 text-center transition-colors text-[9px]"
               >
-                TEST SFX ♫
+                {t.common.testSfx}
               </button>
               <button
                 onClick={() => {
@@ -147,7 +149,7 @@ export function SoundToggle({ className = '', showSliders = true }: SoundToggleP
                 }}
                 className="py-1 px-1 border border-zinc-700 hover:border-emerald-500 text-zinc-400 hover:text-emerald-300 text-center transition-colors text-[9px]"
               >
-                PLAY BGM ▶
+                {t.common.playBgm}
               </button>
             </div>
           </div>

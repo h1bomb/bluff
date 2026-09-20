@@ -70,4 +70,17 @@ export const TRANSLATIONS = {
 } as const;
 
 export type TranslationDictionary = typeof TRANSLATIONS['zh'];
+
+/** Localized label for a blind type enum (SMALL/BIG/BOSS). */
+export function blindTypeLabel(t: TranslationDictionary, blindType?: string | null): string {
+  if (blindType === 'BIG') return t.blinds.bigBlind;
+  if (blindType === 'BOSS') return t.common.boss;
+  return t.blinds.smallBlind;
+}
+
+/** Localized label for a game phase enum; falls back to the raw phase. */
+export function phaseLabel(t: TranslationDictionary, phase?: string | null): string {
+  const map = t.game.phases as Record<string, string> | undefined;
+  return (phase && map?.[phase]) || phase || '';
+}
 export { enJson, zhJson };

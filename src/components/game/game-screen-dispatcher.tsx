@@ -89,7 +89,7 @@ export function GameScreenDispatcher({
           <ResultInlineView
             isVictory={publicState.phase === 'RUN_COMPLETE'}
             ante={publicState.ante ?? 1}
-            blindName={publicState.blind?.bossName || publicState.blind?.blindType}
+            blindName={publicState.blind}
             totalScore={publicState.currentRoundScore ?? 0}
             peakRoundScore={lastScoreResult?.finalScore ?? 0}
             totalHandsPlayed={4 - (publicState.handsLeft ?? 4)}

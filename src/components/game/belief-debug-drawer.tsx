@@ -41,7 +41,7 @@ export function BeliefDebugDrawer({ state }: BeliefDebugDrawerProps) {
               <div className="flex gap-1 flex-wrap mt-0.5">
                 {state.activeBuffs.map(b => (
                   <span key={b.id} className="bg-zinc-900 border border-zinc-700 px-1 py-0.5 text-[8px]">
-                    {b.icon} {b.name}
+                    {b.icon} {(t.buffs[b.id] as { name?: string })?.name || b.name}
                   </span>
                 ))}
               </div>

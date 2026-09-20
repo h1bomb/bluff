@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, PokerAction, PublicGameState } from '@/game/types';
 import { TranslationDictionary } from '@/lib/i18n/translations';
+import { useLanguageStore } from '@/store/language-store';
 import { BossReader } from './boss-reader';
 import { AIOpponentCard } from './ai-opponent-card';
 import { AIBeliefPanel } from './ai-belief-panel';
@@ -39,6 +40,7 @@ export function GameBattleTable({
   onDiscard,
   onPlayAction,
 }: GameBattleTableProps) {
+  const language = useLanguageStore(s => s.language);
   return (
     <>
       {/* SECTION 2: AI Opponent / Boss Reader & Jev Belief */}
@@ -53,12 +55,14 @@ export function GameBattleTable({
                 </span>
                 <span className={`font-bold truncate max-w-[130px] ${isBoss ? 'text-purple-300' : 'text-zinc-200'}`}>
                   {isBoss
-                    ? (publicState.blind?.bossNameZh || publicState.blind?.bossName || t.boss.readerBoss)
+                    ? ((language === 'zh'
+                        ? publicState.blind?.bossNameZh || publicState.blind?.bossName
+                        : publicState.blind?.bossName || publicState.blind?.bossNameZh) || t.boss.readerBoss)
                     : publicState.aiName}
                 </span>
                 {isBoss && (
                   <span className="text-[7px] px-1 py-0.2 bg-purple-950 border border-purple-500 text-purple-300 font-bold shrink-0">
-                    BOSS
+                    {t.common.boss}
                   </span>
                 )}
               </div>

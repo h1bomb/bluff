@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { TRANSLATIONS, enJson, zhJson, format } from '../src/lib/i18n/translations';
+import { localizeBlindDisplay } from '../src/lib/history/snapshot';
 import { useLanguageStore } from '../src/store/language-store';
 import { JOKER_DEFINITIONS } from '../src/game/jokers/definitions';
 import { BUFF_DEFINITIONS } from '../src/game/buffs/definitions';
@@ -47,6 +48,26 @@ describe('i18n translations', () => {
     const enKeys = Object.keys(enJson).sort();
     const zhKeys = Object.keys(zhJson).sort();
     expect(enKeys).toEqual(zhKeys);
+  });
+
+  it('has full deep key parity between en.json and zh.json', () => {
+    const collectLeafPaths = (obj: unknown, prefix = ''): string[] => {
+      if (obj === null || typeof obj !== 'object') return [prefix];
+      return Object.entries(obj as Record<string, unknown>).flatMap(([k, v]) =>
+        collectLeafPaths(v, prefix ? `${prefix}.${k}` : k)
+      );
+    };
+    const enPaths = collectLeafPaths(enJson).sort();
+    const zhPaths = collectLeafPaths(zhJson).sort();
+    expect(zhPaths).toEqual(enPaths);
+  });
+
+  it('localizes blind display names for both languages incl. legacy strings', () => {
+    expect(localizeBlindDisplay('首领盲注: 超频核心', 'en')).toBe(`Boss Blind: ${BOSS_ROSTER[3].name}`);
+    expect(localizeBlindDisplay(`Boss Blind: ${BOSS_ROSTER[3].name}`, 'zh')).toBe('首领盲注: 超频核心');
+    expect(localizeBlindDisplay('小盲注', 'en')).toBe('Small Blind');
+    expect(localizeBlindDisplay('BIG', 'zh')).toBe('大盲注');
+    expect(localizeBlindDisplay('Some Unknown Blind', 'zh')).toBe('Some Unknown Blind');
   });
 
   it('contains all required autopilot confirmation modal keys in both locales', () => {

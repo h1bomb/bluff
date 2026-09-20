@@ -1,7 +1,9 @@
 import React from 'react';
 import { GameRunRecord } from '@/lib/history/types';
 import { downloadRunAsJson } from '@/lib/history/db';
+import { localizeBlindDisplay } from '@/lib/history/snapshot';
 import { TranslationDictionary } from '@/lib/i18n/translations';
+import { useLanguageStore } from '@/store/language-store';
 
 interface HistoryRunCardProps {
   run: GameRunRecord;
@@ -11,6 +13,7 @@ interface HistoryRunCardProps {
 }
 
 export function HistoryRunCard({ run, t, onReplay, onDelete }: HistoryRunCardProps) {
+  const language = useLanguageStore(s => s.language);
   const isVictory = run.status === 'VICTORY';
   const isDefeat = run.status === 'DEFEAT';
   const dateStr = new Date(run.startTime).toLocaleString();
@@ -20,15 +23,7 @@ export function HistoryRunCard({ run, t, onReplay, onDelete }: HistoryRunCardPro
     ? Math.round((run.endTime - run.startTime) / 1000)
     : 0;
 
-  const rawFinalBlind = run.summary?.finalBlind;
-  const finalBlindDisplay =
-    typeof rawFinalBlind === 'object' && rawFinalBlind !== null
-      ? (rawFinalBlind as { nameZh?: string; name?: string; bossNameZh?: string; bossName?: string }).nameZh ||
-        (rawFinalBlind as { nameZh?: string; name?: string; bossNameZh?: string; bossName?: string }).name ||
-        (rawFinalBlind as { nameZh?: string; name?: string; bossNameZh?: string; bossName?: string }).bossNameZh ||
-        (rawFinalBlind as { nameZh?: string; name?: string; bossNameZh?: string; bossName?: string }).bossName ||
-        'BOSS'
-      : String(rawFinalBlind || '');
+  const finalBlindDisplay = localizeBlindDisplay(run.summary?.finalBlind, language) || 'BOSS';
 
   return (
     <div className="border-2 border-zinc-800 bg-zinc-950 p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[2px_2px_0px_#000] hover:border-zinc-700 transition-all">

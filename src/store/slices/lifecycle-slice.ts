@@ -107,6 +107,12 @@ export const createLifecycleSlice = (
         const events: GameUIEvent[] = data.events || [];
         const modelBreakEvent = events.find(e => e.type === 'MODEL_BREAK');
         const patternEvent = events.find(e => e.type === 'PATTERN_DETECTED');
+        const patternToast =
+          patternEvent && patternEvent.type === 'PATTERN_DETECTED'
+            ? patternEvent.patterns?.length
+              ? `${useLanguageStore.getState().t.game.patternToast}: ${patternEvent.patterns.join(', ')}`
+              : patternEvent.pattern
+            : null;
         const throttledToast =
           data.jevThrottled && !get().jevThrottled
             ? useLanguageStore.getState().t.game.jevQuotaToast
@@ -121,7 +127,7 @@ export const createLifecycleSlice = (
           loading: false,
           sequence: data.sequence ?? sequence + 1,
           eventsQueue: events,
-          latestToast: patternEvent ? patternEvent.pattern : throttledToast,
+          latestToast: patternToast || throttledToast,
           ...(throttledToast ? { jevThrottled: true } : {}),
         });
 
