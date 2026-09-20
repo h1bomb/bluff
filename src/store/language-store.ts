@@ -40,10 +40,19 @@ export const useLanguageStore = create<LanguageState>((set, get) => ({
     if (typeof window !== 'undefined') {
       try {
         const saved = localStorage.getItem('bluff_lang') as Language;
-        if ((saved === 'en' || saved === 'zh') && saved !== get().language) {
-          get().setLanguage(saved);
+        if (saved === 'en' || saved === 'zh') {
+          if (saved !== get().language) {
+            get().setLanguage(saved);
+          }
+          return;
         }
       } catch {}
+      const browserLang: Language = navigator.language?.toLowerCase().startsWith('zh')
+        ? 'zh'
+        : 'en';
+      if (browserLang !== get().language) {
+        get().setLanguage(browserLang);
+      }
     }
   },
 }));
