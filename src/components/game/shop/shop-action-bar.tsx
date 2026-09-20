@@ -10,6 +10,7 @@ interface ShopActionBarProps {
   nextBlindFullText: string;
   onReroll: () => void;
   onNextBlind?: () => void;
+  isPending?: boolean;
 }
 
 export function ShopActionBar({
@@ -20,6 +21,7 @@ export function ShopActionBar({
   nextBlindFullText,
   onReroll,
   onNextBlind,
+  isPending = false,
 }: ShopActionBarProps) {
   if (isReplayMode) {
     return (
@@ -36,7 +38,7 @@ export function ShopActionBar({
         size="sm"
         soundEffect="cardDiscard"
         onClick={onReroll}
-        disabled={money < rerollCost}
+        disabled={money < rerollCost || isPending}
         className="shrink-0 w-auto px-2.5 sm:px-3 retro text-[9px] h-9 border-zinc-700 hover:border-yellow-400 text-zinc-300 hover:text-yellow-300 active:scale-95 flex items-center justify-center gap-1"
       >
         <span className="shrink-0">🔄</span>

@@ -81,8 +81,8 @@ export const createCardSlice = (
   },
 
   discardCards: async (customCardIds?: string[]): Promise<boolean> => {
-    const { publicState, sequence, replayStepIndex } = get();
-    if (!publicState) return false;
+    const { publicState, sequence, replayStepIndex, loading } = get();
+    if (!publicState || loading) return false;
     set({ loading: true });
 
     const availableCardIds = (publicState.playerCards || []).map((c: Card) => c.id);
@@ -129,8 +129,8 @@ export const createCardSlice = (
   },
 
   playHand: async (customCardIds?: string[]): Promise<boolean> => {
-    const { publicState, actionStartTime, sequence, replayStepIndex } = get();
-    if (!publicState) return false;
+    const { publicState, actionStartTime, sequence, replayStepIndex, loading } = get();
+    if (!publicState || loading) return false;
 
     if (publicState.phase !== 'PLAYER_TURN' || (publicState.handsLeft ?? 0) <= 0) {
       return false;

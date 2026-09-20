@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { JokerInstance } from '@/game/jokers/types';
 import { useLanguageStore } from '@/store/language-store';
+import { useGameStore } from '@/store/game-store';
 
 interface JokerTrayProps {
   jokers: JokerInstance[];
@@ -20,6 +21,7 @@ export function JokerTray({
   compact = false,
 }: JokerTrayProps) {
   const { language, t } = useLanguageStore();
+  const shopPending = useGameStore((s) => s.shopPending);
   const [selectedJoker, setSelectedJoker] = useState<JokerInstance | null>(null);
 
   const rarityBorders: Record<string, string> = {
@@ -103,11 +105,15 @@ export function JokerTray({
 
           {onSellJoker && (
             <button
+              disabled={shopPending}
               onClick={() => {
+                if (shopPending) return;
                 onSellJoker(selectedJoker.id);
                 setSelectedJoker(null);
               }}
-              className="px-2.5 py-1.5 bg-red-950/80 border border-red-500 text-red-300 hover:bg-red-900 active:scale-95 transition-all text-xs font-bold leading-none shrink-0"
+              className={`px-2.5 py-1.5 bg-red-950/80 border border-red-500 text-red-300 transition-all text-xs font-bold leading-none shrink-0 ${
+                shopPending ? 'opacity-50 cursor-wait' : 'hover:bg-red-900 active:scale-95'
+              }`}
             >
               {`${t.jokers.sell} +$${selectedJoker.sellValue}`}
             </button>

@@ -6,6 +6,7 @@ import { generateShopInventory } from '@/game/shop/definitions';
 import { JokerInstance } from '@/game/jokers/types';
 import { BlindInfo } from '@/game/types';
 import { useLanguageStore } from '@/store/language-store';
+import { useGameStore } from '@/store/game-store';
 import { blindTypeLabel } from '@/lib/i18n/translations';
 import { AutopilotDecision } from '@/game/autopilot/types';
 import { ShopHeader } from './shop/shop-header';
@@ -50,6 +51,7 @@ export function ShopInlineView({
   isAutopilotEnabled = false,
 }: ShopInlineViewProps) {
   const { language, t } = useLanguageStore();
+  const shopPending = useGameStore((s) => s.shopPending);
   const [localInventory, setLocalInventory] = useState<ShopItem[]>(() =>
     generateShopInventory((jokers || []).map((j) => j.jokerKey))
   );
@@ -78,7 +80,7 @@ export function ShopInlineView({
     : t.shop.enterNextBlind;
 
   const handleBuy = async (item: ShopItem) => {
-    if (isReplayMode || !onBuyItem) return;
+    if (isReplayMode || !onBuyItem || shopPending) return;
 
     if (item.itemType === 'JOKER' && jokers.length >= maxJokers) {
       setStatusMessage(t.shop.slotsFull);
@@ -101,7 +103,7 @@ export function ShopInlineView({
   };
 
   const handleReroll = async () => {
-    if (isReplayMode) return;
+    if (isReplayMode || shopPending) return;
     if (money < rerollCost) {
       setStatusMessage(t.shop.notEnoughCashReroll);
       return;
@@ -153,7 +155,7 @@ export function ShopInlineView({
       </div>
 
       {/* Available Items List */}
-      <div className={`flex flex-col gap-1.5 flex-1 min-h-[120px] ${isReplayMode ? 'max-h-[190px] sm:max-h-[220px]' : 'max-h-[260px] sm:max-h-[300px]'} overflow-y-auto pr-1 custom-scrollbar`}>
+      <div className={`flex flex-col gap-1.5 flex-1 min-h-[120px] ${isReplayMode ? 'max-h-[190px] sm:max-h-[220px]' : 'max-h-[260px] sm:max-h-[300px]'} overflow-y-auto pr-1 custom-scrollbar ${shopPending ? 'opacity-60 pointer-events-none' : ''}`}>
         {inventory.length === 0 ? (
           <div className="p-6 text-center retro text-xs text-zinc-500 border border-dashed border-zinc-800">
             {t.shop.soldOutInline}
@@ -203,6 +205,7 @@ export function ShopInlineView({
         nextBlindFullText={nextBlindFullText}
         onReroll={handleReroll}
         onNextBlind={onNextBlind}
+        isPending={shopPending}
       />
     </div>
   );

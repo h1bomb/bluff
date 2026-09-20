@@ -16,9 +16,10 @@ export const createShopSlice = (
   get: () => GameStoreState
 ): ShopSlice => ({
   buyShopItem: async (item: ShopItem): Promise<boolean> => {
-    const { publicState, sequence, replayStepIndex } = get();
-    if (!publicState) return false;
+    const { publicState, sequence, replayStepIndex, shopPending } = get();
+    if (!publicState || shopPending) return false;
 
+    set({ shopPending: true });
     try {
       const data = await sendGameAction({
         gameId: publicState.gameId,
@@ -46,16 +47,19 @@ export const createShopSlice = (
     } catch (err) {
       console.error('Failed to buy shop item:', err);
       return false;
+    } finally {
+      set({ shopPending: false });
     }
   },
 
   sellJoker: async (jokerId: string) => {
-    const { publicState, sequence, replayStepIndex } = get();
-    if (!publicState) return;
+    const { publicState, sequence, replayStepIndex, shopPending } = get();
+    if (!publicState || shopPending) return;
 
     const jokerToSell = (publicState.jokers || []).find((j: JokerInstance) => j.id === jokerId);
     if (!jokerToSell) return;
 
+    set({ shopPending: true });
     try {
       const data = await sendGameAction({
         gameId: publicState.gameId,
@@ -78,13 +82,16 @@ export const createShopSlice = (
       }
     } catch (err) {
       console.error('Failed to sell joker:', err);
+    } finally {
+      set({ shopPending: false });
     }
   },
 
   rerollShop: async () => {
-    const { publicState, sequence } = get();
-    if (!publicState) return false;
+    const { publicState, sequence, shopPending } = get();
+    if (!publicState || shopPending) return false;
 
+    set({ shopPending: true });
     try {
       const data = await sendGameAction({
         gameId: publicState.gameId,
@@ -103,6 +110,8 @@ export const createShopSlice = (
     } catch (err) {
       console.error('Failed to reroll shop:', err);
       return false;
+    } finally {
+      set({ shopPending: false });
     }
   },
 });

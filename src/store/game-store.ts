@@ -16,6 +16,8 @@ import { createUiSlice, UiSlice } from './slices/ui-slice';
 export interface GameStoreState extends CardSlice, ShopSlice, LifecycleSlice, UiSlice {
   publicState: PublicGameState | null;
   loading: boolean;
+  /** True while a shop mutation (buy/sell/reroll) is awaiting the server. */
+  shopPending: boolean;
   actionStartTime: number;
   sequence: number;
   showModelBreak: boolean;
@@ -36,6 +38,7 @@ export interface GameStoreState extends CardSlice, ShopSlice, LifecycleSlice, Ui
 export const initialState = {
   publicState: null,
   loading: false,
+  shopPending: false,
   showModelBreak: false,
   currentModelBreakPayload: null,
   showScoreTally: false,
