@@ -125,13 +125,13 @@ export default function Hero3({
 
         {/* Actions */}
         {actions.length > 0 ? (
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex w-full flex-wrap justify-center gap-4">
             {actions.map((action) =>
               action.href ? (
                 <Button
                   key={action.label}
                   variant={action.variant}
-                  className="min-h-[44px] px-8 py-2.5 text-xs sm:text-sm inline-flex items-center justify-center leading-none tracking-wide"
+                  className="min-h-[44px] max-w-full mx-1.5 px-4 sm:px-8 py-2.5 text-[10px] sm:text-sm inline-flex items-center justify-center leading-none tracking-wide whitespace-normal text-center"
                   asChild
                 >
                   <Link href={action.href}>{action.label}</Link>
@@ -141,7 +141,7 @@ export default function Hero3({
                   key={action.label}
                   onClick={action.onClick}
                   variant={action.variant}
-                  className="min-h-[44px] px-8 py-2.5 text-xs sm:text-sm inline-flex items-center justify-center leading-none tracking-wide"
+                  className="min-h-[44px] max-w-full mx-1.5 px-4 sm:px-8 py-2.5 text-[10px] sm:text-sm inline-flex items-center justify-center leading-none tracking-wide whitespace-normal text-center"
                 >
                   {action.label}
                 </Button>
