@@ -17,7 +17,7 @@ const AutopilotSchema = z.object({
   clientState: z.any().optional(),
 });
 
-const JEV_PICK_TIMEOUT_MS = 2500;
+const JEV_PICK_TIMEOUT_MS = 4500;
 
 /**
  * Server-side Jev "brain" for the autopilot: rebuilds the candidate lines with
