@@ -102,8 +102,23 @@ export async function POST(req: Request) {
     try {
       const client = new TypeSafeClient({ apiKey: process.env.TYPESAFE_API_KEY as string });
       const labels: Record<string, string> = {};
+      const needed = Math.max(
+        1,
+        (publicState.targetScore ?? publicState.blind?.targetScore ?? 300) -
+          (publicState.currentRoundScore ?? 0)
+      );
+
       candidates.forEach((c, i) => {
-        labels[`D${i}`] = `${c.type}/${c.category}: ${c.title} — ${c.reasoning}`;
+        // The subtitle carries the decisive numbers ("Expected: +5158 |
+        // CLEARS BLIND!", "$cost") — without them the model picks blind.
+        const quantitative = c.subtitle ? ` | ${c.subtitle}` : '';
+        const expected =
+          c.expectedScore != null
+            ? ` | expectedScore=${c.expectedScore}${c.expectedScore >= needed ? ' (CLEARS THE BLIND)' : ` (needs ${needed})`}`
+            : '';
+        labels[`D${i}`] =
+          `${c.type}/${c.category}: ${c.title}${quantitative}${expected} — ${c.reasoning} ` +
+          `(local heuristic confidence ${c.confidence}%)`;
       });
 
       const state = {
@@ -112,6 +127,7 @@ export async function POST(req: Request) {
         blindType: publicState.blind?.blindType,
         targetScore: publicState.targetScore,
         currentRoundScore: publicState.currentRoundScore,
+        scoreStillNeeded: needed,
         handsLeft: publicState.handsLeft,
         discardsLeft: publicState.discardsLeft,
         money: publicState.money,
@@ -131,8 +147,11 @@ export async function POST(req: Request) {
               'You are the autopilot piloting a Balatro-like roguelike poker run with cognitive-warfare scoring ' +
               '(playing a weak hand while the AI confidently reads you as strong triggers a huge Model Break multiplier; ' +
               'scores accumulate toward the blind target within limited hands; unspent money earns interest capped at $25). ' +
-              'Pick the strategically optimal line for long-term run survival: clear the blind efficiently when possible; ' +
-              'dig for draws when behind with resources left; buy multiplier/synergy jokers early; preserve economy otherwise.',
+              'Each candidate line shows its expected score and whether it CLEARS THE BLIND. ' +
+              'A line that clears the blind is almost always correct — never discard or stall while holding a guaranteed clear. ' +
+              'When behind, dig with discards only while the deck can still outdraw the gap; keep the engine consistent ' +
+              '(level the run\u2019s dominant hand type, prefer jokers that synergize with the current kit, avoid churning slots for marginal tiers). ' +
+              'The local heuristic confidence is a decent prior — deviate only with a concrete strategic reason.',
             criteria: labels,
           },
         },

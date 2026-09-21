@@ -97,6 +97,16 @@ describe('API /api/game/autopilot', () => {
     expect(res.decision.id).toBe(candidates[1].id);
     expect(res.jevQuota.used).toBe(1);
     expect(res.jevQuota.remaining).toBe(JEV_GUEST_LIMIT_PER_DAY - 1);
+
+    // Candidate labels must carry the quantitative anchors (expected score,
+    // clear flag, heuristic prior) — without them the model picks blind.
+    const callArgs = systemOneMock.mock.calls[0][0];
+    const criteria = callArgs.questions.pick.criteria;
+    const labelValues = Object.values(criteria).join('\n');
+    expect(labelValues).toContain('Expected:');
+    expect(labelValues).toMatch(/expectedScore=\d+/);
+    expect(labelValues).toContain('local heuristic confidence');
+    expect(callArgs.state.scoreStillNeeded).toBeGreaterThan(0);
   });
 
   it('throttles to the heuristic candidate without burning daily quota when the burst window is full', async () => {
