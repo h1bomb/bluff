@@ -65,7 +65,7 @@ export function GameOverlays({
           title={t.history.title}
         >
           <span>📜</span>
-          <span>{t.common.history}</span>
+          <span className="hidden sm:inline">{t.common.history}</span>
         </button>
 
         {/* Autopilot Toggle directly beside History */}
@@ -83,7 +83,7 @@ export function GameOverlays({
             title={isAutopilotEnabled ? t.autopilot.engaged : t.autopilot.standby}
           >
             <span>🤖</span>
-            <span>{isAutopilotEnabled ? t.autopilot.autoToggleOn : t.autopilot.autoToggleOff}</span>
+            <span className="hidden sm:inline">{isAutopilotEnabled ? t.autopilot.autoToggleOn : t.autopilot.autoToggleOff}</span>
             <span
               className={`w-1.5 h-1.5 rounded-full ${
                 isAutopilotEnabled ? 'bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse' : 'bg-zinc-600'
