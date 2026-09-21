@@ -181,11 +181,12 @@ export default function GamePage() {
           <button
             onClick={() => setShowAuthModal(true)}
             className="flex items-center gap-1.5 px-2 py-1 bg-zinc-950/95 border border-amber-500/70 hover:border-amber-300 retro text-[9px] active:scale-95 transition-all"
+            title={t.auth?.quotaGuestHint || 'Sign in for 600/day'}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
             <span className="text-amber-300">{t.auth?.guestBadge || 'GUEST'}</span>
-            <span className="text-zinc-600">·</span>
-            <span className="text-emerald-400">{t.auth?.unlockJevBadge || 'UNLOCK JEV'}</span>
+            <span className="text-zinc-600 hidden sm:inline">·</span>
+            <span className="text-emerald-400 hidden sm:inline">{t.auth?.unlockJevBadge || 'UNLOCK JEV'}</span>
           </button>
         )}
 
@@ -203,7 +204,7 @@ export default function GamePage() {
             title={jevQuota.isGuest ? (t.auth?.quotaGuestHint || 'Sign in for 600/day') : undefined}
           >
             <span className={`w-1.5 h-1.5 rounded-full ${jevQuota.remaining <= 0 ? 'bg-rose-400' : 'bg-emerald-400'}`} />
-            <span>JEV {jevQuota.remaining}/{jevQuota.limit}</span>
+            <span><span className="hidden sm:inline">JEV&nbsp;</span>{jevQuota.remaining}/{jevQuota.limit}</span>
           </button>
         )}
       </div>
