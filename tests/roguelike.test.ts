@@ -9,6 +9,7 @@ import {
 } from '../src/game/engine/game-engine';
 import { HeuristicDecisionProvider } from '../src/jev/heuristic-provider';
 import { generateShopInventory } from '../src/game/shop/definitions';
+import { getBlindInfo } from '../src/game/engine/blinds';
 
 describe('Roguelike Ante & Deckbuilder Flow', () => {
   const provider = new HeuristicDecisionProvider();
@@ -96,5 +97,30 @@ describe('Roguelike Ante & Deckbuilder Flow', () => {
 
     const { game: afterPlay } = await playSelectedCards(game, 1500, provider);
     expect(afterPlay.phase).toBe('RUN_COMPLETE');
+  });
+});
+
+describe('Blind target curve', () => {
+  it('stays gentle through Ante 3 and steepens from Ante 4', () => {
+    const a1 = getBlindInfo(1, 'SMALL').targetScore;
+    const a3 = getBlindInfo(3, 'BOSS').targetScore;
+    const a4 = getBlindInfo(4, 'SMALL').targetScore;
+    const a8 = getBlindInfo(8, 'BOSS').targetScore;
+
+    expect(a1).toBe(300);
+    expect(a3).toBe(4000);
+    expect(a4).toBe(10000);
+    expect(a8).toBe(250000);
+  });
+
+  it('increases monotonically within each blind type across antes', () => {
+    for (const type of ['SMALL', 'BIG', 'BOSS'] as const) {
+      let prev = 0;
+      for (let ante = 1; ante <= 8; ante++) {
+        const t = getBlindInfo(ante, type).targetScore;
+        expect(t).toBeGreaterThan(prev);
+        prev = t;
+      }
+    }
   });
 });

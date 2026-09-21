@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 import { AutopilotDecision } from '@/game/autopilot/types';
-import { evaluateAutopilotDecisions } from '@/game/autopilot/evaluator';
+import { evaluateAutopilotDecisions, isObviousDecision } from '@/game/autopilot/evaluator';
 import { PublicGameState } from '@/game/types';
 import { ShopItem } from '@/game/shop/types';
 import { runAutopilotDecision } from '@/game/autopilot/executor';
 import { AutopilotThoughtLogEntry } from '@/lib/history/types';
-import { fetchAutopilotDecision, JevQuotaInfo } from '@/services/game-api';
+import { fetchAutopilotDecision, JevQuotaInfo, AutopilotPickResult } from '@/services/game-api';
 
 export type AutopilotBrain = 'jev' | 'heuristic';
 
@@ -30,6 +30,21 @@ export interface ExecuteDecisionContext {
 
 const BRAIN_STORAGE_KEY = 'bluff_autopilot_brain';
 
+/** Cheap fingerprint of the state a pick was requested for; mismatch = stale. */
+function stateKeyForPick(s: PublicGameState): string {
+  return [
+    s.gameId,
+    s.phase,
+    s.handIndex,
+    s.currentRoundScore,
+    s.money,
+    s.handsLeft,
+    s.discardsLeft,
+    s.playerCards?.length,
+    s.shopInventory?.length,
+  ].join('|');
+}
+
 function readPersistedBrain(): AutopilotBrain {
   if (typeof window === 'undefined') return 'jev';
   try {
@@ -47,6 +62,8 @@ interface AutopilotState {
   thoughtLogs: AutopilotThoughtLogEntry[];
   isExecuting: boolean;
   isMobileDrawerOpen: boolean;
+  /** In-flight prefetched Jev pick for the current state, if any. */
+  pickCache: { key: string; promise: Promise<AutopilotPickResult | null> } | null;
 
   // Actions
   toggleAutopilot: () => void;
@@ -78,6 +95,7 @@ export const useAutopilotStore = create<AutopilotState>((set, get) => ({
   ],
   isExecuting: false,
   isMobileDrawerOpen: false,
+  pickCache: null,
 
   toggleAutopilot: () => {
     const next = !get().isEnabled;
@@ -167,6 +185,21 @@ export const useAutopilotStore = create<AutopilotState>((set, get) => ({
     if (!publicState) return;
     const evaluated = evaluateAutopilotDecisions(publicState, shopInventory);
     set({ decisions: evaluated });
+
+    // Prefetch the Jev pick in the background so the upcoming execution
+    // usually finds it already resolved instead of waiting 2-4s.
+    const { brain, isEnabled } = get();
+    const inScope = publicState.phase === 'PLAYER_TURN' || publicState.phase === 'SHOP';
+    if (brain === 'jev' && isEnabled && inScope && evaluated.length > 0 && !isObviousDecision(evaluated)) {
+      set({
+        pickCache: {
+          key: stateKeyForPick(publicState),
+          promise: fetchAutopilotDecision(publicState),
+        },
+      });
+    } else if (get().pickCache) {
+      set({ pickCache: null });
+    }
   },
 
   executeDecision: async (decision: AutopilotDecision, gameStoreActions: AutopilotGameActions, context?: ExecuteDecisionContext) => {
@@ -178,13 +211,31 @@ export const useAutopilotStore = create<AutopilotState>((set, get) => ({
       let finalDecision = decision;
 
       // Jev brain: ask the server to pick among the current candidate lines.
-      // DISMISS_TALLY is pure UI pacing and never needs a paid call.
-      if (brain === 'jev' && decision.type !== 'DISMISS_TALLY' && context?.publicState) {
+      // DISMISS_TALLY is pure UI pacing and never needs a paid call. Runaway
+      // candidates skip the pick too — same answer, zero quota.
+      const candidates = get().decisions;
+      if (brain === 'jev' && decision.type !== 'DISMISS_TALLY' && isObviousDecision(candidates)) {
         get().addThoughtLog({
-          zh: '🧠 JEV 认知决策请求已上行，等待最优线路裁决...',
-          en: '🧠 JEV cognitive pick requested, awaiting optimal line...',
+          zh: `⚡ 最优线路显著（${candidates[0].confidence}%），本地直接执行 · 节省 1 次配额`,
+          en: `⚡ Runaway top line (${candidates[0].confidence}%) — executed locally, 1 quota saved`,
         });
-        const pick = await fetchAutopilotDecision(context.publicState);
+      } else if (brain === 'jev' && decision.type !== 'DISMISS_TALLY' && context?.publicState) {
+        const cached = get().pickCache;
+        set({ pickCache: null });
+        const fromPrefetch = cached && cached.key === stateKeyForPick(context.publicState);
+
+        get().addThoughtLog(
+          fromPrefetch
+            ? {
+                zh: '🧠 JEV 裁决已就绪（预取命中），正在执行...',
+                en: '🧠 JEV pick ready (prefetch hit), executing...',
+              }
+            : {
+                zh: '🧠 JEV 认知决策请求已上行，等待最优线路裁决...',
+                en: '🧠 JEV cognitive pick requested, awaiting optimal line...',
+              }
+        );
+        const pick = fromPrefetch ? await cached.promise : await fetchAutopilotDecision(context.publicState);
         context.onJevMeta?.({ jevQuota: pick?.jevQuota, jevThrottled: pick?.jevThrottled });
 
         if (pick?.decision) {

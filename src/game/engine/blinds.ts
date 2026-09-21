@@ -30,17 +30,20 @@ export const BOSS_ROSTER = [
 ];
 
 // Standard Balatro-balanced progression (Ante 1 to 8)
-// In 3-card poker, hands naturally score tighter than 5-card games,
-// so scaling to 100,000 for the Ante 8 Boss creates a rigorous yet conquerable endgame.
+// In 3-card poker, hands naturally score tighter than 5-card games.
+// Early antes stay gentle; from Ante 4 the curve steepens (~2-2.5x the old
+// table) so that mid/late game keeps pressure against cognitive-multiplier
+// and scroll-level snowballing — an average build should need 2-3 hands per
+// blind there, not a guaranteed one-shot.
 export const BALATRO_ANTE_TARGETS: Record<number, { small: number; big: number; boss: number }> = {
   1: { small: 300, big: 450, boss: 600 },
   2: { small: 800, big: 1200, boss: 1600 },
   3: { small: 2000, big: 3000, boss: 4000 },
-  4: { small: 5000, big: 7500, boss: 10000 },
-  5: { small: 11000, big: 16500, boss: 22000 },
-  6: { small: 20000, big: 30000, boss: 40000 },
-  7: { small: 35000, big: 52500, boss: 70000 },
-  8: { small: 50000, big: 75000, boss: 100000 },
+  4: { small: 10000, big: 15000, boss: 20000 },
+  5: { small: 27500, big: 41000, boss: 55000 },
+  6: { small: 50000, big: 75000, boss: 100000 },
+  7: { small: 87500, big: 131000, boss: 175000 },
+  8: { small: 125000, big: 187500, boss: 250000 },
 };
 
 export function getBlindInfo(ante: number, blindType: BlindType): BlindInfo {

@@ -79,7 +79,9 @@ export function evaluateShopDecisions(publicState: PublicGameState, shopInventor
 
         if (weakest) {
           const weakTier = JOKER_TIERS[weakest.jokerKey?.toUpperCase()] || 40;
-          if (effectiveTier > weakTier + 15 && money + (weakest.sellValue ?? 2) >= item.cost) {
+          // Only surface swaps for genuinely top-tier pickups — a marginal
+          // tier bump re-offered every shop visit just becomes pick noise.
+          if (effectiveTier > weakTier + 25 && money + (weakest.sellValue ?? 2) >= item.cost) {
             decisions.push({
               id: `decision_sell_${weakest.id}_for_${item.id}`,
               type: 'SELL_JOKER',

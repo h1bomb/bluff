@@ -43,3 +43,15 @@ export function evaluateAutopilotDecisions(
   decisions.sort((a, b) => b.confidence - a.confidence);
   return decisions.slice(0, 4);
 }
+
+/**
+ * True when the top line is a near-certain runaway (>=95 confidence and 30+
+ * points clear of the runner-up) — asking Jev to adjudicate these just burns
+ * quota for the same answer.
+ */
+export function isObviousDecision(decisions: AutopilotDecision[]): boolean {
+  if (decisions.length === 0) return false;
+  const top = decisions[0];
+  const second = decisions[1];
+  return top.confidence >= 95 && top.confidence - (second?.confidence ?? 0) >= 30;
+}

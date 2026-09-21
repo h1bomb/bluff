@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { evaluateAutopilotDecisions } from '../src/game/autopilot/evaluator';
+import { evaluateAutopilotDecisions, isObviousDecision } from '../src/game/autopilot/evaluator';
 import { evaluateDiscardDecisions } from '../src/game/autopilot/evaluators/discard-evaluator';
 import { evaluateShopDecisions } from '../src/game/autopilot/evaluators/shop-evaluator';
 import { calculateHandScore } from '../src/game/scoring/calculator';
@@ -219,6 +219,57 @@ describe('Discard strategy: draw protection', () => {
     expect(sel).not.toContain(six.id);
     expect(sel).toContain(nine.id);
     expect(sel).toContain(two.id);
+  });
+});
+
+describe('Obvious-decision quota saver', () => {
+  const dec = (confidence: number) =>
+    ({
+      id: `d${confidence}`,
+      type: 'PLAY_HAND',
+      category: 'BEST',
+      title: '',
+      titleZh: '',
+      subtitle: '',
+      subtitleZh: '',
+      confidence,
+      simulatedDelayMs: 500,
+      reasoning: '',
+      reasoningZh: '',
+    }) as const;
+
+  it('flags runaway top lines as obvious', () => {
+    expect(isObviousDecision([dec(98), dec(40), dec(30)])).toBe(true);
+    expect(isObviousDecision([dec(95), dec(65)])).toBe(true);
+  });
+
+  it('does not flag close races or sub-95 tops', () => {
+    expect(isObviousDecision([dec(98), dec(80)])).toBe(false);
+    expect(isObviousDecision([dec(90), dec(30)])).toBe(false);
+    expect(isObviousDecision([dec(95)])).toBe(true);
+    expect(isObviousDecision([])).toBe(false);
+  });
+});
+
+describe('Shop strategy: sell-swap noise control', () => {
+  const midKit = () =>
+    ['POKER_FACE', 'RED_PILL', 'BLACK_ICE', 'PAVLOVS_BELL', 'FAKE_HESITATION'].map(jokerInst);
+
+  it('suppresses swaps when the tier gap is under 25', () => {
+    // ECHO_CHAMBER (80) vs weakest POKER_FACE (55): gap 25 — not enough.
+    const decisions = evaluateShopDecisions(
+      makeState({ phase: 'SHOP', jokers: midKit(), maxJokers: 5, money: 20 }),
+      [jokerItem('ECHO_CHAMBER')],
+    );
+    expect(decisions.every((d) => d.type !== 'SELL_JOKER')).toBe(true);
+  });
+
+  it('still surfaces swaps for genuinely top-tier pickups', () => {
+    const decisions = evaluateShopDecisions(
+      makeState({ phase: 'SHOP', jokers: midKit(), maxJokers: 5, money: 20 }),
+      [jokerItem('NEURAL_FEEDBACK')],
+    );
+    expect(decisions.some((d) => d.type === 'SELL_JOKER')).toBe(true);
   });
 });
 
