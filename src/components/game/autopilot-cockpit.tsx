@@ -85,6 +85,8 @@ export function AutopilotCockpit({
         <AutopilotControlBar
           isEnabled={isEnabled}
           speed={speed}
+          brain={isReplayMode ? undefined : store.brain}
+          setBrain={isReplayMode ? undefined : store.setBrain}
           toggleAutopilot={toggleAutopilot}
           setSpeed={setSpeed}
           t={t}

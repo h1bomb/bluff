@@ -224,6 +224,11 @@
       "GREED": "INTEREST BANK"
     },
     "speed": "EXECUTION SPEED",
+    "brainLabel": "DECISION CORE",
+    "brainJev": "JEV CLOUD",
+    "brainHeuristic": "HEURISTIC",
+    "brainJevHint": "Jev picks every move (uses quota)",
+    "brainHeuristicHint": "Local heuristic engine (free)",
     "logsCount": "{n} LOGS"
   },
   "blinds": {

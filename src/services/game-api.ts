@@ -40,6 +40,31 @@ export interface JevQuotaInfo {
   isGuest: boolean;
 }
 
+export interface AutopilotPickResult {
+  decision: import('@/game/autopilot/types').AutopilotDecision;
+  jevPicked?: boolean;
+  jevConfidence?: number;
+  fallback?: string;
+  jevThrottled?: boolean;
+  jevQuota?: JevQuotaInfo;
+}
+
+export async function fetchAutopilotDecision(
+  publicState: PublicGameState
+): Promise<AutopilotPickResult | null> {
+  try {
+    const res = await fetch('/api/game/autopilot', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ gameId: publicState.gameId, clientState: publicState }),
+    });
+    const data = await res.json();
+    return data?.success && data.decision ? (data as AutopilotPickResult) : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchJevQuota(): Promise<JevQuotaInfo | null> {
   try {
     const res = await fetch('/api/game/quota');

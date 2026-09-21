@@ -5,12 +5,14 @@ import { TranslationDictionary } from '@/lib/i18n/translations';
 interface AutopilotControlBarProps {
   isEnabled: boolean;
   speed: '1x' | '2x';
+  brain?: 'jev' | 'heuristic';
+  setBrain?: (b: 'jev' | 'heuristic') => void;
   toggleAutopilot: () => void;
   setSpeed: (s: '1x' | '2x') => void;
   t: TranslationDictionary;
 }
 
-export function AutopilotControlBar({ isEnabled, speed, toggleAutopilot, setSpeed, t }: AutopilotControlBarProps) {
+export function AutopilotControlBar({ isEnabled, speed, brain, setBrain, toggleAutopilot, setSpeed, t }: AutopilotControlBarProps) {
   return (
     <div className="flex items-center justify-between gap-2 p-1.5 bg-zinc-900/90 border border-zinc-800 shrink-0">
       <div className="flex items-center gap-1.5">
@@ -29,6 +31,21 @@ export function AutopilotControlBar({ isEnabled, speed, toggleAutopilot, setSpee
       </div>
 
       <div className="flex items-center gap-1.5">
+        {/* Decision Core Toggle (Jev cloud vs local heuristic) */}
+        {brain && setBrain && (
+          <button
+            onClick={() => setBrain(brain === 'jev' ? 'heuristic' : 'jev')}
+            className={`px-1.5 py-0.5 border retro text-[8px] font-mono font-bold transition-colors ${
+              brain === 'jev'
+                ? 'border-purple-500 bg-purple-950/60 text-purple-300 hover:border-purple-300'
+                : 'border-zinc-600 bg-zinc-800 text-zinc-400 hover:text-zinc-200'
+            }`}
+            title={`${t.autopilot.brainLabel}: ${brain === 'jev' ? t.autopilot.brainJevHint : t.autopilot.brainHeuristicHint}`}
+          >
+            {brain === 'jev' ? `🧠 ${t.autopilot.brainJev}` : `⚙️ ${t.autopilot.brainHeuristic}`}
+          </button>
+        )}
+
         {/* Speed Toggle */}
         <button
           onClick={() => setSpeed(speed === '1x' ? '2x' : '1x')}

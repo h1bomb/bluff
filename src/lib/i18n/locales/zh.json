@@ -224,6 +224,11 @@
       "GREED": "利息储备"
     },
     "speed": "执行速度",
+    "brainLabel": "决策内核",
+    "brainJev": "JEV 云端",
+    "brainHeuristic": "本地启发",
+    "brainJevHint": "每步由 Jev 裁决（消耗配额）",
+    "brainHeuristicHint": "本地启发式引擎（零消耗）",
     "logsCount": "{n} 条日志"
   },
   "blinds": {

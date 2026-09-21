@@ -96,17 +96,32 @@ export default function GamePage() {
 
   const handleExecuteDecision = useCallback(
     (decision: AutopilotDecision) => {
-      executeDecision(decision, {
-        setSelectedCards,
-        toggleSelectCard,
-        playHand,
-        discardCards,
-        buyShopItem,
-        sellJoker,
-        rerollShop,
-        nextBlind,
-        dismissScoreTally,
-      });
+      executeDecision(
+        decision,
+        {
+          setSelectedCards,
+          toggleSelectCard,
+          playHand,
+          discardCards,
+          buyShopItem,
+          sellJoker,
+          rerollShop,
+          nextBlind,
+          dismissScoreTally,
+        },
+        {
+          publicState,
+          onJevMeta: (meta) => {
+            if (meta.jevQuota) setJevQuota(meta.jevQuota);
+            if (meta.jevThrottled && !useGameStore.getState().jevThrottled) {
+              useGameStore.setState({
+                jevThrottled: true,
+                latestToast: useLanguageStore.getState().t.game.jevQuotaToast,
+              });
+            }
+          },
+        }
+      );
     },
     [
       executeDecision,
@@ -119,6 +134,8 @@ export default function GamePage() {
       rerollShop,
       nextBlind,
       dismissScoreTally,
+      publicState,
+      setJevQuota,
     ]
   );
 
