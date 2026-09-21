@@ -392,6 +392,53 @@ describe('Jev quota enforcement', () => {
     expect(data.success).toBe(true);
     expect(data.jevThrottled).toBe(true);
   });
+
+  it('consumes exactly one daily quota per played hand (autopilot path), none for select/discard', async () => {
+    mockLoggedInUser('quota-hands-user');
+    const gameId = 'quota_hands_session';
+    const game = initRoguelikeGame(gameId);
+    SessionStore.set(sessionKeyFor('quota-hands-user', gameId), game);
+
+    const call = (seq: number, action: string, extra: Record<string, unknown> = {}) =>
+      POST(
+        new Request('http://localhost/api/game/action', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ gameId, sequence: seq, action, ...extra }),
+        })
+      ).then((r) => r.json());
+
+    // Non-scoring actions must not consume Jev quota.
+    const cardIds = game.player.cards.slice(0, 3).map((c) => c.id);
+    await call(1, 'SET_SELECTED_CARDS', { cardIds });
+    const afterDiscard = await call(2, 'DISCARD', { cardIds });
+    expect(afterDiscard.success).toBe(true);
+    let quota = await peekDailyQuota('u:quota-hands-user', JEV_USER_LIMIT_PER_DAY);
+    expect(quota.used).toBe(0);
+
+    // Each PLAY_HAND (what the autopilot issues per hand) consumes exactly 1.
+    const hand1 = await call(3, 'PLAY_HAND', {
+      cardIds: afterDiscard.publicState.playerCards.slice(0, 3).map((c: { id: string }) => c.id),
+      delayMs: 500,
+    });
+    expect(hand1.success).toBe(true);
+    expect(hand1.jevQuota?.used).toBe(1);
+    expect(hand1.jevQuota?.remaining).toBe(JEV_USER_LIMIT_PER_DAY - 1);
+
+    if (hand1.publicState.phase === 'PLAYER_TURN') {
+      const hand2 = await call(4, 'PLAY_HAND', {
+        cardIds: hand1.publicState.playerCards.slice(0, 3).map((c: { id: string }) => c.id),
+        delayMs: 500,
+      });
+      expect(hand2.success).toBe(true);
+      expect(hand2.jevQuota?.used).toBe(2);
+      expect(hand2.jevQuota?.remaining).toBe(JEV_USER_LIMIT_PER_DAY - 2);
+    }
+
+    quota = await peekDailyQuota('u:quota-hands-user', JEV_USER_LIMIT_PER_DAY);
+    expect(quota.used).toBeGreaterThanOrEqual(1);
+    expect(quota.used).toBeLessThanOrEqual(2);
+  });
 });
 
 describe('API /api/game/quota', () => {
