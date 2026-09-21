@@ -9,6 +9,11 @@ import { QuotaIdentity } from './identity';
 const jevProvider = new TypeSafeJevProvider();
 const heuristicProvider = new HeuristicDecisionProvider();
 
+/** True when the Jev API key is configured; without it every call is heuristic. */
+export function hasJevApiKey(): boolean {
+  return !!process.env.TYPESAFE_API_KEY;
+}
+
 /**
  * Wraps the paid Jev engine with per-identity quota checks (per-minute burst
  * window + durable daily counter). Quota is consumed only when a Jev
@@ -23,6 +28,11 @@ class QuotaAwareJevProvider implements DecisionProvider {
   constructor(private readonly identity: QuotaIdentity) {}
 
   async evaluatePlayer(state: ObservablePlayerState): Promise<PlayerBelief> {
+    // Never burn quota when there is no Jev backend to call.
+    if (!hasJevApiKey()) {
+      return heuristicProvider.evaluatePlayer(state);
+    }
+
     const id = this.identity;
 
     // 1. Device/user burst window

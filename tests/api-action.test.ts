@@ -51,6 +51,9 @@ beforeEach(() => {
   mockAuth.mockResolvedValue(null);
   resetMinuteQuota();
   resetDailyQuotaMemory();
+  // Quota is only consumed when a Jev backend exists; pretend one is
+  // configured (the inner client falls back to heuristic on its own).
+  process.env.TYPESAFE_API_KEY = 'test-key';
 });
 
 describe('API /api/game/action simulation (guest)', () => {
@@ -320,6 +323,29 @@ describe('Jev quota enforcement', () => {
     expect(selection.wasThrottled()).toBe(true);
     expect(selection.quotaSnapshot()?.remaining).toBe(0);
     expect(belief.behavior.value).toBeTruthy();
+  });
+
+  it('never burns quota when no Jev API key is configured', async () => {
+    delete process.env.TYPESAFE_API_KEY;
+    const identity = {
+      key: 'u:no-key-user',
+      isGuest: false,
+      minuteLimit: 100,
+      dailyLimit: 10,
+      ipKey: null,
+      ipMinuteLimit: 0,
+      ipDailyLimit: 0,
+      setGuestId: null,
+    };
+    const selection = selectDecisionProvider(identity);
+
+    const belief = await selection.provider.evaluatePlayer(sampleObservable);
+    expect(belief.behavior.value).toBeTruthy();
+    expect(selection.wasThrottled()).toBe(false);
+    // No Jev backend → pure heuristic without touching the counters.
+    expect(selection.quotaSnapshot()).toBeNull();
+    const quota = await peekDailyQuota('u:no-key-user', 10);
+    expect(quota.used).toBe(0);
   });
 
   it('gives each guest device an independent daily quota on a shared egress IP', async () => {

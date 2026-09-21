@@ -4,12 +4,16 @@ vi.mock('@/auth', () => ({
   auth: vi.fn().mockResolvedValue(null),
 }));
 
-const systemOneMock = vi.fn();
-vi.mock('@typesafe-ai/sdk', () => ({
-  TypeSafeClient: class {
-    systemOne = systemOneMock;
-  },
-}));
+const systemOneMock = vi.hoisted(() => vi.fn());
+vi.mock('@typesafe-ai/sdk', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@typesafe-ai/sdk')>();
+  return {
+    ...actual,
+    TypeSafeClient: class {
+      systemOne = systemOneMock;
+    },
+  };
+});
 
 import { POST } from '../src/app/api/game/autopilot/route';
 import { SessionStore } from '../src/game/engine/session-store';

@@ -200,6 +200,16 @@ export const useAutopilotStore = create<AutopilotState>((set, get) => ({
               zh: '⚠️ JEV 配额耗尽，本次由本地启发式接管',
               en: '⚠️ JEV quota exhausted — local heuristic took this one',
             });
+          } else if (pick.fallbackReason === 'no_api_key') {
+            get().addThoughtLog({
+              zh: '⚠️ JEV 云端引擎未配置，由本地启发式接管',
+              en: '⚠️ JEV cloud engine not configured — local heuristic took over',
+            });
+          } else {
+            get().addThoughtLog({
+              zh: '⚠️ JEV 裁决失败（超时/异常），回退本地启发式线路',
+              en: '⚠️ JEV pick failed (timeout/error) — fell back to heuristic line',
+            });
           }
         } else {
           get().addThoughtLog({

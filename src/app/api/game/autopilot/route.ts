@@ -8,6 +8,7 @@ import { evaluateAutopilotDecisions } from '@/game/autopilot/evaluator';
 import { resolveQuotaIdentity } from '@/jev/identity';
 import { consumeMinuteQuota } from '@/jev/rate-limiter';
 import { consumeDailyQuota, peekDailyQuota } from '@/jev/daily-quota';
+import { hasJevApiKey } from '@/jev/provider-selector';
 import { resolveSession } from '../action/session-resolver';
 
 const AutopilotSchema = z.object({
@@ -63,14 +64,13 @@ export async function POST(req: Request) {
       return { ...snap, isGuest: identity.isGuest };
     };
 
-    const apiKey = process.env.TYPESAFE_API_KEY;
-
     // No Jev client at all → never touch the quota counters.
-    if (!apiKey) {
+    if (!hasJevApiKey()) {
       return NextResponse.json({
         success: true,
         decision: candidates[0],
         fallback: 'heuristic',
+        fallbackReason: 'no_api_key',
         jevQuota: await quotaOf(),
       });
     }
@@ -100,7 +100,7 @@ export async function POST(req: Request) {
     }
 
     try {
-      const client = new TypeSafeClient({ apiKey });
+      const client = new TypeSafeClient({ apiKey: process.env.TYPESAFE_API_KEY as string });
       const labels: Record<string, string> = {};
       candidates.forEach((c, i) => {
         labels[`D${i}`] = `${c.type}/${c.category}: ${c.title} — ${c.reasoning}`;
@@ -161,6 +161,7 @@ export async function POST(req: Request) {
         success: true,
         decision: candidates[0],
         fallback: 'heuristic',
+        fallbackReason: 'error',
         jevQuota: await quotaOf(),
       });
     }

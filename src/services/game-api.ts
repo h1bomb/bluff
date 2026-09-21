@@ -45,6 +45,7 @@ export interface AutopilotPickResult {
   jevPicked?: boolean;
   jevConfidence?: number;
   fallback?: string;
+  fallbackReason?: 'no_api_key' | 'error';
   jevThrottled?: boolean;
   jevQuota?: JevQuotaInfo;
 }
